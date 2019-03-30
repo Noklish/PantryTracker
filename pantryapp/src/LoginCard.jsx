@@ -61,7 +61,6 @@ export class LoginCard extends React.Component{
                                 <button className="btn btn-success btn-block" id="loginButton" onClick = {this.validateLogin}>Login</button>
                             </form>
                             <hr/>
-                            <button className="btn btn-primary btn-block regButton" id="regButton">Register</button>
                         </div>
                     </div>
                 </div>
