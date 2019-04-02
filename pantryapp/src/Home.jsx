@@ -4,12 +4,9 @@ import Table from './Table';
 export class Home extends React.Component {
 
     state = {
-        hideMessage: false,
         pantry: false,
         grocery: false,
-        favorites: false,
-        page: 'pantry',
-
+        favorites: false
      }
 
      onTogglePantry = () => {
@@ -65,11 +62,11 @@ export class Home extends React.Component {
                     </ul>
                 </div>
             </nav>
-            <div>
-                {this.state.pantry && <Table title={'Pantry'} />}
-                {this.state.grocery && <Table title={'Grocery List'}/>}
-                {this.state.favorites && <Table title={'Favorites'}/>}
-            </div>
+            <main>
+                {this.state.pantry && <Table title={'Pantry'} quick={'Delete'}/>}
+                {this.state.grocery && <Table title={'Grocery List'} quick={'Quick Add'}/>}
+                {this.state.favorites && <Table title={'Favorites'} quick={'Quick Add'}/>}
+            </main>
             </>
         );
     }
