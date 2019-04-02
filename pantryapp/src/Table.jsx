@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 
 export class PantryTable extends React.Component {
+    
     render (){
         return (
             <>
             <div id="home">
-                <h1>Your Pantry</h1>
-                <div id="pantryAlert" class="alert alert-primary" role="alert">
-                    You do not have any food items in your <b>Pantry</b>. Click 'Add Item' to begin filling your <b>Pantry</b>.
+                <h1>{this.props.title}</h1>
+                <div id="pantryAlert" className="alert alert-primary" role="alert">
+                    You do not have any food items in your <b>{this.props.title}</b>. Click 'Add Item' to begin filling your <b>{this.props.title}</b>.
                 </div>
-                <table class="table table-striped">
+                <table className="table table-striped">
                     <thead>
                         <tr>
                             <th>Food Item</th>
@@ -22,8 +23,8 @@ export class PantryTable extends React.Component {
                     <tbody id="pantryTableBody">
                     </tbody>
                 </table>
-                <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" onclick="events.setPantryList()" data-target="#exampleModal">
-                    Add Item to your Pantry
+                <button type="button" className="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#exampleModal">
+                    Add Item to your {this.props.title}
                 </button>
             </div>
             </>

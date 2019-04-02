@@ -1,39 +1,75 @@
 import React, { Component } from 'react';
-import PantryTable from './PantryTable';
+import Table from './Table';
 
 export class Home extends React.Component {
+
+    state = {
+        hideMessage: false,
+        pantry: false,
+        grocery: false,
+        favorites: false,
+        page: 'pantry',
+
+     }
+
+     onTogglePantry = () => {
+        this.setState(prevState => ({ pantry: true }));
+        this.setState(prevState => ({ grocery: false }));
+        this.setState(prevState => ({ favorites: false }));
+      }
+
+      onToggleGrocery = () => {
+        this.setState(prevState => ({ pantry: false }));
+        this.setState(prevState => ({ grocery: true }));
+        this.setState(prevState => ({ favorites: false }));
+      }
+
+      onToggleFavorites = () => {
+        this.setState(prevState => ({ pantry: false }));
+        this.setState(prevState => ({ grocery: false }));
+        this.setState(prevState => ({ favorites: true }));
+      }
+
+
     render (){
         return (
             <>
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                <div class="nav collapse navbar-collapse ">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="#">Pantry</a>
+
+            <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div className="nav collapse navbar-collapse ">
+                    <ul className="navbar-nav">
+                        <li className="nav-item active">
+                            <a className="nav-link text-light" onClick={this.onTogglePantry} href="#">Pantry</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="#">Grocery</a>
+                        <li className="nav-item">
+                            <a className="nav-link text-light" onClick={this.onToggleGrocery} href="#">Grocery</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="#">Favorites</a>
+                        <li className="nav-item">
+                            <a className="nav-link text-light" onClick={this.onToggleFavorites} href="#">Favorites</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    </ul>
+                </div>
+                <div>
+                    <ul className="navbar-nav">
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 My Account
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Update Profile</a>
-                                <a class="dropdown-item" href="#">Change Profile</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Logout</a>
+                            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a className="dropdown-item" href="#">Update Profile</a>
+                                <a className="dropdown-item" href="#">Change Profile</a>
+                                <div className="dropdown-divider"></div>
+                                <a className="dropdown-item" href="#">Logout</a>
                             </div>
                         </li>
                     </ul>
                 </div>
             </nav>
-            <body>
-                <PantryTable></PantryTable>
-            </body>
+            <div>
+                {this.state.pantry && <Table title={'Pantry'} />}
+                {this.state.grocery && <Table title={'Grocery List'}/>}
+                {this.state.favorites && <Table title={'Favorites'}/>}
+            </div>
             </>
         );
     }
