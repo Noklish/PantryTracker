@@ -66,6 +66,7 @@ export class Table extends React.Component {
                             <Form.Group controlId="foodItem.type">
                                 <Form.Label>Food Type</Form.Label>
                                 <Form.Control as="select" >
+                                    <option value="-1" selected disabled>Please select food type</option>
                                     <option value="Grain">Grain</option>
                                     <option value="Fruit">Fruit</option>
                                     <option value="Vegetable">Vegetable</option>
@@ -81,7 +82,7 @@ export class Table extends React.Component {
                             </Form.Group>
                             <Form.Group controlId="foodItem.quantity">
                                 <Form.Label>Quantity</Form.Label>
-                                <Form.Control type="number" min="1" value="1" /> 
+                                <Form.Control type="number" min="1" placeholder="Please enter the quanity of food" /> 
                             </Form.Group>
                         </Form>
                     </Modal.Body>
