@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
 import { Card } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import './loginCard.css';
 
 export class LoginCard extends React.Component{
     constructor(props){
@@ -35,14 +36,15 @@ export class LoginCard extends React.Component{
             e.preventDefault();
             return;
         }
+        window.alert("You am loged in");
         return true;
     }
 
     render() {
         return(
             <>
-            <Card className="text-center" style={{ width: '20rem' }}>
-                <Card.Header bg="primary">
+            <Card className="text-center" id="loginCard">
+                <Card.Header id="logHead">
                     <h4>Login</h4>
                 </Card.Header>
                 <Card.Body>
