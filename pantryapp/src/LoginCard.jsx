@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Form } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 export class LoginCard extends React.Component{
     constructor(props){
@@ -11,7 +14,6 @@ export class LoginCard extends React.Component{
 
         this.checkEmail = this.checkEmail.bind(this);
         this.validateLogin = this.validateLogin.bind(this);
-        this.handleChange = this.handleChange.bind(this);
     }
 
     checkEmail(mail){
@@ -21,50 +23,46 @@ export class LoginCard extends React.Component{
 
     validateLogin(e){
         debugger;
-        if(this.checkEmail(this.state.email))
+        if(!this.checkEmail(this.state.email.value))
         {
             window.alert("Invalid email address");
             e.preventDefault();
+            return;
         }
-        if(!this.state.pass)
+        if(!this.state.pass.value)
         {
             window.alert("Please enter a valid password");
             e.preventDefault();
+            return;
         }
         return true;
     }
 
-    handleChange(event) {
-        //debugger;
-        this.setState({
-            value: event.target.value
-        });
-        event.preventDefault();
-    }
-
-
     render() {
         return(
             <>
-            <div className="row" id="banner">
-                <div className="flex card text-center" id="loginCard">
-                    <h3 className="card-header">Login</h3>
-                    <div className="card-body">
-                        <div className="form-group">
-                            <form name="loginForm">
-                                <input className="form-control" type="text" placeholder="email" id="loginEmail" name="loginEmail" value={this.state.email} onChange={this.handleChange}/>
-                                <br/>
-                                <input className="form-control" type="password" placeholder="password" id="loginPassword" name="loginPassword" value={this.state.pass} onChange={this.handleChange}/>
-                                <br/>
-                                <label htmlFor="remember" className="remCheck">Remember me</label>
-                                <input type="checkbox" className="remCheck" />
-                                <button className="btn btn-success btn-block" id="loginButton" onClick = {this.validateLogin}>Login</button>
-                            </form>
-                            <hr/>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Card className="text-center" style={{ width: '20rem' }}>
+                <Card.Header bg="primary">
+                    <h4>Login</h4>
+                </Card.Header>
+                <Card.Body>
+                    <Form>
+                        <Form.Group controlID="login.email">
+                            <Form.Control type="email" placeholder="email" ref={ input => this.state.email = input}></Form.Control>
+                        </Form.Group>
+                        <Form.Group controlID="login.pass">
+                            <Form.Control type="password" placeholder="password" ref={ input => this.state.pass = input}></Form.Control>
+                        </Form.Group>
+                        <Form.Group controlID="login.submit">
+                            <Button block className="btn-success" onClick={ this.validateLogin }>Login</Button>
+                        </Form.Group>
+                        <hr/>
+                        <Form.Group controlID="login.register">
+                            <Button block className="btn-primary" onClick={ this.props.toggleRegister }>Register</Button>
+                        </Form.Group>
+                    </Form>
+                </Card.Body>
+            </Card>
             </>
         )
     }

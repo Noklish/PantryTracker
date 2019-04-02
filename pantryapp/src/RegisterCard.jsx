@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 export class RegisterCard extends React.Component {
     constructor(props) {
@@ -25,7 +26,10 @@ export class RegisterCard extends React.Component {
     }
 
     validateRegister(){
-
+        if(!this.checkEmail(this.state.email))
+        {
+            window.alert("Invalid email");
+        }
     }
 
     handleChange(event) {
@@ -53,12 +57,12 @@ export class RegisterCard extends React.Component {
                                 <br/>
                                 <input className="form-control" type="password" placeholder="confirm password" name="regPassword" id="confPassword" required/>
                                 <br/>
-                                <input className="form-control" type="text" placeholder="First Name" name="fName" id="fname" required/>
+                                <input className="form-control" type="text" placeholder="First Name" name="fName" id="fname"/>
                                 <br/>
-                                <input className="form-control" type="text" placeholder="Last Name" name="lName" id="lname" required/>
+                                <input className="form-control" type="text" placeholder="Last Name" name="lName" id="lname"/>
                                 <br/>
-                                <button className="modalButton btn btn-success regButton" onClick={this.validateRegister}>Register</button>
-                                <button className="modalButton btn btn-secondary cancelButton" data-dismiss="modal">Cancel</button>
+                                <Button variant="success" onClick={this.validateRegister}>Register</Button>
+                                <Button variant="secondary" data-dismiss="modal" onClick={this.props.toggleRegister}>Cancel</Button>
                             </form>
                         </div>
                     </Modal.Body>

@@ -9,7 +9,7 @@ export class Login extends React.Component {
 
 
         this.state = {
-            show: true
+            show: false
         }
 
         this.toggleRegister = this.toggleRegister.bind(this);
@@ -22,9 +22,8 @@ export class Login extends React.Component {
     render() {
         return (
             <>
-                <LoginCard/>
-                <RegisterCard/>
-                <button onClick={this.toggleRegister}>Reg</button>
+                <LoginCard toggleRegister = {() => this.toggleRegister()}/>
+                <RegisterCard show={ this.state.show } toggleRegister = {() => this.toggleRegister()}/>
             </>
         )
     }
