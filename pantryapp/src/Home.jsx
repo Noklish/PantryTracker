@@ -4,7 +4,7 @@ import Table from './Table';
 export class Home extends React.Component {
 
     state = {
-        pantry: false,
+        pantry: true,
         grocery: false,
         favorites: false
      }
@@ -63,7 +63,7 @@ export class Home extends React.Component {
                 </div>
             </nav>
             <main>
-                {this.state.pantry && <Table title={'Pantry'} quick={'Delete'}/>}
+                {this.state.pantry && <Table title={'Pantry'} quick={'Remove'}/>}
                 {this.state.grocery && <Table title={'Grocery List'} quick={'Quick Add'}/>}
                 {this.state.favorites && <Table title={'Favorites'} quick={'Quick Add'}/>}
             </main>

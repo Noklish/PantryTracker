@@ -1,9 +1,29 @@
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 export class Table extends React.Component {
-    state = {
-        hideMessage: false
-    }
+    constructor(props, context) {
+        super(props, context);
+    
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+    
+        this.state = {
+          show: false,
+          hideMessage: false
+        };
+      }
+    
+      handleClose() {
+        this.setState({ show: false });
+      }
+    
+      handleShow() {
+        this.setState({ show: true });
+      }
+    
     render (){
         return (
             <>
@@ -26,9 +46,57 @@ export class Table extends React.Component {
                     <tbody id="foodTableBody">
                     </tbody>
                 </table>
-                <button type="button" className="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#exampleModal">
-                    Add Item to your {this.props.title}
-                </button>
+                <Button variant="primary" size='lg' block onClick={this.handleShow}>
+                        Add Item to your {this.props.title}
+                </Button>
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Add Food Item</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group controlId="foodItem.food">
+                                <Form.Label>Food Item</Form.Label>
+                                <Form.Control type="text" placeholder="Please enter your food item" />
+                            </Form.Group>
+                            <Form.Group controlId="foodItem.brand">
+                                <Form.Label>Food Brand</Form.Label>
+                                <Form.Control type="text" placeholder="Please enter the brand of your food item" />
+                            </Form.Group>
+                            <Form.Group controlId="foodItem.type">
+                                <Form.Label>Food Type</Form.Label>
+                                <Form.Control as="select" >
+                                    <option value="Grain">Grain</option>
+                                    <option value="Fruit">Fruit</option>
+                                    <option value="Vegetable">Vegetable</option>
+                                    <option value="Dairy">Dairy</option>
+                                    <option value="Meat">Meat</option>
+                                    <option value="Beverage">Beverage</option>
+                                    <option value="Other">Other</option>
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group controlId="foodItem.expiration">
+                                <Form.Label>Expiration Date</Form.Label>
+                                <Form.Control type="date" /> 
+                            </Form.Group>
+                            <Form.Group controlId="foodItem.quantity">
+                                <Form.Label>Quantity</Form.Label>
+                                <Form.Control type="number" min="1" value="1" /> 
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={this.handleClose}>
+                        Submit
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
+
+
+            
             </div>
             </>
         );
