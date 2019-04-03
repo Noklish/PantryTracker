@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Table from './Table';
+import { FoodList } from './../models/foodList';
 
 export class Home extends React.Component {
+
+    foodList = new FoodList;
 
     state = {
         pantry: true,
@@ -37,25 +40,28 @@ export class Home extends React.Component {
             pantry: false,
             grocery: false,
             favorites: true,
-            titleText: 'GroceryList'
+            titleText: 'Favorites'
         }));
     }
     
     onNewPantryItem(pantryItem){
         this.setState(state => {
             state.pantryList.push(pantryItem);
+            return state;
         });
     }
 
     onNewGroceryItem(groceryItem){
         this.setState(state => {
             state.groceryList.push(groceryItem);
+            return state;
         });
     }
 
     onNewFavoritesItem(favoritesItem){
         this.setState(state => {
             state.favoritesList.push(favoritesItem);
+            return state;
         });
     }
 

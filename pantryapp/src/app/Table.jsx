@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FoodList } from './../models/foodList';
 
 export class Table extends React.Component {
     
@@ -7,7 +8,18 @@ export class Table extends React.Component {
         brand: '',
         type: '',
         date: '',
-        quantity: 1
+        quantity: 1,
+        temp: []
+    }
+
+    onAddItem() {
+        if(this.props.title == 'Pantry') {
+            this.props.onNewPantryItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
+        } else if(this.props.title == 'Grocery List'){
+            this.props.onNewGroceryItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
+        } else if(this.props.title == 'Favorites'){
+            this.props.onNewFavoritesItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
+        }
     }
 
     render (){
@@ -117,7 +129,7 @@ export class Table extends React.Component {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button id="addCourse" type="button" className="btn btn-primary" data-dismiss="modal">Submit</button>
+                                <button id="addCourse" type="button" className="btn btn-primary" onClick={e => this.onAddItem()} data-dismiss="modal">Submit</button>
                             </div>
                         </div>
                     </div>
