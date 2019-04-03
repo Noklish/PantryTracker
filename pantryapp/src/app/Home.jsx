@@ -100,9 +100,9 @@ export class Home extends React.Component {
                 </div>
             </nav>
             <main>
-                {this.state.pantry && <Table title={this.state.titleText} onNewPantryItem={p => this.onNewPantryItem(p)} quick={'Remove'}/>}
-                {this.state.grocery && <Table title={this.state.titleText} onNewGroceryItem={g => this.onNewGroceryItem(g)} quick={'Quick Add'}/>}
-                {this.state.favorites && <Table title={this.state.titleText} onNewFavoritesItem={f => this.onNewFavoritesItem(f)} quick={'Quick Add'}/>}
+                {this.state.pantry && <Table title={this.state.titleText} onNewPantryItem={p => this.onNewPantryItem(p)} tableList={this.state.pantryList} quick={'Remove'}/>}
+                {this.state.grocery && <Table title={this.state.titleText} onNewGroceryItem={g => this.onNewGroceryItem(g)} tableList={this.state.groceryList} quick={'Quick Add'}/>}
+                {this.state.favorites && <Table title={this.state.titleText} onNewFavoritesItem={f => this.onNewFavoritesItem(f)} tableList={this.state.favoritesList} quick={'Quick Add'}/>}
             </main>
             </>
         );

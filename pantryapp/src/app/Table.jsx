@@ -42,6 +42,18 @@ export class Table extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
+                        {
+                            this.props.tableList.map((a, i) => 
+                                <tr key={i}>
+                                    <td>{a.food}</td>
+                                    <td>{a.brand}</td>
+                                    <td>{a.type}</td>
+                                    <td>{a.date}</td>
+                                    <td>{a.quantity}</td>
+                                    <td><button type="button" className="btn btn-secondary float-right" >{this.props.quick}</button></td>
+                                 </tr>
+                            )
+                        }
                     </tbody>
                 </table>
                 <button type="button" className="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
