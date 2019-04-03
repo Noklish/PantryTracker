@@ -6,27 +6,58 @@ export class Home extends React.Component {
     state = {
         pantry: true,
         grocery: false,
-        favorites: false
+        favorites: false,
+        hideTable: false,
+        titleText: 'Pantry',
+        pantryList: [],
+        groceryList: [],
+        favoritesList: []
      }
 
-     onTogglePantry = () => {
-        this.setState(prevState => ({ pantry: true }));
-        this.setState(prevState => ({ grocery: false }));
-        this.setState(prevState => ({ favorites: false }));
-      }
+    onTogglePantry = () => {
+        this.setState(state => ({ 
+            pantry: true,
+            grocery: false,
+            favorites: false,
+            titleText: 'Pantry'
+        }));
+    }
 
-      onToggleGrocery = () => {
-        this.setState(prevState => ({ pantry: false }));
-        this.setState(prevState => ({ grocery: true }));
-        this.setState(prevState => ({ favorites: false }));
-      }
+    onToggleGrocery = () => {
+        this.setState(state => ({ 
+            pantry: false,
+            grocery: true,
+            favorites: false,
+            titleText: 'Grocery List'
+        }));
+    }
 
-      onToggleFavorites = () => {
-        this.setState(prevState => ({ pantry: false }));
-        this.setState(prevState => ({ grocery: false }));
-        this.setState(prevState => ({ favorites: true }));
-      }
+    onToggleFavorites = () => {
+        this.setState(state => ({ 
+            pantry: false,
+            grocery: false,
+            favorites: true,
+            titleText: 'GroceryList'
+        }));
+    }
+    
+    onNewPantryItem(pantryItem){
+        this.setState(state => {
+            state.pantryList.push(pantryItem);
+        });
+    }
 
+    onNewGroceryItem(groceryItem){
+        this.setState(state => {
+            state.groceryList.push(groceryItem);
+        });
+    }
+
+    onNewFavoritesItem(favoritesItem){
+        this.setState(state => {
+            state.favoritesList.push(favoritesItem);
+        });
+    }
 
     render (){
         return (
@@ -63,9 +94,9 @@ export class Home extends React.Component {
                 </div>
             </nav>
             <main>
-                {this.state.pantry && <Table title={'Pantry'} quick={'Remove'}/>}
-                {this.state.grocery && <Table title={'Grocery List'} quick={'Quick Add'}/>}
-                {this.state.favorites && <Table title={'Favorites'} quick={'Quick Add'}/>}
+                {this.state.pantry && <Table title={this.state.titleText} onNewPantryItem={p => this.onNewPantryItem(p)} quick={'Remove'}/>}
+                {this.state.grocery && <Table title={this.state.titleText} onNewGroceryItem={g => this.onNewGroceryItem(g)} quick={'Quick Add'}/>}
+                {this.state.favorites && <Table title={this.state.titleText} onNewFavoritesItem={f => this.onNewFavoritesItem(f)} quick={'Quick Add'}/>}
             </main>
             </>
         );
