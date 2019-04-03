@@ -5,11 +5,15 @@
 }
 
 #regHead {
-    background-color: grey;
+    background-color: darkolivegreen;
+}
+
+#regHead > h4 {
+    color: white;
 }
 
 #regX {
-    background-color:grey;
+    background-color:darkolivegreen;
 }
 
 .regButton {

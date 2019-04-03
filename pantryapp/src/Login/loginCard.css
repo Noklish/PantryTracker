@@ -11,5 +11,9 @@ body {
 }
 
 #logHead {
-    background-color: grey;
+    background-color: darkolivegreen;
+}
+
+#logHead > h4 {
+    color: white;
 }
