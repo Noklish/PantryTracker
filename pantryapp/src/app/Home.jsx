@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Table from './Table';
 import { FoodList } from './../models/foodList';
-import { Message } from './Message';
+import { Recipies } from './Recipies';
 
 export class Home extends React.Component {
 
@@ -11,6 +11,7 @@ export class Home extends React.Component {
         pantry: true,
         grocery: false,
         favorites: false,
+        recipies: false,
         titleText: 'Pantry',
         pantryList: [],
         groceryList: [],
@@ -22,6 +23,7 @@ export class Home extends React.Component {
             pantry: true,
             grocery: false,
             favorites: false,
+            recipies: false,
             titleText: 'Pantry'
         }));
     }
@@ -31,6 +33,7 @@ export class Home extends React.Component {
             pantry: false,
             grocery: true,
             favorites: false,
+            recipies: false,
             titleText: 'Grocery List'
         }));
     }
@@ -40,7 +43,18 @@ export class Home extends React.Component {
             pantry: false,
             grocery: false,
             favorites: true,
+            recipies: false,
             titleText: 'Favorites'
+        }));
+    }
+
+    onToggleRecipies = () => {
+        this.setState(state => ({ 
+            pantry: false,
+            grocery: false,
+            favorites: false,
+            recipies: true,
+            titleText: 'Recipies'
         }));
     }
 
@@ -81,6 +95,9 @@ export class Home extends React.Component {
                         <li className="nav-item">
                             <a className="nav-link text-light" onClick={this.onToggleFavorites} href="#">Favorites</a>
                         </li>
+                        <li className="nav-item">
+                            <a className="nav-link text-light" onClick={this.onToggleRecipies} href="#">Recipies</a>
+                        </li>
                     </ul>
                 </div>
                 <div>
@@ -103,6 +120,7 @@ export class Home extends React.Component {
                 {this.state.pantry && <Table title={this.state.titleText} onNewPantryItem={p => this.onNewPantryItem(p)} tableList={this.state.pantryList} quick={'Remove'}/>}
                 {this.state.grocery && <Table title={this.state.titleText} onNewGroceryItem={g => this.onNewGroceryItem(g)} tableList={this.state.groceryList} quick={'Quick Add'}/>}
                 {this.state.favorites && <Table title={this.state.titleText} onNewFavoritesItem={f => this.onNewFavoritesItem(f)} tableList={this.state.favoritesList} quick={'Quick Add'}/>}
+                {this.state.recipies && <Recipies title={this.state.titleText}/>}
             </main>
             </>
         );

@@ -1,0 +1,19 @@
+body {
+    /* background-image: url("./../data/veggiebg.jpg"); */
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+#loginCard {
+    margin: auto;
+    margin-top: 10rem;
+    width: 20rem;
+}
+
+#logHead {
+    background-color: darkolivegreen;
+}
+
+#logHead > h4 {
+    color: white;
+}

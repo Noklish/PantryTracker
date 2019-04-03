@@ -97,7 +97,6 @@ export class Table extends React.Component {
                                         <select className= "form-control"
                                                 name="foodType"
                                                 id="foodType"
-                                                placeholder="Please Enter Food Type"
                                                 value={this.state.type}
                                                 onChange={e => this.setState({ type: e.target.value })} >
                                             <option value="N/A">Please select food type</option>
