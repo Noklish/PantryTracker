@@ -27,9 +27,6 @@ export class Table extends React.Component {
             <>
             <div id="home">
                 <h1>{this.props.title}</h1>
-                <div id="foodAlert" className="alert alert-primary" role="alert">
-                    You do not have any food items in your <b>{this.props.title}</b>. Click 'Add Item' to begin filling your <b>{this.props.title}</b>.
-                </div>
                 <table className="table table-striped">
                     <thead>
                         <tr>
@@ -48,7 +45,7 @@ export class Table extends React.Component {
                                     <td>{a.food}</td>
                                     <td>{a.brand}</td>
                                     <td>{a.type}</td>
-                                    <td>{a.date}</td>
+                                    <td>{a.expire}</td>
                                     <td>{a.quantity}</td>
                                     <td><button type="button" className="btn btn-secondary float-right" >{this.props.quick}</button></td>
                                  </tr>

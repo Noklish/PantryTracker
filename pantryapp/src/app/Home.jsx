@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Table from './Table';
 import { FoodList } from './../models/foodList';
+import { Message } from './Message';
 
 export class Home extends React.Component {
 
@@ -10,12 +11,11 @@ export class Home extends React.Component {
         pantry: true,
         grocery: false,
         favorites: false,
-        hideTable: false,
         titleText: 'Pantry',
         pantryList: [],
         groceryList: [],
         favoritesList: []
-     }
+    }
 
     onTogglePantry = () => {
         this.setState(state => ({ 
@@ -43,7 +43,7 @@ export class Home extends React.Component {
             titleText: 'Favorites'
         }));
     }
-    
+
     onNewPantryItem(pantryItem){
         this.setState(state => {
             state.pantryList.push(pantryItem);
