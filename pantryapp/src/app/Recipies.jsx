@@ -41,10 +41,10 @@ export class Recipies extends React.Component {
                 this.state.recipes.map((r,i) => 
                   <div className="card" key={i}>
                     <div className="card-header">
-                      <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"#accordion-" + i} aria-expanded="false" aria-controls={"accordion-" + i}>{r.name}</button>
+                      <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"#accordion-" + i} aria-expanded="true" aria-controls={"accordion-" + i}>{r.name}</button>
                       <span className="float-right">{r.meal}</span>
                     </div>
-                    <div id={"accordion-" + i} className="collapse show" aria-labelledby={"heading-" + i} data-parent="#recipeAccordion">
+                    <div id={"accordion-" + i} className="collapse" aria-labelledby={"heading-" + i} data-parent="#recipeAccordion">
                       <div className="card-body">
                         <table className="table">
                           <thead>
