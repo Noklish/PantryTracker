@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Table from './Table';
 import { FoodList } from './../models/foodList';
-import { Recipies } from './Recipies';
+import RecipeTable from './RecipeTable'
 
 export class Home extends React.Component {
 
@@ -15,7 +15,8 @@ export class Home extends React.Component {
         titleText: 'Pantry',
         pantryList: [],
         groceryList: [],
-        favoritesList: []
+        favoritesList: [],
+        recipeList: []
     }
 
     onTogglePantry = () => {
@@ -58,6 +59,8 @@ export class Home extends React.Component {
         }));
     }
 
+
+
     onNewPantryItem(pantryItem){
         this.setState(state => {
             state.pantryList.push(pantryItem);
@@ -75,6 +78,13 @@ export class Home extends React.Component {
     onNewFavoritesItem(favoritesItem){
         this.setState(state => {
             state.favoritesList.push(favoritesItem);
+            return state;
+        });
+    }
+
+    onNewRecipe(recipe){
+        this.setState(state => {
+            state.recipeList.push(recipe);
             return state;
         });
     }
@@ -120,7 +130,7 @@ export class Home extends React.Component {
                 {this.state.pantry && <Table title={this.state.titleText} onNewPantryItem={p => this.onNewPantryItem(p)} tableList={this.state.pantryList} quick={'Remove'}/>}
                 {this.state.grocery && <Table title={this.state.titleText} onNewGroceryItem={g => this.onNewGroceryItem(g)} tableList={this.state.groceryList} quick={'Quick Add'}/>}
                 {this.state.favorites && <Table title={this.state.titleText} onNewFavoritesItem={f => this.onNewFavoritesItem(f)} tableList={this.state.favoritesList} quick={'Quick Add'}/>}
-                {this.state.recipies && <Recipies title={this.state.titleText}/>}
+                {this.state.recipies && <RecipeTable onNewRecipe={r => this.onNewRecipe(r)} recipies={this.state.recipeList} />}
             </main>
             </>
         );
