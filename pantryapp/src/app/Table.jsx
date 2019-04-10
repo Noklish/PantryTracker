@@ -21,6 +21,7 @@ export class Table extends React.Component {
             this.props.onNewFavoritesItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
         }
     }
+    
 
     render (){
         return (
@@ -45,7 +46,7 @@ export class Table extends React.Component {
                                     <td>{a.food}</td>
                                     <td>{a.brand}</td>
                                     <td>{a.type}</td>
-                                    <td>{a.expire}</td>
+                                    <td>{this.onCheckDate(a.expire)}</td>
                                     <td>{a.quantity}</td>
                                     <td><button type="button" className="btn btn-secondary float-right" >{this.props.quick}</button></td>
                                  </tr>
