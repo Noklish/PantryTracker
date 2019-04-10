@@ -22,6 +22,29 @@ export class Table extends React.Component {
         }
     }
 
+    checkExpiration(date) {
+        var day = new Date().getDate();
+        var month = new Date().getMonth() + 1;
+        var year = new Date().getFullYear();
+
+        var splitDate = date.split("-");
+
+        if(year > splitDate[0]){
+            return "Expired";
+        }
+        
+        if(month > splitDate[1]){
+            return "Expired";
+        }
+
+        if(day > splitDate[2]){
+            return "Expired";
+        }
+
+        return splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0];
+        
+    }
+
     render (){
         return (
             <>
@@ -45,7 +68,7 @@ export class Table extends React.Component {
                                     <td>{a.food}</td>
                                     <td>{a.brand}</td>
                                     <td>{a.type}</td>
-                                    <td>{a.expire}</td>
+                                    <td>{this.checkExpiration(a.expire)}</td>
                                     <td>{a.quantity}</td>
                                     <td><button type="button" className="btn btn-secondary float-right" >{this.props.quick}</button></td>
                                  </tr>
