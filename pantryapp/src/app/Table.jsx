@@ -30,15 +30,15 @@ export class Table extends React.Component {
         var splitDate = date.split("-");
 
         if(year > splitDate[0]){
-            return "Expired";
+            return <td className="text-danger">Expired</td>;
         }
         
         if(month > splitDate[1]){
-            return "Expired";
+            return <td className="text-danger">Expired</td>;
         }
 
         if(day > splitDate[2]){
-            return "Expired";
+            return <td className="text-danger">Expired</td>;
         }
 
         return splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0];
@@ -68,7 +68,7 @@ export class Table extends React.Component {
                                     <td>{a.food}</td>
                                     <td>{a.brand}</td>
                                     <td>{a.type}</td>
-                                    <td>{this.checkExpiration(a.expire)}</td>
+                                    {this.checkExpiration(a.expire)}
                                     <td>{a.quantity}</td>
                                     <td><button type="button" className="btn btn-secondary float-right" >{this.props.quick}</button></td>
                                  </tr>
