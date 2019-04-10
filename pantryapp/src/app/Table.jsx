@@ -8,8 +8,7 @@ export class Table extends React.Component {
         brand: '',
         type: '',
         date: '',
-        quantity: 1,
-        temp: []
+        quantity: 1
     }
 
     onAddItem() {
@@ -20,6 +19,13 @@ export class Table extends React.Component {
         } else if(this.props.title == 'Favorites'){
             this.props.onNewFavoritesItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
         }
+        this.setState(state => ({
+            food: '',
+            brand: '',
+            type: '',
+            date: '',
+            quantity: 1
+          }));
     }
 
     checkExpiration(date) {
