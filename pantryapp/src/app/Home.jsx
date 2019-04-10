@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Table from './Table';
 import { FoodList } from './../models/foodList';
-import { Recipies } from './Recipies';
+import RecipeTable from './RecipeTable'
+import UpdateProfile from './UpdateProfile'
 
 export class Home extends React.Component {
 
@@ -12,10 +13,12 @@ export class Home extends React.Component {
         grocery: false,
         favorites: false,
         recipies: false,
+        updateAccount: false,
         titleText: 'Pantry',
         pantryList: [],
         groceryList: [],
-        favoritesList: []
+        favoritesList: [],
+        recipeList: []
     }
 
     onTogglePantry = () => {
@@ -24,6 +27,7 @@ export class Home extends React.Component {
             grocery: false,
             favorites: false,
             recipies: false,
+            updateAccount: false,
             titleText: 'Pantry'
         }));
     }
@@ -34,6 +38,7 @@ export class Home extends React.Component {
             grocery: true,
             favorites: false,
             recipies: false,
+            updateAccount: false,
             titleText: 'Grocery List'
         }));
     }
@@ -44,6 +49,7 @@ export class Home extends React.Component {
             grocery: false,
             favorites: true,
             recipies: false,
+            updateAccount: false,
             titleText: 'Favorites'
         }));
     }
@@ -54,7 +60,19 @@ export class Home extends React.Component {
             grocery: false,
             favorites: false,
             recipies: true,
+            updateAccount: false,
             titleText: 'Recipies'
+        }));
+    }
+
+    onToggleUpdateProfile = () => {
+        this.setState(state => ({ 
+            pantry: false,
+            grocery: false,
+            favorites: false,
+            recipies: false,
+            updateAccount: true,
+            titleText: 'Update Account'
         }));
     }
 
@@ -75,6 +93,13 @@ export class Home extends React.Component {
     onNewFavoritesItem(favoritesItem){
         this.setState(state => {
             state.favoritesList.push(favoritesItem);
+            return state;
+        });
+    }
+
+    onNewRecipe(recipe){
+        this.setState(state => {
+            state.recipeList.push(recipe);
             return state;
         });
     }
@@ -107,7 +132,7 @@ export class Home extends React.Component {
                                 My Account
                             </a>
                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a className="dropdown-item" href="#">Update Profile</a>
+                                <a className="dropdown-item" onClick={this.onToggleUpdateProfile} href="#">Update Profile</a>
                                 <a className="dropdown-item" href="#">Change Profile</a>
                                 <div className="dropdown-divider"></div>
                                 <a className="dropdown-item" href="#">Logout</a>
@@ -120,7 +145,8 @@ export class Home extends React.Component {
                 {this.state.pantry && <Table title={this.state.titleText} onNewPantryItem={p => this.onNewPantryItem(p)} tableList={this.state.pantryList} quick={'Remove'}/>}
                 {this.state.grocery && <Table title={this.state.titleText} onNewGroceryItem={g => this.onNewGroceryItem(g)} tableList={this.state.groceryList} quick={'Quick Add'}/>}
                 {this.state.favorites && <Table title={this.state.titleText} onNewFavoritesItem={f => this.onNewFavoritesItem(f)} tableList={this.state.favoritesList} quick={'Quick Add'}/>}
-                {this.state.recipies && <Recipies title={this.state.titleText}/>}
+                {this.state.recipies && <RecipeTable onNewRecipe={r => this.onNewRecipe(r)} recipies={this.state.recipeList} />}
+                {this.state.updateAccount && <UpdateProfile />}
             </main>
             </>
         );
