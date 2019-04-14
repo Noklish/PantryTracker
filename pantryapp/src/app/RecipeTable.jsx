@@ -35,7 +35,7 @@ class RecipeTable extends React.Component {
             <>
             <h1>Recipies</h1>
             {!this.props.recipies.length && <div className="alert alert-primary" role="alert">
-                    You do not have any <b>Recipies</b>. Click 'Add Item' to begin filling your <b>Recipies</b>.
+                    You do not have any <b>Recipies</b>. Click 'Add Item' to begin filling your <b>Recipies List</b>.
                 </div>}
             <div className="accordion" id="recipeAccordion">
             {
