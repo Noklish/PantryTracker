@@ -48,9 +48,16 @@ app.post('/user/:userid/pantry/add', (req, res, pID, uID, fName, fGroup, exDate,
 //USER STORY 42 / 22
 app.put('/user/:userid/pantry/item/quantity', (req, res, uID, fName, num) => {
 	.query('UPDATE pantry SET quantity = ' + num + ' WHERE userID = ' + uID + ' AND foodName = ' + fName);  //42
-	var a = .query('SELECT foodName, brand FROM pantry NATURAL JOIN favoriteFood WHERE userid = ' + uID + ' AND foodName = ' + fName ' AND quantity = 0'); //22
+	var a = .query('SELECT foodName, brand FROM pantry NATURAL JOIN favoriteFood WHERE userid = ' + uID + ' AND foodName = ' + fName + ' AND quantity = 0'); //22
+	var b = .query('SELECT foodName FROM pantry WHERE userid = ' + uID + ' AND foodName = ' + fName + ' AND quantity = 0');
+	var c = .query('SELECT quantity, minValue FROM pantry NATURAL JOIN favoriteFood WHERE userid = ' + uID + ' AND foodName = ' + fName);
 	if(typeof a != undefined && a) {
-		.query(INSERT INTO groceryList VALUES(fname + ', ' + a[0].brand + ', 1'));
+		.query('INSERT INTO groceryList VALUES(' + fname + ', ' + a[0].brand + ', 1)');
+		.query('DELETE FROM pantry WHERE userid = ' + uID + ' AND foodName = ' + fName);
+	} else if(typeof b != undefined && b){
+		.query('DELETE FROM pantry WHERE userid = ' + uID + ' AND foodName = ' + fName);
+	} else if(c[0].quantity < c[0].minValue) {
+		.query('INSERT INTO groceryList VALUES(' + fname + ', ' + a[0].brand + ', 1)');
 	}
 });
 
@@ -112,7 +119,7 @@ app.get('user/:userid/recipes', (req, res, uID) => {
 });
 
 app.get('user/:userid/recipes/recipe', (req, res, uID, recipeName) => {
-	-.query('SELECT * FROM recipe NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND recipeName = ' + recipeName);
+	.query('SELECT * FROM recipe NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND recipeName = ' + recipeName);
 });
 
 //INSERT RECIPE INGREDIENTS FIGURE OUT HOW TO ARRAY THING
@@ -124,4 +131,3 @@ app.post('user/:userid/recipes/recipe', (req, res, uID, recipeName, meal, ) => {
 app.put('user/:userid/recipes/recipe', (req, res, uID, recipeName) => {
 	.query('');
 });
-
