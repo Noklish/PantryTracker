@@ -34,6 +34,9 @@ class RecipeTable extends React.Component {
         return (
             <>
             <h1>Recipies</h1>
+            {!this.props.recipies.length && <div className="alert alert-primary" role="alert">
+                    You do not have any <b>Recipies</b>. Click 'Add Item' to begin filling your <b>Recipies</b>.
+                </div>}
             <div className="accordion" id="recipeAccordion">
             {
                 this.props.recipies.map((r,i) => 
