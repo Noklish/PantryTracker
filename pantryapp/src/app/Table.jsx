@@ -47,7 +47,7 @@ export class Table extends React.Component {
             return <td className="text-danger">Expired</td>;
         }
 
-        return splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0];
+        return <td>{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
         
     }
 
@@ -56,6 +56,9 @@ export class Table extends React.Component {
             <>
             <div id="home">
                 <h1>{this.props.title}</h1>
+                {!this.props.tableList.length && <div className="alert alert-primary" role="alert">
+                    You do not have any food items in your <b>{this.props.title}</b>. Click 'Add Item' to begin filling your <b>{this.props.title}</b>.
+                </div>}
                 <table className="table table-striped">
                     <thead>
                         <tr>
