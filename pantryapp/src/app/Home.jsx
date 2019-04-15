@@ -3,6 +3,7 @@ import Table from './Table';
 import { FoodList } from './../models/foodList';
 import RecipeTable from './RecipeTable'
 import UpdateProfile from './UpdateProfile'
+import './Home.css';
 
 export class Home extends React.Component {
 
@@ -108,7 +109,7 @@ export class Home extends React.Component {
         return (
             <>
 
-            <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-success">
                 <div className="nav collapse navbar-collapse ">
                     <ul className="navbar-nav">
                         <li className="nav-item active">

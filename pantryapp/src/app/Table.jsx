@@ -55,11 +55,11 @@ export class Table extends React.Component {
         return (
             <>
             <div id="home">
-                <h1>{this.props.title}</h1>
-                {!this.props.tableList.length && <div className="alert alert-primary" role="alert">
+                <h1 className="text-white">{this.props.title}</h1>
+                {!this.props.tableList.length && <div className="alert alert-light" role="alert">
                     You do not have any food items in your <b>{this.props.title}</b>. Click 'Add Item' to begin filling your <b>{this.props.title}</b>.
                 </div>}
-                <table className="table table-striped">
+                {!!this.props.tableList.length && <table className="table table-striped">
                     <thead>
                         <tr>
                             <th>Food Item</th>
@@ -84,8 +84,9 @@ export class Table extends React.Component {
                             )
                         }
                     </tbody>
-                </table>
-                <button type="button" className="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
+                </table>}
+                
+                <button type="button" className="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
                     Add Item to your {this.props.title}
                 </button>
                 <div className="modal fade" id="foodEntry" tabIndex="-1" role="dialog" aria-labelledby="foodEntryLable" aria-hidden="true">
