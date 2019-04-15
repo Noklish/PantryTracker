@@ -12,12 +12,26 @@ export class Table extends React.Component {
     }
 
     onAddItem() {
+        var sendBrand = 'N/A';
+        var sendType = 'N/A';
+        var sendDate = 'N/A';
+
+        if(this.state.brand != ''){
+            sendBrand = this.state.brand;
+        }
+        if(this.state.type != ''){
+            sendType = this.state.type;
+        }
+        if(this.state.date != ''){
+            sendDate = this.state.date;
+        }
+
         if(this.props.title == 'Pantry') {
-            this.props.onNewPantryItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
+            this.props.onNewPantryItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
         } else if(this.props.title == 'Grocery List'){
-            this.props.onNewGroceryItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
+            this.props.onNewGroceryItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
         } else if(this.props.title == 'Favorites'){
-            this.props.onNewFavoritesItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
+            this.props.onNewFavoritesItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
         }
         this.setState(state => ({
             food: '',
@@ -33,7 +47,12 @@ export class Table extends React.Component {
         var month = new Date().getMonth() + 1;
         var year = new Date().getFullYear();
 
+        if(date == 'N/A'){
+            return <td>{date}</td>;
+        }
+
         var splitDate = date.split("-");
+
 
         if(year > splitDate[0]){
             return <td className="text-danger">Expired</td>;
@@ -59,13 +78,13 @@ export class Table extends React.Component {
                 {!this.props.tableList.length && <div className="alert alert-light" role="alert">
                     You do not have any food items in your <b>{this.props.title}</b>. Click 'Add Item' to begin filling your <b>{this.props.title}</b>.
                 </div>}
-                {!!this.props.tableList.length && <table className="table table-striped">
+                {!!this.props.tableList.length && <table className="table table-light table-striped">
                     <thead>
                         <tr>
-                            <th>Food Item</th>
-                            <th>Brand</th>
-                            <th>Food Type</th>
-                            <th>Expiration Date</th>
+                            <th>Food Item <i className="fa fa-sort"></i></th>
+                            <th>Brand <i className="fa fa-sort"></i></th>
+                            <th>Food Type <i className="fa fa-sort"></i></th>
+                            <th>Expiration Date <i className="fa fa-sort"></i></th>
                             <th>Quantity</th>
                             <th className="text-right">{this.props.quick}</th>
                         </tr>

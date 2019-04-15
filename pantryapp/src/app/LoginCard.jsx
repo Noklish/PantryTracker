@@ -43,7 +43,6 @@ export class LoginCard extends React.Component{
     render() {
         return(
             <>
-            <div id="login">
                 <Card className="text-center" id="loginCard">
                     <Card.Header id="logHead">
                         <h4>Login</h4>
@@ -66,7 +65,6 @@ export class LoginCard extends React.Component{
                         </Form>
                     </Card.Body>
                 </Card>
-            </div>
             </>
         )
     }

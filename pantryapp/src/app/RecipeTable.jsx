@@ -33,8 +33,8 @@ class RecipeTable extends React.Component {
 
         return (
             <>
-            <h1>Recipies</h1>
-            {!this.props.recipies.length && <div className="alert alert-primary" role="alert">
+            <h1 className="text-white">Recipies</h1>
+            {!this.props.recipies.length && <div className="alert alert-light" role="alert">
                     You do not have any <b>Recipies</b>. Click 'Add Item' to begin filling your <b>Recipies List</b>.
                 </div>}
             <div className="accordion" id="recipeAccordion">
@@ -73,7 +73,7 @@ class RecipeTable extends React.Component {
             }
             </div>
 
-            <button type="button" className="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
+            <button type="button" className="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
                 Add Item to your Recipe List
             </button>
             <div className="modal fade" id="foodEntry" tabIndex="-1" role="dialog" aria-labelledby="foodEntryLable" aria-hidden="true">
