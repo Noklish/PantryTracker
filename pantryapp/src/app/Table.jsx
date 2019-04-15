@@ -11,6 +11,11 @@ export class Table extends React.Component {
         quantity: 1
     }
 
+
+    onCheckModal(){
+
+    }
+
     onAddItem() {
         var sendBrand = 'N/A';
         var sendType = 'N/A';
@@ -189,7 +194,7 @@ export class Table extends React.Component {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button id="addCourse" type="button" className="btn btn-primary" onClick={e => this.onAddItem()} data-dismiss="modal">Submit</button>
+                                <button id="addCourse" type="submit" className="btn btn-primary" onClick={e => this.onAddItem()} data-dismiss="modal">Submit</button>
                             </div>
                         </div>
                     </div>
