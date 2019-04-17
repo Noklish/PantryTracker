@@ -71,6 +71,14 @@ export class Table extends React.Component {
             return <td className="text-danger">Expired</td>;
         }
 
+        if(month == splitDate[1] && (splitDate[2] - day) <= 5){
+            return <td className="text-warning">{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
+        }
+
+        if(month != splitDate[1] && ((splitDate[2]+30) - day) <= 5){
+            return <td className="text-warning">{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
+        }
+
         return <td>{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
         
     }
