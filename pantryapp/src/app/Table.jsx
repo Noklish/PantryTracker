@@ -63,11 +63,11 @@ export class Table extends React.Component {
             return <td className="text-danger">Expired</td>;
         }
         
-        if(month > splitDate[1]){
+        if(year == splitDate[0] && month > splitDate[1]){
             return <td className="text-danger">Expired</td>;
         }
 
-        if(day > splitDate[2]){
+        if(month == splitDate[1] && day > splitDate[2]){
             return <td className="text-danger">Expired</td>;
         }
 
