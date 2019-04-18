@@ -15,9 +15,6 @@ var connection = mysql.createConnection({
 
 //USER STORY 12
 app.post('/user', (req, res, userName, pass, email) => {
-	//TODO Generate UserID somehow to distinguish users
-	//SQL autoincrement
-	//var userID =
 	connection.query('INSERT INTO userAccount VALUES (userName, pass, email)');
 });
 
