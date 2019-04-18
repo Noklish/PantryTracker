@@ -16,26 +16,55 @@ export class repository {
         });
     }
 
-    updatePassword(userId, newPass){
+    changePassword(userId, newPass){
         return new Promise((resolve, reject) => {
             axios.put(`${this.url}/passUpdate/${userId}`, newPass, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
-    //food stuff
+    //with JSon
+    // addAccount(userName, pass, email){
+    //     return new Promise((resolve, reject) => {
+    //         axios.post(`${this.url}/user`, { userName: userName, pass: pass, email: email }, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+    //     });
+    // }
+
+    //pantry stuff
     getPantry(userId){
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/user/${userId}/pantry`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
-    getFoodList(userId){
+    // addFoodItem()
+
+    //Grocery stuff
+    getGroceryList(userId){
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/user/${userId}/groceryList`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
-    addFoodItem()
+    addGroceryItem(userId /* Idk what else we need in here */){
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/user/${userId}/groceryList`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
+
+    groceryToPantry(userId, foodName, foodGroup, brand, quantity){
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/user/${userId}/groceryList/item`, {uID: userId, fName: foodName, fGroup: foodGroup, brand: brand, quanty: quantity}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
+
+    //favorite stuff
+    addFavorite(userId, foodName){
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/user/${userId}/pantry/favorite`, {uID: userId, fName: foodName}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
+
+
 
     //recipe stuff
     getRecipes(userId){
