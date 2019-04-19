@@ -2,45 +2,129 @@
 
 const express = require('express');
 const app = express();
-const port = 3000;
+const fs = require('fs');
+const jwt = require('jsonwebtoken');
+const port = 9000;
 var mysql = require('mysql');
 
-var connection = mysql.createConnection({
-	host:
-	user:
-	password:
-	database:
+var privateKey = fs.readFileSync('./private.key', 'utf8');
+var publicKey = fs.readFileSync('./public.key', 'utf8');
+var token;
+var i = 'Pantry LLC'; //issuer
+//var s = '';
+//var a = '';
+var payload = {
+	data1: "Data 1"
+};
 
+app.get('/', function (req, res){
+        res.send('Nobody expects the spanish inquisition!\n');
 });
 
+var connection = mysql.createConnection({
+	host: "ec2-18-208-170-68.compute-1.amazonaws.com",
+    user: "admin",
+    password: "abc123",
+    port: '9000',
+    database: "rdsdatabase.c1kuubgkyedt.us-east-1.rds.amazonaws.com"
+});
+
+connection.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
+app.listen(port);
+console.log('Listening on port', port);
+
+/************CREATE ACCOUNT EPIC************/
 //USER STORY 12
 app.post('/user', (req, res, userName, pass, email) => {
 	connection.query('INSERT INTO userAccount VALUES (userName, pass, email)');
 });
 
-//USER STORY 12
-app.get('/user/:userid', (req, res, User, Pass) => {
-	connection.query('SELECT * FROM userAccount WHERE userName = ' + User + ' AND userPassword = ' + Pass,
-		function(err, row) { 
-		if(err) {/*go back to login page with error*/} 
-		else {/*login successful, go to ho4mepage*/
-				/*.query('SELECT * FROM ')*  TODO This should return relevant data needed for homepage*/
-			 }
-	});
-});
-
-
-//USER STORY 16
+//USER STORY 16 - updating password
 app.put('/passUpdate/:userid', (req, res, user, newPass) => {
 	connection.query('UPDATE userAccount SET userPassword = ' + newPass + ' WHERE userName = ' + user);
 });
 
+//USER STORY 12
+app.get('/user/:userid', (req, res, User, Pass) => {
+	var login = connection.query('SELECT * FROM userAccount WHERE userName = ' + User + ' AND userPassword = ' + Pass); 
+		if(typeof login != undefined && login) {/*login successful, go to ho4mepage*/
+				/*.query('SELECT * FROM ')*  TODO This should return relevant data needed for homepage*/
+				var s = login[0].userName; //subject
+				var a = 'http://pantrytracker.com'; //audience
 
+				var signOptions = {
+					issuer: i,
+					subject: s,
+					audience: a,
+					expiresIn: "12h",
+					algorithm: "RS256"
+				};
+
+				token = jwt.sign(payload, privateKey, signOptions);
+				console.log("Token - " + token);
+		} else {
+				/*go back to login page with error*/
+				return 0;
+		}
+});
+
+/*******MANUALLY INPUT FOOD EPIC*******/
 //USER STORY 31
 app.post('/user/:userid/pantry/add', (req, res, pID, uID, fName, fGroup, exDate, quant, desc, br) => {
 	connection.query('INSERT INTO pantry VALUES (' + pID + ', ' + uID + ', ' + fName ', ' + fGroup ', ' + exDate ', ' + quant ', ' + desc + ', ' + br + ')');
 });
 
+
+
+//USER STORY 42
+app.put('/user/:userid/pantry/item/exDate', (req, res, uID, exDate) => {
+	connection.query('UPDATE pantry SET expirationDate = ' + exDate + ' WHERE userID = ' + uID + ' AND foodName = ' + fName);
+});
+
+//USER STORY 42
+app.delete('/user:userid/pantry/item', (req, res, uID, fName) => {
+	connection.query('DELETE FROM pantry WHERE foodName = ' + fName + ' AND userId = ' + uID);
+});
+
+/*******TRACK FOOD EPIC*******/
+//USER STORY 24
+app.get('user/:userid/pantry/categories', (req, res, uID) => {
+	connection.query('SELECT * FROM pantry WHERE userID = ' + uID + ' GROUP BY foodGroup');
+});
+
+//USER STORY 24
+app.get('user/:userid/pantry', (req, res, uID) => {
+	connection.query('SELECT * FROM pantry WHERE userID = ' + uID);
+});
+
+//USER STORY 30
+app.get('user/:userid/pantry/exp', (req, res, uID) => {
+	connection.query('SELECT * FROM pantry WHERE userID = ' + uID + 'ORDER BY (expirationDate) ASC');
+});
+
+/*******FILTER FOOD EPIC*******/
+
+/*******SHOPPING RECOMMENDATIONS EPIC*******/
+
+/*******RECIPE RECOMMENDATIONS EPIC*******/
+//Viewing list of recipes for a user
+app.get('user/:userid/recipes', (req, res, uID) => {
+	connection.query('SELECT recipeName FROM recipes WHERE userID =' + uID);
+});
+
+/*******GROCERY LIST EPIC********/
+//USER STORY 13
+app.get('/user/:userid/groceryList', (req, res, uID) => {
+	connection.query('SELECT * FROM groceryList WHERE userid = ' + uID);
+});
+
+//USER STORY 18
+app.post('user/:userid/groceryList', (req, res, uID, fName, b, quant) => {
+	connection.query('INSERT INTO groceryList VALUES(' + uID + ', ' + fName + ', ' + b + ', ' + quant + ')');
+});
 
 //USER STORY 42 / 22
 app.put('/user/:userid/pantry/item/quantity', (req, res, uID, fName, num) => {
@@ -58,26 +142,6 @@ app.put('/user/:userid/pantry/item/quantity', (req, res, uID, fName, num) => {
 	}
 });
 
-
-//USER STORY 42
-app.put('/user/:userid/pantry/item/exDate', (req, res, uID, exDate) => {
-	connection.query('UPDATE pantry SET expirationDate = ' + exDate + ' WHERE userID = ' + uID + ' AND foodName = ' + fName);
-});
-
-//USER STORY 42
-app.delete('/user:userid/pantry/item', (req, res, uID, fName) => {
-	connection.query('DELETE FROM pantry WHERE foodName = ' + fName + ' AND userId = ' + uID);
-});
-
-app.post('/user:userid/pantry/favorite', (req, res, fName, uID) => {
-	connection.query('INSERT INTO favoriteFood VALUES (' + uID + ', ' + fName + ')');
-});
-
-//USER STORY 13
-app.get('/user/:userid/groceryList', (req, res, uID) => {
-	connection.query('SELECT * FROM groceryList WHERE userid = ' + uID);
-});
-
 //USER STORY 23 & 46
 //ADD EXPIRATION DATE HERE
 app.delete('user/:userid/groceryList/item', (req, res, uID, fName, fGroup, brand, quant) => { //Quantity either needs to be specified upon saying it was bought or it will be defaulted to 1
@@ -85,35 +149,19 @@ app.delete('user/:userid/groceryList/item', (req, res, uID, fName, fGroup, brand
 	connection.query('DELETE FROM groceryList WHERE foodName = ' + fName ' AND userID = ' + uID);
 });
 
-//USER STORY 18
-app.post('user/:userid/groceryList', (req, res, uID, fName, b, quant) => {
-	connection.query('INSERT INTO groceryList VALUES(' + uID + ', ' + fName + ', ' + b + ', ' + quant + ')');
-});
-
-//USER STORY 24
-app.get('user/:userid/pantry/categories', (req, res, uID) => {
-	connection.query('SELECT * FROM pantry WHERE userID = ' + uID + ' GROUP BY foodGroup');
-});
-
-//USER STORY 24
-app.get('user/:userid/pantry', (req, res, uID) => {
-	connection.query('SELECT * FROM pantry WHERE userID = ' + uID);
-});
-
-//USER STORY 30
-app.get('user/:userid/pantry/exp', (req, res, uID) => {
-	connection.query('SELECT * FROM pantry WHERE userID = ' + uID + 'ORDER BY (expirationDate) ASC');
+app.post('/user:userid/pantry/favorite', (req, res, fName, uID) => {
+	connection.query('INSERT INTO favoriteFood VALUES (' + uID + ', ' + fName + ')');
 });
 
 
+
+
+/*******ENTER CUSTOM RECIPE*******/
 app.get('user/:userid/recipes/ingredient', (req, res, uID, ingred) => {
 	connection.query('SELECT * FROM recipes NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = ' + ingred);
 });
 
-//Viewing list of recipes for a user
-app.get('user/:userid/recipes', (req, res, uID) => {
-	connection.query('SELECT recipeName FROM recipes WHERE userID =' + uID);
-});
+
 
 app.get('user/:userid/recipes/recipe', (req, res, uID, recipeName) => {
 	connection.query('SELECT * FROM recipe NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND recipeName = ' + recipeName);
