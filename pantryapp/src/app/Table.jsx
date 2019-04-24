@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { FoodList } from './../models/foodList';
+import { repository } from '../api/repository';
 
 export class Table extends React.Component {
+    repo = new repository();
     
     state = {
         food: '',
@@ -32,9 +34,10 @@ export class Table extends React.Component {
         }
 
         if(this.props.title == 'Pantry') {
-            this.props.onNewPantryItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
+            this.props.onNewPantryItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity));
         } else if(this.props.title == 'Grocery List'){
-            this.props.onNewGroceryItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
+            this.props.onNewGroceryItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity));
+            this.repo.addGroceryItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity));
         } else if(this.props.title == 'Favorites'){
             this.props.onNewFavoritesItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
         }

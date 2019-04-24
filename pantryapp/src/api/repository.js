@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export class repository {
-    url = "ec2-18-208-170-68.com";
+    url = "http://ec2-18-208-170-68.compute-1.amazonaws.com:9000";
     
     //Account stuff
     getAccount(userId){
