@@ -8,32 +8,96 @@ export class Table extends React.Component {
         brand: '',
         type: '',
         date: '',
-        quantity: 1,
-        temp: []
+        quantity: 1
+    }
+
+
+    onCheckModal(){
+
     }
 
     onAddItem() {
-        if(this.props.title == 'Pantry') {
-            this.props.onNewPantryItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
-        } else if(this.props.title == 'Grocery List'){
-            this.props.onNewGroceryItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
-        } else if(this.props.title == 'Favorites'){
-            this.props.onNewFavoritesItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
+        var sendBrand = 'N/A';
+        var sendType = 'N/A';
+        var sendDate = 'N/A';
+
+        if(this.state.brand != ''){
+            sendBrand = this.state.brand;
         }
+        if(this.state.type != ''){
+            sendType = this.state.type;
+        }
+        if(this.state.date != ''){
+            sendDate = this.state.date;
+        }
+
+        if(this.props.title == 'Pantry') {
+            this.props.onNewPantryItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
+        } else if(this.props.title == 'Grocery List'){
+            this.props.onNewGroceryItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
+        } else if(this.props.title == 'Favorites'){
+            this.props.onNewFavoritesItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
+        }
+        this.setState(state => ({
+            food: '',
+            brand: '',
+            type: '',
+            date: '',
+            quantity: 1
+          }));
+    }
+
+    checkExpiration(date) {
+        var day = new Date().getDate();
+        var month = new Date().getMonth() + 1;
+        var year = new Date().getFullYear();
+
+        if(date == 'N/A'){
+            return <td>{date}</td>;
+        }
+
+        var splitDate = date.split("-");
+
+
+        if(year > splitDate[0]){
+            return <td className="text-danger">Expired</td>;
+        }
+        
+        if(year == splitDate[0] && month > splitDate[1]){
+            return <td className="text-danger">Expired</td>;
+        }
+
+        if(month == splitDate[1] && day > splitDate[2]){
+            return <td className="text-danger">Expired</td>;
+        }
+
+        if(month == splitDate[1] && (splitDate[2] - day) <= 5){
+            return <td className="text-warning">{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
+        }
+
+        if(month != splitDate[1] && ((splitDate[2]+30) - day) <= 5){
+            return <td className="text-warning">{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
+        }
+
+        return <td>{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
+        
     }
 
     render (){
         return (
             <>
             <div id="home">
-                <h1>{this.props.title}</h1>
-                <table className="table table-striped">
+                <h1 className="text-white">{this.props.title}</h1>
+                {!this.props.tableList.length && <div className="alert alert-light" role="alert">
+                    You do not have any food items in your <b>{this.props.title}</b>. Click 'Add Item' to begin filling your <b>{this.props.title}</b>.
+                </div>}
+                {!!this.props.tableList.length && <table className="table table-light table-striped">
                     <thead>
                         <tr>
-                            <th>Food Item</th>
-                            <th>Brand</th>
-                            <th>Food Type</th>
-                            <th>Expiration Date</th>
+                            <th><button type="button" class="btn btn-link">Food Item <i className="fa fa-sort"></i></button></th>
+                            <th>Brand <i className="fa fa-sort"></i></th>
+                            <th>Food Type <i className="fa fa-sort"></i></th>
+                            <th>Expiration Date <i className="fa fa-sort"></i></th>
                             <th>Quantity</th>
                             <th className="text-right">{this.props.quick}</th>
                         </tr>
@@ -45,15 +109,16 @@ export class Table extends React.Component {
                                     <td>{a.food}</td>
                                     <td>{a.brand}</td>
                                     <td>{a.type}</td>
-                                    <td>{a.expire}</td>
+                                    {this.checkExpiration(a.expire)}
                                     <td>{a.quantity}</td>
                                     <td><button type="button" className="btn btn-secondary float-right" >{this.props.quick}</button></td>
                                  </tr>
                             )
                         }
                     </tbody>
-                </table>
-                <button type="button" className="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
+                </table>}
+                
+                <button type="button" className="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
                     Add Item to your {this.props.title}
                 </button>
                 <div className="modal fade" id="foodEntry" tabIndex="-1" role="dialog" aria-labelledby="foodEntryLable" aria-hidden="true">
@@ -137,7 +202,7 @@ export class Table extends React.Component {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button id="addCourse" type="button" className="btn btn-primary" onClick={e => this.onAddItem()} data-dismiss="modal">Submit</button>
+                                <button id="addCourse" type="submit" className="btn btn-primary" onClick={e => this.onAddItem()} data-dismiss="modal">Submit</button>
                             </div>
                         </div>
                     </div>

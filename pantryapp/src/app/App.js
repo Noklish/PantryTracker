@@ -5,7 +5,7 @@ import { Login } from './Login';
 
 class App extends Component {
   state = {
-    loggedIn: true
+    loggedIn: false
   }
   render() {
     return (

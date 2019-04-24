@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
-import { LoginCard } from './LoginCard'
-import { RegisterCard } from './RegisterCard'
+import { LoginCard } from './LoginCard';
+import { RegisterCard } from './RegisterCard';
+import './loginCard.css';
 
 export class Login extends React.Component {
     constructor (props) {
@@ -22,8 +23,10 @@ export class Login extends React.Component {
     render() {
         return (
             <>
+            <div id="login">
                 <LoginCard toggleRegister = {() => this.toggleRegister()}/>
                 <RegisterCard show={ this.state.show } toggleRegister = {() => this.toggleRegister()}/>
+            </div>
             </>
         )
     }
