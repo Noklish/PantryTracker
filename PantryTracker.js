@@ -17,13 +17,13 @@ var payload = {
 	data1: "Data 1"
 };
 
-// var verifyOptions = {
-// 	issuer: i,
-// 	subject: s,
-// 	audience: a,
-// 	expiresIn: "12h",
-// 	algorithm: ["RS256"]
-// };
+ var verifyOptions; /*= {
+ 	issuer: i,
+ 	subject: s,
+ 	audience: a,
+ 	expiresIn: "12h",
+ 	algorithm: ["RS2568"]
+ };*/
 
 app.get('/', function (req, res){
         res.send('Nobody expects the spanish inquisition!\n');
@@ -70,6 +70,14 @@ app.get('/user/:userid', (req, res, User, Pass) => {
 					expiresIn: "12h",
 					algorithm: "RS256"
 				};
+
+				verifyOptions; = {
+				 	issuer: i,
+				 	subject: s,
+				 	audience: a,
+				 	expiresIn: "12h",
+ 					algorithm: ["RS256"]
+ 				};
 
 				token = jwt.sign(payload, privateKey, signOptions);
 				console.log("Token - " + token);
@@ -136,15 +144,22 @@ app.get('/user/:userid/groceryList', (req, res, uID) => {
 	connection.query('SELECT * FROM groceryList NATURAL JOIN foodItem WHERE userid = ' + uID);
 });
 
-//USER STORY 18 FINISHsldjf alkfjslkafjlkskd fldsak jflkaj fdldas lkal fdla 
-app.post('user/:userid/groceryList', (req, res, uID, fName, b, quant) => {
+//USER STORY 18
+app.post('user/:userid/groceryList', (req, res, uID, fName, fGroup, b, quant) => {
 	var item = connection.query('SELECT * FROM foodItem WHERE foodName = ' + fName + ' AND brand = ' + br + " AND foodGroup = " + fGroup + ')');
-	connection.query('INSERT INTO groceryList VALUES(' + uID + ', ' + fName + ', ' + b + ', ' + quant + ')');
+	if(typeof item != undefined && item) {
+		connection.query('INSERT INTO groceryList VALUES(' + uID + ', ' + item[0].foodID + ', ' + quant + ')');
+	} else {
+		connection.query('INSERT INTO foodItem VALUES(' + fName + ', ' + fGroup + ', ' + b + ', ' + quant + ', ' + ')');
+		var newItem = connection.query('SELECT * FROM foodItem WHERE foodName = ' + fName + ' AND brand = ' + br + " AND foodGroup = " + fGroup + ')');
+		connection.query('INSERT INTO groceryList VALUES(' + uID + ', ' + newItem[0].foodID + ', ' + quant + ')');
+	}
 });
 
 //USER STORY 42 / 22
-app.put('/user/:userid/pantry/item/quantity', (req, res, uID, fName, num) => {
-	connection.query('UPDATE pantry SET quantity = ' + num + ' WHERE userID = ' + uID + ' AND foodName = ' + fName);  //42
+app.put('/user/:userid/pantry/item/quantity', (req, res, uID, fName, br, num) => {
+	var item = connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = ' + fName + ' AND brand = ' + br);
+	connection.query('UPDATE pantry SET quantity = ' + num + ' WHERE userID = ' + uID + ' AND foodID = ' + item[0].foodID);  //42
 	var a = connection.query('SELECT foodName, brand FROM pantry NATURAL JOIN favoriteFood WHERE userid = ' + uID + ' AND foodName = ' + fName + ' AND quantity = 0'); //22
 	var b = connection.query('SELECT foodName FROM pantry WHERE userid = ' + uID + ' AND foodName = ' + fName + ' AND quantity = 0');
 	var c = connection.query('SELECT quantity, minValue FROM pantry NATURAL JOIN favoriteFood WHERE userid = ' + uID + ' AND foodName = ' + fName);
@@ -153,7 +168,7 @@ app.put('/user/:userid/pantry/item/quantity', (req, res, uID, fName, num) => {
 		connection.query('DELETE FROM pantry WHERE userid = ' + uID + ' AND foodName = ' + fName);
 	} else if(typeof b != undefined && b){
 		connection.query('DELETE FROM pantry WHERE userid = ' + uID + ' AND foodName = ' + fName);
-	} else if(c[0].quantity < c[0].minValue) {
+	} else if(typeof c != undefined && c && c[0].quantity < c[0].minValue) {
 		connection.query('INSERT INTO groceryList VALUES(' + fname + ', ' + a[0].brand + ', 1)');
 	}
 });
@@ -161,12 +176,16 @@ app.put('/user/:userid/pantry/item/quantity', (req, res, uID, fName, num) => {
 //USER STORY 23 & 46
 //ADD EXPIRATION DATE HERE
 app.delete('user/:userid/groceryList/item', (req, res, uID, fName, fGroup, brand, quant) => { //Quantity either needs to be specified upon saying it was bought or it will be defaulted to 1
-	connection.query('INSERT INTO pantry VALUES(' + uID + ', ' + fName + ', ' + fGroup + ', ' + brand + ', ' + quant + ')');
-	connection.query('DELETE FROM groceryList WHERE foodName = ' + fName + ' AND userID = ' + uID);
+	var item1 = connection.query('SELECT * FROM groceryList NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = ' + fName + ' AND brand = ' + brand);
+	var item2 = connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = ' + fName + ' AND brand = ' + brand);
+	
+
+	connection.query('INSERT INTO pantry VALUES(' + uID + ', ' + item2[0].foodID + ', ' + brand + ', ' + quant + ')');
+	connection.query('DELETE FROM groceryList WHERE foodID = ' + item1[0].foodID + ' AND userID = ' + uID);
 });
 
-app.post('/user:userid/pantry/favorite', (req, res, fName, uID) => {
-	connection.query('INSERT INTO favoriteFood VALUES (' + uID + ', ' + fName + ')');
+app.post('/user:userid/pantry/favorite', (req, res, fID, uID) => {
+	connection.query('INSERT INTO favoriteFood VALUES (' + uID + ', ' + fID + ')');
 });
 
 
