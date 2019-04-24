@@ -10,7 +10,8 @@ export class LoginCard extends React.Component{
 
         this.state = {
             email: "",
-            pass: ""
+            pass: "",
+            remember: false
         }
 
         this.checkEmail = this.checkEmail.bind(this);
@@ -24,7 +25,7 @@ export class LoginCard extends React.Component{
 
     validateLogin(e){
         debugger;
-        if(!this.checkEmail(this.state.email.value))
+        if(!this.checkEmail(this.state.email))
         {
             window.alert("Invalid email address");
             e.preventDefault();
@@ -36,6 +37,9 @@ export class LoginCard extends React.Component{
             e.preventDefault();
             return;
         }
+        if(this.state.remember){
+            localStorage.setItem("LoginData",this.state);
+        }
         window.alert("You am loged in");
         return true;
     }
@@ -43,28 +47,31 @@ export class LoginCard extends React.Component{
     render() {
         return(
             <>
-                <Card className="text-center" id="loginCard">
-                    <Card.Header id="logHead">
-                        <h4>Login</h4>
-                    </Card.Header>
-                    <Card.Body>
-                        <Form>
-                            <Form.Group controlID="login.email">
-                                <Form.Control type="email" placeholder="email" ref={ input => this.state.email = input}></Form.Control>
-                            </Form.Group>
-                            <Form.Group controlID="login.pass">
-                                <Form.Control type="password" placeholder="password" ref={ input => this.state.pass = input}></Form.Control>
-                            </Form.Group>
-                            <Form.Group controlID="login.submit">
-                                <Button block className="btn-success" onClick={ this.validateLogin }>Login</Button>
-                            </Form.Group>
-                            <hr/>
-                            <Form.Group controlID="login.register">
-                                <Button block className="btn-primary" onClick={ this.props.toggleRegister }>Register</Button>
-                            </Form.Group>
-                        </Form>
-                    </Card.Body>
-                </Card>
+            <Card className="text-center" id="loginCard">
+                <Card.Header id="logHead">
+                    <h4>Login</h4>
+                </Card.Header>
+                <Card.Body>
+                    <Form>
+                        <Form.Group controlID="login.email">
+                            <Form.Control type="email" placeholder="email" value={ this.state.email } onChange={ e => this.setState({ email: e.target.value })}></Form.Control>
+                        </Form.Group>
+                        <Form.Group controlID="login.pass">
+                            <Form.Control type="password" placeholder="password" value={ this.state.pass } onChange={ e => this.setState({ pass: e.target.value })}></Form.Control>
+                        </Form.Group>
+                        <Form.Group controlID="login.stay">
+                            <Form.Check type="checkbox" label="Remember me" value={this.state.remember} onChange={ e => this.setState(state => ({ remember: !state.remember })) }/>
+                        </Form.Group>
+                    </Form>
+                    <Form.Group controlID="login.submit">
+                        <Button block className="btn-success" onClick={ e => this.validateLogin(e) }>Login</Button>
+                    </Form.Group>
+                    <hr/>
+                    <Form.Group controlID="login.register">
+                        <Button block className="btn-primary" onClick={ this.props.toggleRegister }>Register</Button>
+                    </Form.Group>
+                </Card.Body>
+            </Card>
             </>
         )
     }

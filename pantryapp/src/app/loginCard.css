@@ -17,3 +17,7 @@ main {
 #logHead > h4 {
     color: white;
 }
+
+#stayLoggedIn {
+    max-width: 1rem;
+}
