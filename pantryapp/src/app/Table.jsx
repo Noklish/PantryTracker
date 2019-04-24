@@ -94,7 +94,7 @@ export class Table extends React.Component {
                 {!!this.props.tableList.length && <table className="table table-light table-striped">
                     <thead>
                         <tr>
-                            <th>Food Item <i className="fa fa-sort"></i></th>
+                            <th><button type="button" class="btn btn-link">Food Item <i className="fa fa-sort"></i></button></th>
                             <th>Brand <i className="fa fa-sort"></i></th>
                             <th>Food Type <i className="fa fa-sort"></i></th>
                             <th>Expiration Date <i className="fa fa-sort"></i></th>
