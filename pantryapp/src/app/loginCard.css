@@ -1,8 +1,8 @@
-body {
-    /* background-image: url("./../data/veggiebg.jpg"); */
-    background-repeat: no-repeat;
-    background-size: 100%;
+main {
+    background-size: cover;
 }
+
+
 
 #loginCard {
     margin: auto;
