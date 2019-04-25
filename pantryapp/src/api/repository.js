@@ -2,6 +2,12 @@ import axios from 'axios';
 
 export class repository {
     url = "http://ec2-18-208-170-68.compute-1.amazonaws.com:9000";
+
+    config = {
+        headers: {
+            Authorization: '*'
+        }
+    }
     
     //Account stuff
     getAccount(userId){
@@ -12,22 +18,21 @@ export class repository {
 
     addAccount(userName, pass, email){
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/user`, userName, pass, email, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.post(`${this.url}/user`, {userName: userName, pass: pass, email: email}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
     changePassword(userId, newPass){
         return new Promise((resolve, reject) => {
-            axios.put(`${this.url}/passUpdate/${userId}`, newPass, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.put(`${this.url}/passUpdate/${userId}`, {user: userId, newPass: newPass}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
-    //with JSon
-    // addAccount(userName, pass, email){
-    //     return new Promise((resolve, reject) => {
-    //         axios.post(`${this.url}/user`, { userName: userName, pass: pass, email: email }, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
-    //     });
-    // }
+    login(userName, pass){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/login`, {User: userName, Pass: pass}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
 
     //pantry stuff
     getPantry(userId){
@@ -45,22 +50,23 @@ export class repository {
         });
     }
 
-    addGroceryItem(userId /* Idk what else we need in here */){
+    addGroceryItem(userId, foodName, foodGroup, brand, quantity){
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/user/${userId}/groceryList`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            //debugger;
+            axios.post(`${this.url}/user/${userId}/groceryList`, {uID: userId, fName: foodName, fGroup: foodGroup, b: brand, quant: quantity}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
     groceryToPantry(userId, foodName, foodGroup, brand, quantity){
         return new Promise((resolve, reject) => {
-            axios.delete(`${this.url}/user/${userId}/groceryList/item`, {uID: userId, fName: foodName, fGroup: foodGroup, brand: brand, quanty: quantity}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.delete(`${this.url}/user/${userId}/groceryList/item`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
     //favorite stuff
-    addFavorite(userId, foodName){
+    addFavorite(userId, foodId){
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/user/${userId}/pantry/favorite`, {uID: userId, fName: foodName}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.post(`${this.url}/user/${userId}/pantry/favorite`, {uID: userId, fID: foodId}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
