@@ -29,7 +29,7 @@ class FoodItemModal extends React.Component {
         if(this.state.date != ''){
             sendDate = this.state.date;
         }
-        alert(this.props.page);
+        
         if(this.props.page == 'Pantry') {
             this.props.onNewItem(new FoodList(this.state.food, this.state.brand, this.state.type, this.state.date, this.state.quantity))
         } else if(this.props.page == 'Grocery List'){
