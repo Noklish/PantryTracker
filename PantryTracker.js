@@ -88,18 +88,18 @@ app.post('/user', (req, res/*userName, pass, email*/) => {
 
 //user story 12 - account login
 app.post('/user/login', (req, res) => {
-	var user = req.body.userName;
+	var email = req.body.email;
 	var pass = req.body.userPassword;
 	if(req.session.loggedin) {
-		res.send("Already logged in as " + req.session.userName);
+		res.send("You're already logged in");
 	} else {
 		if(user && pass) {
-			connection.query('SELECT * FROM userAccount WHERE userName = ? AND userPassword = ?', [user, pass],
+			connection.query('SELECT * FROM userAccount WHERE email = ? AND userPassword = ?', [email, pass],
 				function(err, results, fields) {
 					if(results.length > 0) {
 						req.session.loggedin = true;
-						req.session.userName = user;
-						req.send("Welcome back, " + user);
+						req.session.email = email;
+						req.send("Welcome back, " + email);
 					} else {
 						res.status(400).send('Incorrect Username or Password.');
 						req.session.loggedin = false;
