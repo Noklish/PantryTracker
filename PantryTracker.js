@@ -223,9 +223,9 @@ app.put('/user/:userid/pantry/item/exDate', (req, res/*, uID, fName, br, exDate*
 });
 
 //USER STORY 42 - remove item from pantry
-app.delete('/user/:userid/pantry/item', (req, res/*, uID, fName*/) => {
-	var fName = req.body.fName;
-	var uID = req.body.uID;
+app.delete('/user/:userid/pantry/:item', (req, res/*, uID, fName*/) => {
+	var fName = req.params.item;
+	var uID = req.params.uID;
 	var fid = connection.query('SELECT foodID FROM pantry INNER JOIN foodItem ON pantry.foodID = foodItem.foodID WHERE userID = ? AND foodName = ?', [uID, fName],
 		function(err, result) {
 			if(err) throw err;
@@ -240,7 +240,7 @@ app.delete('/user/:userid/pantry/item', (req, res/*, uID, fName*/) => {
 /*******TRACK FOOD EPIC*******/
 //USER STORY 24
 app.get('user/:userid/pantry/categories', (req, res/*, uID*/) => {
-	var uID = req.body.uID;
+	var uID = req.params.userid;
 	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' GROUP BY foodGroup', function(err, results) {
 		if(err) throw err;
 	});
@@ -248,7 +248,7 @@ app.get('user/:userid/pantry/categories', (req, res/*, uID*/) => {
 
 //USER STORY 24
 app.get('user/:userid/pantry', (req, res/*, uID*/) => {
-	var uID = req.body.uID;
+	var uID = req.params.userid;
 	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID, function(err, results) {
 		if(err) throw err;
 	});
@@ -256,7 +256,7 @@ app.get('user/:userid/pantry', (req, res/*, uID*/) => {
 
 //USER STORY 30
 app.get('user/:userid/pantry/exp', (req, res/*, uID*/) => {
-	var uID = req.body.uID;
+	var uID = req.params.userid;
 	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + 'ORDER BY (expirationDate) ASC', function(err, results) {
 		if(err) throw err;
 	});
@@ -269,7 +269,7 @@ app.get('user/:userid/pantry/exp', (req, res/*, uID*/) => {
 /*******RECIPE RECOMMENDATIONS EPIC*******/
 //USER STORY 11 - Viewing list of recipes for a user
 app.get('user/:userid/recipes', (req, res/*, uID*/) => {
-	var uID = req.body.uID;
+	var uID = req.params.userid;
 	connection.query('SELECT recipeName FROM recipes WHERE userID =' + uID, function(err, results) {
 		if(err) throw err;
 	});
@@ -278,7 +278,7 @@ app.get('user/:userid/recipes', (req, res/*, uID*/) => {
 /*******GROCERY LIST EPIC********/
 //USER STORY 13
 app.get('/user/:userid/groceryList', (req, res/*, uID*/) => {
-	var uID = req.body.uID;
+	var uID = req.params.userid;
 	connection.query('SELECT * FROM groceryList NATURAL JOIN foodItem WHERE userID = ' + uID, function(err, results) {
 		if(err) throw err;
 	});
@@ -356,12 +356,12 @@ app.put('/user/:userid/pantry/item/quantity', (req, res/*, uID, fName, br, num*/
 
 //USER STORY 23 & 46
 //ADD EXPIRATION DATE HERE? (not in grocerylist)
-app.delete('user/:userid/groceryList/item', (req, res/*, uID, fName, fGroup, br, quant*/) => { //Quantity either needs to be specified upon saying it was bought or have it defaulted to 1
-	var uID = req.body.uID;
-	var fName = req.body.fName;
-	var fGroup = req.body.fGroup;
-	var br = req.body.br;
-	var quant = req.body.quant;
+app.delete('user/:userid/groceryList/:item/:group/:br/:quant', (req, res/*, uID, fName, fGroup, br, quant*/) => { //Quantity either needs to be specified upon saying it was bought or have it defaulted to 1
+	var uID = req.params.userid;
+	var fName = req.params.item;
+	var fGroup = req.params.group;
+	var br = req.params.br;
+	var quant = req.params.quant;
 
 	var item1 = connection.query('SELECT * FROM groceryList NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = ' + fName + ' AND brand = ' + brand, function(err, results) {
 		if(err) throw err;
@@ -392,10 +392,10 @@ app.post('/user:userid/pantry/favorite', (req, res/*, fID, uID, minVal*/) => {
 
 /*******ENTER CUSTOM RECIPE*******/
 
-//Searching for recipes based on an ingredient
-app.get('user/:userid/recipes/ingredient', (req, res/*, uID, ingred*/) => {
-	var user = req.body.uID;
-	var ingred = req.body.ingred;
+//Searching for recipes based on an ingredient (name?)
+app.get('user/:userid/recipes/:ingredient', (req, res/*, uID, ingred*/) => {
+	var user = req.params.userid;
+	var ingred = req.params.ingredient;
 	connection.query('SELECT * FROM recipes NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = ' + ingred, function(err, results) {
 		if(err) throw err;
 	});
@@ -403,9 +403,9 @@ app.get('user/:userid/recipes/ingredient', (req, res/*, uID, ingred*/) => {
 
 
 //search / select recipe based on the recipe name
-app.get('user/:userid/recipes/recipe', (req, res/*, uID, recipeName*/) => {
-	var recipeName = req.body.recipeName;
-	var uID = req.body.uID;
+app.get('user/:userid/recipes/:recipe', (req, res/*, uID, recipeName*/) => {
+	var recipeName = req.params.recipe;
+	var uID = req.params.userid;
 	connection.query('SELECT * FROM recipe NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND recipeName = ' + recipeName, function(err, results) {
 		if(err) throw err;
 	});
@@ -425,23 +425,23 @@ app.post('user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ingr
 		if(err) throw err;
 	});
 	for(int j = 0; j < ingredients.length; j++){
-		var fd = connection.query('SELECT * FROM foodItem NATURAL JOIN pantry WHERE foodName = ' + ingredients[0] + ' AND userID = ' + uID, function(err, results) {
+		var fd = connection.query('SELECT * FROM foodItem NATURAL JOIN pantry WHERE foodName = ' + ingredients[j].name + ' AND userID = ' + uID, function(err, results) {
 			if(err) throw err;
 		});
 		if(typeof fd != undefined && fd) {
 			//Figure out quantities
-			connection.query('INSERT INTO recipeAssignments (recipeID, foodID, quantity) VALUES(' + recipe[0].recipeID + ', ' + fd[0].foodID + /*', ' + recipe[0].procedure +*/ ')', function(err, results) {
+			connection.query('INSERT INTO recipeAssignments (recipeID, foodID, quantity) VALUES(' + recipe[0].recipeID + ', ' + fd[0].foodID + ', ' + ingredients[j].quantity + ')', function(err, results) {
 				if(err) throw err;
 			});
 		} else {
 			//brand / food group & brand for ingredients that aren't already in foodItem table
-			connection.query('INSERT INTO foodItem (foodName) VALUES(' + ingredients[j] + ')', function(err, results) {
+			connection.query('INSERT INTO foodItem (foodName) VALUES(' + ingredients[j].name + ')', function(err, results) {
 				if(err) throw err;
 			});
-			var newfd = connection.query('SELECT * FROM foodItem WHERE foodName = ' + ingredients[j], function(err, results) {
+			var newfd = connection.query('SELECT * FROM foodItem WHERE foodName = ' + ingredients[j].name, function(err, results) {
 				if(err) throw err;
 			});
-			connection.query('INSERT INTO recipeAssignments (recipeID, foodID, quantity) VALUES(' + recipe[0].recipeID + ', ' + newfd[0].foodID /*+ ', '*/ +')', function(err, results) {
+			connection.query('INSERT INTO recipeAssignments (recipeID, foodID, quantity) VALUES(' + recipe[0].recipeID + ', ' + newfd[0].foodID + ', ' + ingredients[j].quantity +')', function(err, results) {
 				if(err) throw err;
 			});
 		}
@@ -451,9 +451,60 @@ app.post('user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ingr
 //Update recipes as users edit them
 app.put('user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ingredients, procedure*/) => {
 	var uID = req.body.uID;
+	var rID = req.body.rID;
 	var recipeName = req.body.recipeName;
 	var meal = req.body.meal;
 	var ingredients = req.body.ingredients;
 	var procedure = req.body.procedure;
-	connection.query('');
+
+	var recipe = connection.query('SELECT * FROM recipes WHERE recipeID = ' + rID + ' AND userID = ' + uID, function(err, results) {
+		if(err) throw err;
+	});
+
+	connection.query('UPDATE recipes SET recipeName = ' + recipeName + ', meal = ' + meal + ', steps = ' + procedure + ' WHERE userID = ' + uID + ' AND recipeID = ' + recipe[0].recipeID, function(err, results) {
+		if(err) throw err;
+	});
+});
+
+app.put('/user/:userid/recipes/recipe/ingred', (req, res) => {
+	var fName = req.body.fName;
+	var rID = var.body.rID;
+
+	var fid = connection.query('SELECT * FROM foodItem WHERE foodName = ' + fName.name, function(err, results) {
+		if(err) throw err;
+	});
+
+	if(typeof fid != undefined && fid) {
+		connection.query('INSERT INTO recipeAssignments VALUES(' + rID + ', ' + fid[0].foodID + ', ' + fName.quantity + ')', function(err, results) {
+			if(err) throw err;
+		});
+	} else {
+		var newF = connection.query('INSERT INTO foodItem (foodName) VALUES(' + fName.name + ')', function(err, results) {
+			if(err) throw err;
+		});
+		connection.query('INSERT INTO recipeAssignments VALUES(' + rID + ', ' + newF.foodID + ', ' + fName.quantity + ')');
+	}
+});
+
+app.delete('/user/:userid/recipes/:recipe/ingred/:ingred', (req, res) => {
+	var uID = req.params.userid;
+	var rID = req.params.recipe;
+	var ingred = req.params.ingred;
+
+	var fname = connection.query('SELECT * FROM foodItem WHERE foodName = ' + ingred, function(err, results) {
+		if(err) throw err;
+	});
+
+	if(typeof fname != undefined && fname) {
+		for(int j = 0; j < fname.length; j++) {
+			var bol = connection.query('SELECT * FROM recipeAssignments WHERE recipeID = ' + rID + ' AND foodID = ' + fname[j].foodID, function(err, results) {
+				if(err) throw err;
+			});
+			if(typeof bol != undefined && bol) {
+				connection.query('DELETE FROM recipeAssignments WHERE recipeID = ' + rID + ' AND foodID = ' + fname[j].foodID, function(err, results) {
+					if(err) throw err;
+				});
+			} //end inner-if
+		} //end for loop
+	} //end outer if
 });
