@@ -93,7 +93,7 @@ app.post('/user/login', (req, res) => {
 	if(req.session.loggedin) {
 		res.send("You're already logged in");
 	} else {
-		if(user && pass) {
+		if(email && pass) {
 			connection.query('SELECT * FROM userAccount WHERE email = ? AND userPassword = ?', [email, pass],
 				function(err, results, fields) {
 					if(results.length > 0) {
