@@ -222,6 +222,16 @@ app.put('/user/:userid/pantry/item/exDate', (req, res/*, uID, fName, br, exDate*
 	}
 });
 
+app.put('/user/:userid/pantry/item/foodGroup', (req, res) => {
+	var uID = req.body.uID;
+	var fID = req.body.fID;
+	var newFG = req.body.newFG;
+
+	connection.query('UPDATE foodItem SET foodGroup = ' + newFG + ' WHERE foodID = ' + fID, function(err, results) {
+		if(err) { res.send("Something went wrong updating that item"); }
+	});
+}); 
+
 //USER STORY 42 - remove item from pantry
 app.delete('/user/:userid/pantry/:item', (req, res/*, uID, fName*/) => {
 	var fName = req.params.item;
@@ -243,6 +253,7 @@ app.get('user/:userid/pantry/categories', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
 	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' GROUP BY foodGroup', function(err, results) {
 		if(err) throw err;
+		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
 });
 
@@ -251,6 +262,7 @@ app.get('user/:userid/pantry', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
 	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID, function(err, results) {
 		if(err) throw err;
+		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
 });
 
@@ -259,6 +271,7 @@ app.get('user/:userid/pantry/exp', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
 	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + 'ORDER BY (expirationDate) ASC', function(err, results) {
 		if(err) throw err;
+		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
 });
 
@@ -272,6 +285,7 @@ app.get('user/:userid/recipes', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
 	connection.query('SELECT recipeName FROM recipes WHERE userID =' + uID, function(err, results) {
 		if(err) throw err;
+		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
 });
 
@@ -281,6 +295,7 @@ app.get('/user/:userid/groceryList', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
 	connection.query('SELECT * FROM groceryList NATURAL JOIN foodItem WHERE userID = ' + uID, function(err, results) {
 		if(err) throw err;
+		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
 });
 
@@ -398,6 +413,7 @@ app.get('user/:userid/recipes/:ingredient', (req, res/*, uID, ingred*/) => {
 	var ingred = req.params.ingredient;
 	connection.query('SELECT * FROM recipes NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = ' + ingred, function(err, results) {
 		if(err) throw err;
+		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
 });
 
@@ -408,6 +424,7 @@ app.get('user/:userid/recipes/:recipe', (req, res/*, uID, recipeName*/) => {
 	var uID = req.params.userid;
 	connection.query('SELECT * FROM recipe NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND recipeName = ' + recipeName, function(err, results) {
 		if(err) throw err;
+		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
 });
 
