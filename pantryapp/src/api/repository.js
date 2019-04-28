@@ -65,6 +65,12 @@ export class repository {
     }
 
     //favorite stuff
+    getFavorites(userId){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/user/${userId}/favoriteFood`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
+    
     addFavorite(userId, foodId){
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/user/${userId}/pantry/favorite`, {uID: userId, fID: foodId}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Ingredient } from '../models/ingredient';
-import { Recipe } from '../models/recipe';
-import IngredientList from './ingredientList';
+import { Ingredient } from '../../models/ingredient';
+import { Recipe } from '../../models/recipe';
+import IngredientList from '../ingredientList';
 
 export class RecipeModal extends React.Component {
     constructor(props){
@@ -16,7 +16,6 @@ export class RecipeModal extends React.Component {
     }
 
     onAddItem() {
-        this.props.onNewRecipe(new Recipe(this.state.name, this.state.meal, this.state.description, this.state.ingredients));
         this.setState({
           name: '',
           meal: '',
