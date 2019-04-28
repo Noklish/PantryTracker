@@ -124,7 +124,7 @@ app.get('/user/logout', (req, res) => {
 });
 
 //USER STORY 16 - updating password
-app.put('/passUpdate/:userid', (req, res/*, user, newPass*/) => {
+app.put('/:userid/passUpdate', (req, res/*, user, newPass*/) => {
 	var user = req.body.userName;
 	var pass = req.body.pass;
 	var newPass = req.body.newPass;
