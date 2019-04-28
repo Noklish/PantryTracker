@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { FoodList } from './../models/foodList';
+import { repository }  from './../api/repository';
 
 export class GroceryTable extends React.Component {
-    
+    repository = new repository();
+
     state = {
         food: '',
         brand: '',
         type: '',
         date: '',
-        quantity: 1
+        quantity: 1,
+        tableList: []
     }
 
     onAddItem() {
@@ -26,13 +29,7 @@ export class GroceryTable extends React.Component {
             sendDate = this.state.date;
         }
 
-        if(this.props.title == 'Pantry') {
-            this.props.onNewPantryItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
-        } else if(this.props.title == 'Grocery List'){
-            this.props.onNewGroceryItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
-        } else if(this.props.title == 'Favorites'){
-            this.props.onNewFavoritesItem(new FoodList(this.state.food, sendBrand, sendType, sendDate, this.state.quantity))
-        }
+        
         this.setState(state => ({
             food: '',
             brand: '',
@@ -47,10 +44,10 @@ export class GroceryTable extends React.Component {
             <>
             <div id="home">
                 <h1 className="text-white">Grocery List</h1>
-                {!this.props.tableList.length && <div className="alert alert-light" role="alert">
+                {!this.state.tableList.length && <div className="alert alert-light" role="alert">
                     You do not have any food items in your <b>Grocery List</b>. Click 'Add Item' to begin filling your <b>Grocery List</b>.
                 </div>}
-                {!!this.props.tableList.length && <table className="table table-light table-striped">
+                {!!this.state.tableList.length && <table className="table table-light table-striped">
                     <thead>
                         <tr>
                             <th><button type="button" class="btn btn-link">Food Item <i className="fa fa-sort"></i></button></th>
@@ -62,13 +59,13 @@ export class GroceryTable extends React.Component {
                     </thead>
                     <tbody>
                         {
-                            this.props.tableList.map((a, i) => 
+                            this.state.tableList.map((a, i) => 
                                 <tr key={i}>
-                                    <td>{a.food}</td>
+                                    <td>{a.foodName}</td>
                                     <td>{a.brand}</td>
-                                    <td>{a.type}</td>
+                                    <td>{a.foodGroup}</td>
                                     <td>{a.quantity}</td>
-                                    <td><button type="button" className="btn btn-secondary float-right" >{this.props.quick}</button></td>
+                                    <td><button type="button" className="btn btn-secondary float-right" >Qucik Add</button></td>
                                  </tr>
                             )
                         }
@@ -76,7 +73,7 @@ export class GroceryTable extends React.Component {
                 </table>}
                 
                 <button type="button" className="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
-                    Add Item to your {this.props.title}
+                    Add Item to your GroceryList
                 </button>
                 <div className="modal fade" id="foodEntry" tabIndex="-1" role="dialog" aria-labelledby="foodEntryLable" aria-hidden="true">
                     <div className="modal-dialog" role="document">
@@ -167,6 +164,16 @@ export class GroceryTable extends React.Component {
             </div>
             </>
         );
+    }
+
+    componentDidMount(){
+        let userId = +this.props.match.params.userId;
+        if(userId){
+            this.repository.getGroceryList(userId).then(groceryList => {
+                this.setState(state => ({
+                    tableList: groceryList}));
+            })
+        }
     }
 }
 

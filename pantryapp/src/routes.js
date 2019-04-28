@@ -8,12 +8,12 @@ import { Login } from './app/Login';
 
 export const ROUTES = [
     { path: '/login', component: Login},
-    { path: '/pantry', component: PantryTable},
-    { path: '/grocery-list', component: GroceryTable},
-    { path: '/favorites', component: FavoritesTable},
-    { path: '/recipes', component: RecipeTable},
-    { path: '/update-profile', component: UpdateProfile},
-    { path: '/home', component: Home},
+    { path: '/user/:userId/pantry', component: PantryTable},
+    { path: '/user/:userId/grocery-list', component: GroceryTable},
+    { path: '/user/:userId/favorites', component: FavoritesTable},
+    { path: '/user/:userId/recipes', component: RecipeTable},
+    { path: '/user/:userId/update-profile', component: UpdateProfile},
+    { path: '/user/:userId/home', component: Home},
     // { path: '/', component: Home}
 ];
 

@@ -3,7 +3,7 @@ import { FoodList } from './../models/foodList';
 import { repository } from '../api/repository';
 
 export class Table extends React.Component {
-    repo = new repository();
+    // repo = new repository();
     
     state = {
         food: '',

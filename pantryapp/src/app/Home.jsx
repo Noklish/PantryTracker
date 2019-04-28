@@ -4,6 +4,7 @@ import { FoodList } from './../models/foodList';
 import RecipeTable from './RecipeTable';
 import UpdateProfile from './UpdateProfile';
 import { Link } from 'react-router-dom';
+
 import './Home.css';
 
 
@@ -12,147 +13,14 @@ export class Home extends React.Component {
     foodList = new FoodList;
 
     state = {
-        pantry: true,
-        grocery: false,
-        favorites: false,
-        recipies: false,
-        updateAccount: false,
-        titleText: 'Pantry',
-        pantryList: [],
-        groceryList: [],
-        favoritesList: [],
-        recipeList: []
-    }
-
-    onTogglePantry = () => {
-        this.setState(state => ({ 
-            pantry: true,
-            grocery: false,
-            favorites: false,
-            recipies: false,
-            updateAccount: false,
-            titleText: 'Pantry'
-        }));
-    }
-
-    onToggleGrocery = () => {
-        this.setState(state => ({ 
-            pantry: false,
-            grocery: true,
-            favorites: false,
-            recipies: false,
-            updateAccount: false,
-            titleText: 'Grocery List'
-        }));
-    }
-
-    onToggleFavorites = () => {
-        this.setState(state => ({ 
-            pantry: false,
-            grocery: false,
-            favorites: true,
-            recipies: false,
-            updateAccount: false,
-            titleText: 'Favorites'
-        }));
-    }
-
-    onToggleRecipies = () => {
-        this.setState(state => ({ 
-            pantry: false,
-            grocery: false,
-            favorites: false,
-            recipies: true,
-            updateAccount: false,
-            titleText: 'Recipies'
-        }));
-    }
-
-    onToggleUpdateProfile = () => {
-        this.setState(state => ({ 
-            pantry: false,
-            grocery: false,
-            favorites: false,
-            recipies: false,
-            updateAccount: true,
-            titleText: 'Update Account'
-        }));
-    }
-
-    onNewPantryItem(pantryItem){
-        this.setState(state => {
-            state.pantryList.push(pantryItem);
-            return state;
-        });
-    }
-
-    onNewGroceryItem(groceryItem){
-        this.setState(state => {
-            state.groceryList.push(groceryItem);
-            return state;
-        });
-    }
-
-    onNewFavoritesItem(favoritesItem){
-        this.setState(state => {
-            state.favoritesList.push(favoritesItem);
-            return state;
-        });
-    }
-
-    onNewRecipe(recipe){
-        this.setState(state => {
-            state.recipeList.push(recipe);
-            return state;
-        });
+        
     }
 
     render (){
         return (
             <>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-success">
-                <div className="nav collapse navbar-collapse ">
-                    <ul className="navbar-nav">
-                        <li className="nav-item active">
-                            {/* <a className="nav-link text-light" onClick={this.onTogglePantry} href="#">Pantry</a> */}
-                            <Link to='/pantry' className="nav-link text-light">Pantry</Link>
-                        </li>
-                        <li className="nav-item">
-                            {/* <a className="nav-link text-light" onClick={this.onToggleGrocery} href="#">Grocery</a> */}
-                            <Link to='/grocery-list' className="nav-link text-light">Grocery List</Link>
-                        </li>
-                        <li className="nav-item">
-                            {/* <a className="nav-link text-light" onClick={this.onToggleFavorites} href="#">Favorites</a> */}
-                            <Link to='/favorites' className="nav-link text-light">Favorites</Link>
-                        </li>
-                        <li className="nav-item">
-                            {/* <a className="nav-link text-light" onClick={this.onToggleRecipies} href="#">Recipies</a> */}
-                            <Link to='/recipies' className="nav-link text-light">Recipies</Link>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <ul className="navbar-nav">
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                My Account
-                            </a>
-                            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {/* <a className="dropdown-item" onClick={this.onToggleUpdateProfile} href="#">Update Profile</a> */}
-                                <Link to='/update-profile' className="dropdown-item">Update Profile</Link>
-                                <div className="dropdown-divider"></div>
-                                <a className="dropdown-item" href="#">Logout</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+
             <main>
-                {/* {this.state.pantry && <Table title={this.state.titleText} onNewPantryItem={p => this.onNewPantryItem(p)} tableList={this.state.pantryList} quick={'Remove'}/>}
-                {this.state.grocery && <Table title={this.state.titleText} onNewGroceryItem={g => this.onNewGroceryItem(g)} tableList={this.state.groceryList} quick={'Quick Add'}/>}
-                {this.state.favorites && <Table title={this.state.titleText} onNewFavoritesItem={f => this.onNewFavoritesItem(f)} tableList={this.state.favoritesList} quick={'Quick Add'}/>}
-                {this.state.recipies && <RecipeTable onNewRecipe={r => this.onNewRecipe(r)} recipies={this.state.recipeList} />}
-                {this.state.updateAccount && <UpdateProfile />} */}
                 <h1 className="text-white">Welcome back [User]! Please enjoy your expirence!</h1>
             </main>
             </>
