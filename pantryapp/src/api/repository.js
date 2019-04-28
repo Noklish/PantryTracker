@@ -54,7 +54,7 @@ export class repository {
     addGroceryItem(userId, foodName, foodGroup, brand, quantity){
         return new Promise((resolve, reject) => {
             //debugger;
-            axios.post(`${this.url}/user/${userId}/groceryList`, {uID: userId, fName: foodName, fGroup: foodGroup, b: brand, quant: quantity}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.post(`${this.url}/user/${userId}/groceryList`, {uID: userId, fName: foodName, fGroup: foodGroup, br: brand, quant: quantity}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 

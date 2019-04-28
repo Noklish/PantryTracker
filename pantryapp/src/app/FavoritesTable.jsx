@@ -11,6 +11,30 @@ export class FavoritesTable extends React.Component {
     }
 
 
+    onAddItemBase(food, type, brand, quantity) {
+        
+        if(food == ''){
+            return false;
+        }
+        if(brand == ''){
+            brand = 'N/A';
+        }
+        if(type == ''){
+            type = 'N/A';
+        }
+
+        let userId = +this.props.match.params.userId;
+        if(userId){
+            this.repo.addGroceryItem(userId, food, type, brand, quantity).then(state => {
+                this.setState(state => ({
+                    food: '',
+                    brand: '',
+                    type: '',
+                    quantity: 1}));
+            })
+        }
+    }
+
     render (){
         return (
             <>
@@ -48,7 +72,7 @@ export class FavoritesTable extends React.Component {
                     Add Item to your Favorites
                 </button>
                 {
-                    <FavoriteModal repo={ this.repo } />
+                    <FavoriteModal onAddItemBase={e => this.onAddItemBase(e)} repo={ this.repo } />
                 }
                 {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1">
                     Add all to your Grocery List

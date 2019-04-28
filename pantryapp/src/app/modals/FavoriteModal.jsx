@@ -16,6 +16,7 @@ class FavoriteModal extends React.Component {
     }
 
     onAddItem() {
+        this.props.onAddItemBase(this.state);
         this.setState({
             food: '',
             brand: '',
@@ -78,6 +79,18 @@ class FavoriteModal extends React.Component {
                                     <option value="Beverage">Beverage</option>
                                     <option value="Other">Other</option>
                                 </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="quantity">Quantity</label>
+                                <input  type="number"
+                                        name="quantity" 
+                                        id="quantity" 
+                                        className="form-control" 
+                                        min="1"
+                                        placeholder="Please enter the Quantity of Food"
+                                        value={this.state.quantity}
+                                        onChange={e => this.setState({ quantity: e.target.value })} />
                             </div>
                         </form>
                     </div>

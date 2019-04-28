@@ -8,37 +8,32 @@ export class GroceryTable extends React.Component {
     repo = new repository();
 
     state = {
-        food: '',
-        brand: '',
-        type: '',
-        date: '',
-        quantity: 1,
         tableList: []
     }
 
-    onAddItem() {
-        var sendBrand = 'N/A';
-        var sendType = 'N/A';
-        var sendDate = 'N/A';
-
-        if(this.state.brand != ''){
-            sendBrand = this.state.brand;
-        }
-        if(this.state.type != ''){
-            sendType = this.state.type;
-        }
-        if(this.state.date != ''){
-            sendDate = this.state.date;
-        }
-
+    onAddItemBase(s) {
         
-        this.setState(state => ({
-            food: '',
-            brand: '',
-            type: '',
-            date: '',
-            quantity: 1
-          }));
+        // if(s.food == ''){
+        //     return false;
+        // }
+        // if(brand == ''){
+        //     brand = 'N/A';
+        // }
+        // if(type == ''){
+        //     type = 'N/A';
+        // }
+
+        let userId = +this.props.match.params.userId;
+        debugger;
+        if(userId){
+            this.repo.addGroceryItem(userId, s.food, s.type, s.brand, s.quantity).then(state => {
+                this.setState(state => ({
+                    food: '',
+                    brand: '',
+                    type: '',
+                    quantity: 1}));
+            })
+        }
     }
 
     render (){
@@ -78,9 +73,9 @@ export class GroceryTable extends React.Component {
                     Add Item to your GroceryList
                 </button>
                 {
-                    <FavoriteModal repo={ this.repo } />
+                    <FavoriteModal onAddItemBase={e => this.onAddItemBase(e)} repo={ this.repo } />
                 }
-                {!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1">
+                {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1">
                     Add all to your Pantry
                 </button>}
             </div>

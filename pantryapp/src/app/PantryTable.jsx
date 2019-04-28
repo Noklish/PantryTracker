@@ -88,7 +88,7 @@ export class PantryTable extends React.Component {
                 {!this.state.tableList.length && <div className="alert alert-light" role="alert">
                     You do not have any food items in your <b>Pantry</b>. Click 'Add Item' to begin filling your <b>Pantry</b>.
                 </div>}
-                {!!this.state.tableList.length && <table className="table table-light table-striped w-auto">
+                {!!this.state.tableList.length && <table className="table table-light table-striped">
                     <thead>
                         <tr>
                             <th><button type="button" class="btn btn-link">Food Item <i className="fa fa-sort"></i></button></th>
@@ -96,19 +96,19 @@ export class PantryTable extends React.Component {
                             <th>Food Type <i className="fa fa-sort"></i></th>
                             <th>Expiration Date <i className="fa fa-sort"></i></th>
                             <th>Quantity</th>
-                            <th className="text-right">delete</th>
+                            <th className="text-right">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             this.state.tableList.map((a, i) => 
                                 <tr key={i}>
-                                    <td>{a.food}</td>
+                                    <td>{a.foodName}</td>
                                     <td>{a.brand}</td>
-                                    <td>{a.type}</td>
-                                    {this.checkExpiration(a.expire)}
+                                    <td>{a.foodGroup}</td>
+                                    <td>{a.expirationDate}</td>
                                     <td>{a.quantity}</td>
-                                    <td><button type="button" className="btn btn-danger float-right">delete</button></td>
+                                    <td><button type="button" className="btn btn-danger float-right">Delete</button></td>
                                  </tr>
                             )
                         }
