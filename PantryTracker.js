@@ -544,21 +544,30 @@ app.delete('/user/:userid/recipes/:recipe/ingred/:ingred', (req, res) => {
 	} //end outer if
 });
 
-// app.get('/user/:userid/recipes/pantry', (req, res) => {
-// 	var uID = req.params.userid;
-// 	var r = [];
+app.get('/user/:userid/recipes/pantry', (req, res) => {
+	var uID = req.params.userid;
+	var r = [];
 
-// 	var b = connection.query('SELECT DISTINCT recipeID FROM recipes WHERE userID = ' + uID);
-// 	var a = connection.query('SELECT * FROM (recipes NATURAL JOIN recipeAssignments) x LEFT OUTER JOIN pantry ON pantry.foodID = x.foodID' + 
-// 		' WHERE userID = ' + uID + ' AND pantry.' + ' GROUP BY recipeID', function(err, results) {
-// 			if(err) throw err;
-// 		});
+	var b = connection.query('SELECT DISTINCT recipeID FROM recipes WHERE userID = ' + uID);
+	var a = connection.query('SELECT recipeID, COUNT(*) as t FROM (recipes NATURAL JOIN recipeAssignments) x LEFT OUTER JOIN pantry ON pantry.foodID = x.foodID' + 
+		' WHERE userID = ' + uID + ' AND pantry.foodID IS NULL' + ' GROUP BY recipeID', function(err, results) {
+			if(err) throw err;
+			else {
+				for(var j = 0; j < results.length; j++) {
+					if(results[j].t <= 2) {
+						r.push(results[j].recipeID);
+					}
+				}
+				res.send(r);
+			}
 
-// 	 for(var j = 0; j < b.length; j++) {
-// 	 	// var a = connection.query('SELECT * FROM (recipes NATURAL JOIN recipeAssignments) x LEFT OUTER JOIN pantry ON pantry.foodID = x.foodID' + 
-// 	 	// ' WHERE userID = ' + uID + ' AND recipeID = ' + b[j]);
-// 	 	connection.query('SELECT * FROM ' + r + ' WHERE recipeID = ' + b[j]);
+		});
 
-// 	 }
+	 // for(var j = 0; j < b.length; j++) {
+	 // 	// var a = connection.query('SELECT * FROM (recipes NATURAL JOIN recipeAssignments) x LEFT OUTER JOIN pantry ON pantry.foodID = x.foodID' + 
+	 // 	// ' WHERE userID = ' + uID + ' AND recipeID = ' + b[j]);
+	 // 	connection.query('SELECT * FROM ' + r + ' WHERE recipeID = ' + b[j]);
 
-// });
+	 // }
+
+});
