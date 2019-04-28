@@ -395,7 +395,7 @@ app.delete('user/:userid/groceryList/:item/:group/:br/:quant', (req, res/*, uID,
 });
 
 //insert a food into favorited food table
-app.post('/user:userid/pantry/favorite', (req, res/*, fID, uID, minVal*/) => {
+app.post('/user/:userid/pantry/favorite', (req, res/*, fID, uID, minVal*/) => {
 	var fID = req.body.fID;
 	var uID = req.body.uID;
 	var minVal = req.body.minVal;
