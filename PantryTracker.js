@@ -248,19 +248,20 @@ app.delete('/user/:userid/pantry/:item', (req, res/*, uID, fName*/) => {
 });
 
 /*******TRACK FOOD EPIC*******/
+
 //USER STORY 24
-app.get('user/:userid/pantry/categories', (req, res/*, uID*/) => {
+app.get('user/:userid/pantry', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
-	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' GROUP BY foodGroup', function(err, results) {
+	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID, function(err, results) {
 		if(err) throw err;
 		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
 });
 
 //USER STORY 24
-app.get('user/:userid/pantry', (req, res/*, uID*/) => {
+app.get('user/:userid/pantry/categories', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
-	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID, function(err, results) {
+	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' GROUP BY foodGroup', function(err, results) {
 		if(err) throw err;
 		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
@@ -404,6 +405,8 @@ app.post('/user/:userid/pantry/favorite', (req, res/*, fID, uID, minVal*/) => {
 	});
 });
 
+app.get('/user/:userid/favorites', (req, res) );
+
 
 /*******ENTER CUSTOM RECIPE*******/
 
@@ -418,11 +421,11 @@ app.get('user/:userid/recipes/:ingredient', (req, res/*, uID, ingred*/) => {
 });
 
 
-//search / select recipe based on the recipe name
+//search / select recipe based on the recipe ID
 app.get('user/:userid/recipes/:recipe', (req, res/*, uID, recipeName*/) => {
-	var recipeName = req.params.recipe;
+	var recipeID = req.params.recipe;
 	var uID = req.params.userid;
-	connection.query('SELECT * FROM recipe NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND recipeName = ' + recipeName, function(err, results) {
+	connection.query('SELECT * FROM recipes NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND recipeID = ' + recipeID, function(err, results) {
 		if(err) throw err;
 		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
@@ -525,3 +528,22 @@ app.delete('/user/:userid/recipes/:recipe/ingred/:ingred', (req, res) => {
 		} //end for loop
 	} //end outer if
 });
+
+// app.get('/user/:userid/recipes/pantry', (req, res) => {
+// 	var uID = req.params.userid;
+// 	var r = [];
+
+// 	var b = connection.query('SELECT DISTINCT recipeID FROM recipes WHERE userID = ' + uID);
+// 	var a = connection.query('SELECT * FROM (recipes NATURAL JOIN recipeAssignments) x LEFT OUTER JOIN pantry ON pantry.foodID = x.foodID' + 
+// 		' WHERE userID = ' + uID + ' AND pantry.' + ' GROUP BY recipeID', function(err, results) {
+// 			if(err) throw err;
+// 		});
+
+// 	 for(var j = 0; j < b.length; j++) {
+// 	 	// var a = connection.query('SELECT * FROM (recipes NATURAL JOIN recipeAssignments) x LEFT OUTER JOIN pantry ON pantry.foodID = x.foodID' + 
+// 	 	// ' WHERE userID = ' + uID + ' AND recipeID = ' + b[j]);
+// 	 	connection.query('SELECT * FROM ' + r + ' WHERE recipeID = ' + b[j]);
+
+// 	 }
+
+// });
