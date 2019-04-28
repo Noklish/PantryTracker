@@ -43,8 +43,7 @@ export class LoginCard extends React.Component{
             localStorage.removeItem("RememberEmail");
             localStorage.removeItem("RememberPassword");
         }
-        window.alert("You am loged in");
-        //this.repo.login(this.state.email, this.state.pass);
+        this.repo.login(this.state.email, this.state.pass);
         return true;
     }
 

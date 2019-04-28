@@ -29,8 +29,9 @@ export class repository {
     }
 
     login(userName, pass){
+        debugger;
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/login`, {User: userName, Pass: pass}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.get(`${this.url}/login`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
