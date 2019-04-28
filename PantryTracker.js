@@ -250,7 +250,7 @@ app.delete('/user/:userid/pantry/:item', (req, res/*, uID, fName*/) => {
 /*******TRACK FOOD EPIC*******/
 
 //USER STORY 24
-app.get('user/:userid/pantry', (req, res/*, uID*/) => {
+app.get('/user/:userid/pantry', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
 	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID, function(err, results) {
 		if(err) throw err;
@@ -259,7 +259,7 @@ app.get('user/:userid/pantry', (req, res/*, uID*/) => {
 });
 
 //USER STORY 24
-app.get('user/:userid/pantry/categories', (req, res/*, uID*/) => {
+app.get('/user/:userid/pantry/categories', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
 	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' GROUP BY foodGroup', function(err, results) {
 		if(err) throw err;
@@ -268,7 +268,7 @@ app.get('user/:userid/pantry/categories', (req, res/*, uID*/) => {
 });
 
 //USER STORY 30
-app.get('user/:userid/pantry/exp', (req, res/*, uID*/) => {
+app.get('/user/:userid/pantry/exp', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
 	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + 'ORDER BY (expirationDate) ASC', function(err, results) {
 		if(err) throw err;
@@ -282,7 +282,7 @@ app.get('user/:userid/pantry/exp', (req, res/*, uID*/) => {
 
 /*******RECIPE RECOMMENDATIONS EPIC*******/
 //USER STORY 11 - Viewing list of recipes for a user
-app.get('user/:userid/recipes', (req, res/*, uID*/) => {
+app.get('/user/:userid/recipes', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
 	connection.query('SELECT recipeName FROM recipes WHERE userID =' + uID, function(err, results) {
 		if(err) throw err;
@@ -301,7 +301,7 @@ app.get('/user/:userid/groceryList', (req, res/*, uID*/) => {
 });
 
 //USER STORY 18
-app.post('user/:userid/groceryList', (req, res/*, uID, fName, fGroup, br, quant*/) => {
+app.post('/user/:userid/groceryList', (req, res/*, uID, fName, fGroup, br, quant*/) => {
 	var uID = req.body.uID;
 	var fName = req.body.fName;
 	var fGroup = req.body.fGroup;
@@ -372,7 +372,7 @@ app.put('/user/:userid/pantry/item/quantity', (req, res/*, uID, fName, br, num*/
 
 //USER STORY 23 & 46
 //ADD EXPIRATION DATE HERE? (not in grocerylist)
-app.delete('user/:userid/groceryList/:item/:group/:br/:quant', (req, res/*, uID, fName, fGroup, br, quant*/) => { //Quantity either needs to be specified upon saying it was bought or have it defaulted to 1
+app.delete('/user/:userid/groceryList/:item/:group/:br/:quant', (req, res/*, uID, fName, fGroup, br, quant*/) => { //Quantity either needs to be specified upon saying it was bought or have it defaulted to 1
 	var uID = req.params.userid;
 	var fName = req.params.item;
 	var fGroup = req.params.group;
@@ -426,7 +426,7 @@ app.get('/user/:userid/recipes', (req, res) => {
 });
 
 //Searching for recipes based on an ingredient (name?)
-app.get('user/:userid/recipes/:ingredient', (req, res/*, uID, ingred*/) => {
+app.get('/user/:userid/recipes/:ingredient', (req, res/*, uID, ingred*/) => {
 	var user = req.params.userid;
 	var ingred = req.params.ingredient;
 	connection.query('SELECT * FROM recipes NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = ' + ingred, function(err, results) {
@@ -437,7 +437,7 @@ app.get('user/:userid/recipes/:ingredient', (req, res/*, uID, ingred*/) => {
 
 
 //search / select recipe based on the recipe ID
-app.get('user/:userid/recipes/:recipe', (req, res/*, uID, recipeName*/) => {
+app.get('/user/:userid/recipes/:recipe', (req, res/*, uID, recipeName*/) => {
 	var recipeID = req.params.recipe;
 	var uID = req.params.userid;
 	connection.query('SELECT * FROM recipes NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND recipeID = ' + recipeID, function(err, results) {
@@ -447,7 +447,7 @@ app.get('user/:userid/recipes/:recipe', (req, res/*, uID, recipeName*/) => {
 });
 
 //INSERT RECIPE INGREDIENTS FIGURE OUT HOW TO ARRAY THING
-app.post('user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ingredients, procedure*/) => {
+app.post('/user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ingredients, procedure*/) => {
 	var uID = req.body.uID;
 	var recipeName = req.body.recipeName;
 	var meal = req.body.meal;
@@ -484,7 +484,7 @@ app.post('user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ingr
 });
 
 //Update recipes as users edit them
-app.put('user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ingredients, procedure*/) => {
+app.put('/user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ingredients, procedure*/) => {
 	var uID = req.body.uID;
 	var rID = req.body.rID;
 	var recipeName = req.body.recipeName;
@@ -548,7 +548,9 @@ app.get('/user/:userid/recipes/pantry', (req, res) => {
 	var uID = req.params.userid;
 	var r = [];
 
-	var b = connection.query('SELECT DISTINCT recipeID FROM recipes WHERE userID = ' + uID);
+	var b = connection.query('SELECT DISTINCT recipeID FROM recipes WHERE userID = ' + uID, function(err, results) {
+		if(err) throw err;
+	});
 	var a = connection.query('SELECT recipeID, COUNT(*) as t FROM (recipes NATURAL JOIN recipeAssignments) x LEFT OUTER JOIN pantry ON pantry.foodID = x.foodID' + 
 		' WHERE userID = ' + uID + ' AND pantry.foodID IS NULL' + ' GROUP BY recipeID', function(err, results) {
 			if(err) throw err;
