@@ -53,8 +53,10 @@ export class PantryTable extends React.Component {
             return <td>{date}</td>;
         }
 
-        var splitDate = date.split("-");
+        var prettyDate = date.substring(0,10);
 
+        
+        var splitDate = prettyDate.split("-");
 
         if(year > splitDate[0]){
             return <td className="text-danger">Expired</td>;
@@ -77,7 +79,6 @@ export class PantryTable extends React.Component {
         }
 
         return <td>{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
-        
     }
 
     render (){
@@ -106,7 +107,7 @@ export class PantryTable extends React.Component {
                                     <td>{a.foodName}</td>
                                     <td>{a.brand}</td>
                                     <td>{a.foodGroup}</td>
-                                    <td>{a.expirationDate}</td>
+                                    {this.checkExpiration(a.expirationDate)}
                                     <td>{a.quantity}</td>
                                     <td><button type="button" className="btn btn-danger float-right">Delete</button></td>
                                  </tr>

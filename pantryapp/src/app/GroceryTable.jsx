@@ -24,7 +24,6 @@ export class GroceryTable extends React.Component {
         // }
 
         let userId = +this.props.match.params.userId;
-        debugger;
         if(userId){
             this.repo.addGroceryItem(userId, s.food, s.type, s.brand, s.quantity).then(state => {
                 this.setState(state => ({
