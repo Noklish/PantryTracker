@@ -4,7 +4,7 @@ import { repository }  from './../api/repository';
 import FoodItemModal from './modals/FoodItemModal';
 
 export class PantryTable extends React.Component {
-    repository = new repository();
+    repo = new repository();
 
     state = {
         food: '',
@@ -88,7 +88,7 @@ export class PantryTable extends React.Component {
                 {!this.state.tableList.length && <div className="alert alert-light" role="alert">
                     You do not have any food items in your <b>Pantry</b>. Click 'Add Item' to begin filling your <b>Pantry</b>.
                 </div>}
-                {!!this.state.tableList.length && <table className="table table-light table-striped">
+                {!!this.state.tableList.length && <table className="table table-light table-striped w-auto">
                     <thead>
                         <tr>
                             <th><button type="button" class="btn btn-link">Food Item <i className="fa fa-sort"></i></button></th>
@@ -129,7 +129,7 @@ export class PantryTable extends React.Component {
     componentDidMount(){
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repository.getPantry(userId).then(pantry => {
+            this.repo.getPantry(userId).then(pantry => {
                 this.setState(state => ({
                     tableList: pantry}));
             })

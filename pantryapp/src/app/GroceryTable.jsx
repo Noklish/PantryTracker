@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { FoodList } from './../models/foodList';
 import { repository }  from './../api/repository';
 import FavoriteModal from './modals/FavoriteModal';
+import ExpirationModal from './modals/ExpirationModal';
 
 export class GroceryTable extends React.Component {
-    repository = new repository();
+    repo = new repository();
 
     state = {
         food: '',
@@ -66,7 +67,7 @@ export class GroceryTable extends React.Component {
                                     <td>{a.brand}</td>
                                     <td>{a.foodGroup}</td>
                                     <td>{a.quantity}</td>
-                                    <td><button type="button" className="btn btn-secondary float-right" >Quick Add</button></td>
+                                    <td><button type="button" className="btn btn-secondary float-right" data-toggle="modal" data-target="#expiration">Quick Add</button>{ <ExpirationModal repo={this.repo}/>}</td>
                                  </tr>
                             )
                         }
@@ -79,6 +80,9 @@ export class GroceryTable extends React.Component {
                 {
                     <FavoriteModal repo={ this.repo } />
                 }
+                {!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1">
+                    Add all to your Pantry
+                </button>}
             </div>
             </>
         );
@@ -87,7 +91,7 @@ export class GroceryTable extends React.Component {
     componentDidMount(){
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repository.getGroceryList(userId).then(groceryList => {
+            this.repo.getGroceryList(userId).then(groceryList => {
                 this.setState(state => ({
                     tableList: groceryList}));
             })
