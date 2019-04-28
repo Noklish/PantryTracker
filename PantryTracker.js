@@ -284,7 +284,7 @@ app.get('/user/:userid/pantry/exp', (req, res/*, uID*/) => {
 //USER STORY 11 - Viewing list of recipes for a user
 app.get('/user/:userid/recipes', (req, res/*, uID*/) => {
 	var uID = req.params.userid;
-	connection.query('SELECT recipeName FROM recipes WHERE userID =' + uID, function(err, results) {
+	connection.query('SELECT recipeName FROM recipe WHERE userID =' + uID, function(err, results) {
 		if(err) throw err;
 		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
@@ -307,7 +307,7 @@ app.post('/user/:userid/groceryList', (req, res/*, uID, fName, fGroup, br, quant
 	var fGroup = req.body.fGroup;
 	var br = req.body.br;
 	var quant = req.body.quant;
-	var fid = connection.query('SELECT foodID FROM foodItem WHERE foodName = ' + fName + ' AND brand = ' + br + " AND foodGroup = " + fGroup + ')', function(err, results) {
+	var fid = connection.query('SELECT foodID FROM foodItem WHERE foodName = ' + fName + ' AND brand = ' + br + " AND foodGroup = " + fGroup, function(err, results) {
 		if(err) throw err;
 	});
 	if(typeof fid != undefined && fid) {
@@ -321,7 +321,7 @@ app.post('/user/:userid/groceryList', (req, res/*, uID, fName, fGroup, br, quant
 		connection.query('INSERT INTO foodItem (foodName, foodGroup, brand) VALUES(' + fName + ', ' + fGroup + ', ' + br + ', ' + quant + ')', function(err, results) {
 			if(err) throw err;
 		});
-		var newItem = connection.query('SELECT * FROM foodItem WHERE foodName = ' + fName + ' AND brand = ' + br + " AND foodGroup = " + fGroup + ')', function(err, results) {
+		var newItem = connection.query('SELECT * FROM foodItem WHERE foodName = ' + fName + ' AND brand = ' + br + " AND foodGroup = " + fGroup, function(err, results) {
 			if(err) throw err;
 		});
 		connection.query('INSERT INTO groceryList (userID, foodID, quantity) VALUES(' + uID + ', ' + newItem[0].foodID + ', ' + quant + ')', function(err, results) {
@@ -419,7 +419,7 @@ app.get('/user/:userid/favorites', (req, res) => {
 //select all recipes for a user
 app.get('/user/:userid/recipes', (req, res) => {
 	var uID = req.params.userid;
-	connection.query('SELECT * FROM recipes WHERE userID = ' + uID, function(err, results) {
+	connection.query('SELECT * FROM recipe WHERE userID = ' + uID, function(err, results) {
 		if(err) throw err;
 		else { res.send(jSON.parse(JSON.stringify(results))); }
 	});
@@ -429,7 +429,7 @@ app.get('/user/:userid/recipes', (req, res) => {
 app.get('/user/:userid/recipes/:ingredient', (req, res/*, uID, ingred*/) => {
 	var user = req.params.userid;
 	var ingred = req.params.ingredient;
-	connection.query('SELECT * FROM recipes NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = ' + ingred, function(err, results) {
+	connection.query('SELECT * FROM recipe NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = ' + ingred, function(err, results) {
 		if(err) throw err;
 		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
@@ -440,7 +440,7 @@ app.get('/user/:userid/recipes/:ingredient', (req, res/*, uID, ingred*/) => {
 app.get('/user/:userid/recipes/:recipe', (req, res/*, uID, recipeName*/) => {
 	var recipeID = req.params.recipe;
 	var uID = req.params.userid;
-	connection.query('SELECT * FROM recipes NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND recipeID = ' + recipeID, function(err, results) {
+	connection.query('SELECT * FROM recipe NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND recipeID = ' + recipeID, function(err, results) {
 		if(err) throw err;
 		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
@@ -453,10 +453,10 @@ app.post('/user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ing
 	var meal = req.body.meal;
 	var ingredients = req.body.ingredients;
 	var procedure = req.body.procedure;
-	connection.query('INSERT INTO recipes (userID, recipeName, meal, steps) VALUES(' + uID + ', ' + recipeName + ', ' + meal + ', ' + procedure + ')', function(err, results) {
+	connection.query('INSERT INTO recipe (userID, recipeName, meal, steps) VALUES(' + uID + ', ' + recipeName + ', ' + meal + ', ' + procedure + ')', function(err, results) {
 		if(err) throw err;
 	});
-	var recipe = connection.query('SELECT * FROM recipes WHERE userID = ' + uID + ' AND recipeName = ' + recipeName + ' AND procedure = ' + procedure, function(err, results) {
+	var recipe = connection.query('SELECT * FROM recipe WHERE userID = ' + uID + ' AND recipeName = ' + recipeName + ' AND procedure = ' + procedure, function(err, results) {
 		if(err) throw err;
 	});
 	for(int j = 0; j < ingredients.length; j++){
@@ -492,11 +492,11 @@ app.put('/user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ingr
 	var ingredients = req.body.ingredients;
 	var procedure = req.body.procedure;
 
-	var recipe = connection.query('SELECT * FROM recipes WHERE recipeID = ' + rID + ' AND userID = ' + uID, function(err, results) {
+	var recipe = connection.query('SELECT * FROM recipe WHERE recipeID = ' + rID + ' AND userID = ' + uID, function(err, results) {
 		if(err) throw err;
 	});
 
-	connection.query('UPDATE recipes SET recipeName = ' + recipeName + ', meal = ' + meal + ', steps = ' + procedure + ' WHERE userID = ' + uID + ' AND recipeID = ' + recipe[0].recipeID, function(err, results) {
+	connection.query('UPDATE recipe SET recipeName = ' + recipeName + ', meal = ' + meal + ', steps = ' + procedure + ' WHERE userID = ' + uID + ' AND recipeID = ' + recipe[0].recipeID, function(err, results) {
 		if(err) throw err;
 	});
 });
@@ -548,10 +548,10 @@ app.get('/user/:userid/recipes/pantry', (req, res) => {
 	var uID = req.params.userid;
 	var r = [];
 
-	var b = connection.query('SELECT DISTINCT recipeID FROM recipes WHERE userID = ' + uID, function(err, results) {
+	var b = connection.query('SELECT DISTINCT recipeID FROM recipe WHERE userID = ' + uID, function(err, results) {
 		if(err) throw err;
 	});
-	var a = connection.query('SELECT recipeID, COUNT(*) as t FROM (recipes NATURAL JOIN recipeAssignments) x LEFT OUTER JOIN pantry ON pantry.foodID = x.foodID' + 
+	var a = connection.query('SELECT recipeID, COUNT(*) as t FROM (recipe NATURAL JOIN recipeAssignments) x LEFT OUTER JOIN pantry ON pantry.foodID = x.foodID' + 
 		' WHERE userID = ' + uID + ' AND pantry.foodID IS NULL' + ' GROUP BY recipeID', function(err, results) {
 			if(err) throw err;
 			else {
