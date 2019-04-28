@@ -7,11 +7,6 @@ export class PantryTable extends React.Component {
     repo = new repository();
 
     state = {
-        food: '',
-        brand: '',
-        type: '',
-        date: '',
-        quantity: 1,
         tableList: []
     }
 
@@ -20,28 +15,17 @@ export class PantryTable extends React.Component {
 
     }
 
-    onAddItem() {
-        var sendBrand = 'N/A';
-        var sendType = 'N/A';
-        var sendDate = 'N/A';
-
-        if(this.state.brand != ''){
-            sendBrand = this.state.brand;
+    onAddItemBase(s) {
+        let userId = +this.props.match.params.userId;
+        if(userId){
+            this.repo.add(userId, s.food, s.type, s.brand, s.quantity, s.date, "This is a Description").then(state => {
+                this.setState(state => ({
+                    food: '',
+                    brand: '',
+                    type: '',
+                    quantity: 1}));
+            })
         }
-        if(this.state.type != ''){
-            sendType = this.state.type;
-        }
-        if(this.state.date != ''){
-            sendDate = this.state.date;
-        }
-
-        this.setState(state => ({
-            food: '',
-            brand: '',
-            type: '',
-            date: '',
-            quantity: 1
-          }));
     }
 
     checkExpiration(date) {
@@ -120,7 +104,7 @@ export class PantryTable extends React.Component {
                     Add Item to your Pantry
                 </button>
                 {
-                    <FoodItemModal repo={ this.repo } />
+                    <FoodItemModal repo={ this.repo }  onAddItemBase={e => this.onAddItemBase(e)}/>
                 }
             </div>
             </>

@@ -43,7 +43,7 @@ export class FavoritesTable extends React.Component {
                 {!this.state.tableList.length && <div className="alert alert-light" role="alert">
                     You do not have any food items in your <b>Favorites</b>. Click 'Add Item' to begin filling your <b>Favorites</b>.
                 </div>}
-                {!!this.state.tableList.length && <table className="table table-light table-striped w-auto">
+                {!!this.state.tableList.length && <table className="table table-light table-striped">
                     <thead>
                         <tr>
                             <th><button type="button" class="btn btn-link">Food Item <i className="fa fa-sort"></i></button></th>

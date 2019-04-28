@@ -41,6 +41,13 @@ export class repository {
             axios.get(`${this.url}/user/${userId}/pantry`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
+    
+    addPantryItem(userId, foodName, foodGroup, brand, quantity, date, description){
+        return new Promise((resolve, reject) => {
+            //debugger;
+            axios.post(`${this.url}/user/${userId}/pantry/add`, {uID: userId, fName: foodName, exDate: date, desc: description, fGroup: foodGroup, br: brand, quant: quantity}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
 
     // addFoodItem()
 
@@ -67,13 +74,13 @@ export class repository {
     //favorite stuff
     getFavorites(userId){
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/user/${userId}/favoriteFood`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.get(`${this.url}/user/${userId}/favorites`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
     
-    addFavorite(userId, foodId){
+    addFavorite(userId, foodId, quant){
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/user/${userId}/pantry/favorite`, {uID: userId, fID: foodId}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.post(`${this.url}/user/${userId}/favorites`, {uID: userId, fID: foodId, minVal: quant}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 

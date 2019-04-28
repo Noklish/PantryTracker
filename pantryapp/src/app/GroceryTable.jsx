@@ -69,7 +69,7 @@ export class GroceryTable extends React.Component {
                 </table>}
                 
                 <button type="button" className="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
-                    Add Item to your GroceryList
+                    Add Item to your Grocery List
                 </button>
                 {
                     <FavoriteModal onAddItemBase={e => this.onAddItemBase(e)} repo={ this.repo } />

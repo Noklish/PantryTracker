@@ -63,9 +63,9 @@ class RecipeTable extends React.Component {
     componentDidMount(){
       let userId = +this.props.match.params.userId;
       if(userId){
-          this.repo.getRecipes(userId).then(recipies => {
+          this.repo.getRecipes(userId).then(recipes => {
               this.setState(state => ({
-                  tableList: recipies}));
+                  tableList: recipes}));
           })
       }
   }

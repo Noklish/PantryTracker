@@ -16,6 +16,7 @@ class FoodItemModal extends React.Component {
     }
 
     onAddItem() {
+        // this.props.onAddItemBase()
         this.setState(state => ({
             food: '',
             brand: '',
