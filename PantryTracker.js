@@ -405,10 +405,25 @@ app.post('/user/:userid/pantry/favorite', (req, res/*, fID, uID, minVal*/) => {
 	});
 });
 
-app.get('/user/:userid/favorites', (req, res) );
+app.get('/user/:userid/favorites', (req, res) => {
+	var uID = req.params.userid;
+	connection.query('SELECT * FROM favoriteFood NATURAL JOIN foodItem WHERE userID = ' + uID, function(err, results) {
+		if(err) throw err;
+		else { res.send(JSON.parse(JSON.stringify(results))); }
+	});
+});
 
 
 /*******ENTER CUSTOM RECIPE*******/
+
+//select all recipes for a user
+app.get('/user/:userid/recipes', (req, res) => {
+	var uID = req.params.userid;
+	connection.query('SELECT * FROM recipes WHERE userID = ' + uID, function(err, results) {
+		if(err) throw err;
+		else { res.send(jSON.parse(JSON.stringify(results))); }
+	});
+});
 
 //Searching for recipes based on an ingredient (name?)
 app.get('user/:userid/recipes/:ingredient', (req, res/*, uID, ingred*/) => {
