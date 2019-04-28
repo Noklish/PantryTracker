@@ -1,0 +1,23 @@
+main {
+    background-size: cover;
+}
+
+
+
+#loginCard {
+    margin: auto;
+    margin-top: 10rem;
+    width: 20rem;
+}
+
+#logHead {
+    background-color: darkolivegreen;
+}
+
+#logHead > h4 {
+    color: white;
+}
+
+#stayLoggedIn {
+    max-width: 1rem;
+}

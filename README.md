@@ -1,23 +1,68 @@
-# PantryTracker
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-To start app, navigate to PantryTracker/pantryapp and run "npm start"
+## Available Scripts
 
-Werk flow
+In the project directory, you can run:
 
-ALWAYS '''git pull''' (from develop) and '''npm install''' before starting your work/branching
+### `npm start`
 
-Before working on your feature/view --> '''git checkout -b yourinitials-viewdescription'''
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Add and commit your changes as you work
+The page will reload if you make edits.<br>
+You will also see any lint errors in the console.
 
-'''git push origin''' (may have to set upstream) before stopping your work for the day
+### `npm test`
 
-Once your feature/view is complete, go to github.com and click create pull request or compare and pull requet for your branch into dev (base should be dev and the other branch should be yours). Add comments on what functionality you added. Create pull request.
+Launches the test runner in the interactive watch mode.<br>
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-----We will review and pull in code during each lab.---
+### `npm run build`
 
-THEN '''git checkout dev''' to go back to dev
+Builds the app for production to the `build` folder.<br>
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-'''git pull''' to pull down everyone's changes
+The build is minified and the filenames include the hashes.<br>
+Your app is ready to be deployed!
 
-'''git checkout -b branch-name''' to start working on your code again (see steps above)
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+
+### Analyzing the Bundle Size
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+
+### Making a Progressive Web App
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+
+### Advanced Configuration
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+
+### Deployment
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+
+### `npm run build` fails to minify
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
