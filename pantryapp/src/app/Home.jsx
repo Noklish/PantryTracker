@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Table from './Table';
 import { FoodList } from './../models/foodList';
-import RecipeTable from './RecipeTable'
-import UpdateProfile from './UpdateProfile'
+import RecipeTable from './RecipeTable';
+import UpdateProfile from './UpdateProfile';
+import { Link } from 'react-router-dom';
 import './Home.css';
+
 
 export class Home extends React.Component {
 
@@ -108,48 +110,51 @@ export class Home extends React.Component {
     render (){
         return (
             <>
-            <div className="bg">
-                <nav className="navbar navbar-expand-lg navbar-dark bg-success">
-                    <div className="nav collapse navbar-collapse ">
-                        <ul className="navbar-nav">
-                            <li className="nav-item active">
-                                <a className="nav-link text-light" onClick={this.onTogglePantry} href="#">Pantry</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link text-light" onClick={this.onToggleGrocery} href="#">Grocery</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link text-light" onClick={this.onToggleFavorites} href="#">Favorites</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link text-light" onClick={this.onToggleRecipies} href="#">Recipies</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <ul className="navbar-nav">
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    My Account
-                                </a>
-                                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a className="dropdown-item" onClick={this.onToggleUpdateProfile} href="#">Update Profile</a>
-                                    <a className="dropdown-item" href="#">Change Profile</a>
-                                    <div className="dropdown-divider"></div>
-                                    <a className="dropdown-item" href="#">Logout</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-                <main>
-                    {this.state.pantry && <Table title={this.state.titleText} onNewPantryItem={p => this.onNewPantryItem(p)} tableList={this.state.pantryList} quick={'Remove'}/>}
-                    {this.state.grocery && <Table title={this.state.titleText} onNewGroceryItem={g => this.onNewGroceryItem(g)} tableList={this.state.groceryList} quick={'Quick Add'}/>}
-                    {this.state.favorites && <Table title={this.state.titleText} onNewFavoritesItem={f => this.onNewFavoritesItem(f)} tableList={this.state.favoritesList} quick={'Quick Add'}/>}
-                    {this.state.recipies && <RecipeTable onNewRecipe={r => this.onNewRecipe(r)} recipies={this.state.recipeList} />}
-                    {this.state.updateAccount && <UpdateProfile />}
-                </main>
-            </div>
+            <nav className="navbar navbar-expand-lg navbar-dark bg-success">
+                <div className="nav collapse navbar-collapse ">
+                    <ul className="navbar-nav">
+                        <li className="nav-item active">
+                            {/* <a className="nav-link text-light" onClick={this.onTogglePantry} href="#">Pantry</a> */}
+                            <Link to='/pantry' className="nav-link text-light">Pantry</Link>
+                        </li>
+                        <li className="nav-item">
+                            {/* <a className="nav-link text-light" onClick={this.onToggleGrocery} href="#">Grocery</a> */}
+                            <Link to='/grocery-list' className="nav-link text-light">Grocery List</Link>
+                        </li>
+                        <li className="nav-item">
+                            {/* <a className="nav-link text-light" onClick={this.onToggleFavorites} href="#">Favorites</a> */}
+                            <Link to='/favorites' className="nav-link text-light">Favorites</Link>
+                        </li>
+                        <li className="nav-item">
+                            {/* <a className="nav-link text-light" onClick={this.onToggleRecipies} href="#">Recipies</a> */}
+                            <Link to='/recipies' className="nav-link text-light">Recipies</Link>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <ul className="navbar-nav">
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                My Account
+                            </a>
+                            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {/* <a className="dropdown-item" onClick={this.onToggleUpdateProfile} href="#">Update Profile</a> */}
+                                <Link to='/update-profile' className="dropdown-item">Update Profile</Link>
+                                <div className="dropdown-divider"></div>
+                                <a className="dropdown-item" href="#">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main>
+                {/* {this.state.pantry && <Table title={this.state.titleText} onNewPantryItem={p => this.onNewPantryItem(p)} tableList={this.state.pantryList} quick={'Remove'}/>}
+                {this.state.grocery && <Table title={this.state.titleText} onNewGroceryItem={g => this.onNewGroceryItem(g)} tableList={this.state.groceryList} quick={'Quick Add'}/>}
+                {this.state.favorites && <Table title={this.state.titleText} onNewFavoritesItem={f => this.onNewFavoritesItem(f)} tableList={this.state.favoritesList} quick={'Quick Add'}/>}
+                {this.state.recipies && <RecipeTable onNewRecipe={r => this.onNewRecipe(r)} recipies={this.state.recipeList} />}
+                {this.state.updateAccount && <UpdateProfile />} */}
+                <h1 className="text-white">Welcome back [User]! Please enjoy your expirence!</h1>
+            </main>
             </>
         );
     }

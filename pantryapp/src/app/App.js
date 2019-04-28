@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
-import Home from './Home';
-import { Login } from './Login';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import ROUTES from './../routes';
 
 class App extends Component {
-  state = {
-    loggedIn: false
-  }
   render() {
     return (
       <>
-      {!this.state.loggedIn && <Login></Login>}
-      {this.state.loggedIn && <Home></Home>}
+        <Router>
+          <Switch>
+            { ROUTES.map(x => <Route key={x.path} {...x}/>)}
+          </Switch>
+        </Router>
       </>
     );
   }
