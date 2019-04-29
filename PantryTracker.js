@@ -194,7 +194,7 @@ app.post('/user/:userid/pantry/add', (req, res/*, pID, uID, fName, fGroup, exDat
 	var food;
 	var id;
 
-	connection.query('SELECT * FROM FoodItem WHERE foodName = \"' + fName + '\" AND brand = \"' + br + '\" AND foodGroup = \"' + fGroup + '\"', function(err, results) {
+	connection.query('SELECT * FROM FoodItem WHERE foodName = \'' + fName + '\' AND brand = \'' + br + '\' AND foodGroup = \'' + fGroup + '\'', function(err, results) {
 		if(err) throw err;
 		else {
 			food = JSON.parse(JSON.stringify(results));
@@ -208,7 +208,7 @@ app.post('/user/:userid/pantry/add', (req, res/*, pID, uID, fName, fGroup, exDat
 		connection.query('INSERT INTO foodItem  (foodName, foodGroup, brand) VALUES(' + fName + ', ' + fGroup + ', ' + br + ', ' + ')', function(err, results) {
 			if(err) throw err;
 		});
-		connection.query('SELECT foodID FROM foodItem WHERE foodName = \"' + fName + '\" AND foodGroup = \"' + fGroup + '\" AND brand = \"' + br + '\"', function(err, results) {
+		connection.query('SELECT foodID FROM foodItem WHERE foodName = \'' + fName + '\' AND foodGroup = \'' + fGroup + '\' AND brand = \'' + br + '\'', function(err, results) {
 			if(err) throw err;
 			else {
 				id = JSON.parse(JSON.stringify(results));
@@ -249,7 +249,7 @@ app.put('/user/:userid/pantry/item/foodGroup', (req, res) => {
 	var fID = req.body.fID;
 	var newFG = req.body.newFG;
 
-	connection.query('UPDATE foodItem SET foodGroup = \"' + newFG + '\" WHERE foodID = ' + fID, function(err, results) {
+	connection.query('UPDATE foodItem SET foodGroup = \'' + newFG + '\' WHERE foodID = ' + fID, function(err, results) {
 		if(err) { res.send("Something went wrong updating that item"); }
 	});
 }); 
@@ -339,7 +339,7 @@ app.post('/user/:userid/groceryList', (req, res/*, uID, fName, fGroup, br, quant
 	var fid;
 	var newItem;
 
-	connection.query('SELECT foodID FROM foodItem WHERE foodName = \"' + fName + '\" AND brand = \"' + br + '\" AND foodGroup = \"' + fGroup + '\"', function(err, results) {
+	connection.query('SELECT foodID FROM foodItem WHERE foodName = \'' + fName + '\' AND brand = \'' + br + '\' AND foodGroup = \'' + fGroup + '\'', function(err, results) {
 		if(err) throw err;
 		else {
 			fid = JSON.parse(JSON.stringify(results));
@@ -356,7 +356,7 @@ app.post('/user/:userid/groceryList', (req, res/*, uID, fName, fGroup, br, quant
 		connection.query('INSERT INTO foodItem (foodName, foodGroup, brand) VALUES(' + fName + ', ' + fGroup + ', ' + br + ', ' + quant + ')', function(err, results) {
 			if(err) throw err;
 		});
-		connection.query('SELECT * FROM foodItem WHERE foodName = \"' + fName + '\" AND brand = \"' + br + '\" AND foodGroup = \"' + fGroup + '\"', function(err, results) {
+		connection.query('SELECT * FROM foodItem WHERE foodName = \'' + fName + '\' AND brand = \'' + br + '\' AND foodGroup = \'' + fGroup + '\'', function(err, results) {
 			if(err) throw err;
 			else {
 				newItem = JSON.parse(JSON.stringify(results));
@@ -381,7 +381,7 @@ app.put('/user/:userid/pantry/item/quantity', (req, res/*, uID, fName, br, num*/
 	var b;
 	var c;
 
-	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \"' + fName + '\" AND brand = \"' + br + '\"', function(err, results) {
+	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \'' + fName + '\' AND brand = \'' + br + '\'', function(err, results) {
 		if(err) throw err;
 		else {
 			item = JSON.parse(JSON.stringify(results));
@@ -390,19 +390,19 @@ app.put('/user/:userid/pantry/item/quantity', (req, res/*, uID, fName, br, num*/
 	connection.query('UPDATE pantry SET quantity = ' + num + ' WHERE userID = ' + uID + ' AND foodID = ' + item[0].foodID, function(err, results) {
 		if(err) throw err;
 	});  //42
-	connection.query('SELECT * FROM pantry NATURAL JOIN favoriteFood NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \"' + fName + '\" AND quantity = 0', function(err, results) {
+	connection.query('SELECT * FROM pantry NATURAL JOIN favoriteFood NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \'' + fName + '\' AND quantity = 0', function(err, results) {
 		if(err) throw err;
 		else {
 			a = JSON.parse(JSON.stringify(results));
 		}
 	}); //22
-	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \"' + fName + '\" AND quantity = 0', function(err, results) {
+	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \'' + fName + '\' AND quantity = 0', function(err, results) {
 		if(err) throw err;
 		else {
 			b = JSON.parse(JSON.stringify(results));
 		}
 	});
-	connection.query('SELECT * FROM pantry NATURAL JOIN favoriteFood NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \"' + fName + '\"', function(err, results) {
+	connection.query('SELECT * FROM pantry NATURAL JOIN favoriteFood NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \'' + fName + '\'', function(err, results) {
 		if(err) throw err;
 		else {
 			c = JSON.parse(JSON.stringify(results));
@@ -438,13 +438,13 @@ app.delete('/user/:userid/groceryList/:item/:group/:br/:quant', (req, res/*, uID
 	var item1;
 	var item2;
 
-	connection.query('SELECT * FROM groceryList NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \"' + fName + '\" AND brand = \"' + brand + '\"', function(err, results) {
+	connection.query('SELECT * FROM groceryList NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \'' + fName + '\' AND brand = \'' + brand + '\'', function(err, results) {
 		if(err) throw err;
 		else {
 			item1 = JSON.parse(JSON.stringify(results));
 		}
 	});
-	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \"' + fName + '\" AND brand = \"' + brand + '\"', function(err, results) {
+	connection.query('SELECT * FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \'' + fName + '\' AND brand = \'' + brand + '\'', function(err, results) {
 		if(err) throw err;
 		else {
 			item2 = JSON.parse(JSON.stringify(results));
@@ -494,7 +494,7 @@ app.get('/user/:userid/recipes', (req, res) => {
 app.get('/user/:userid/recipes/:ingredient', (req, res/*, uID, ingred*/) => {
 	var user = req.params.userid;
 	var ingred = req.params.ingredient;
-	connection.query('SELECT * FROM recipe NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \"' + ingred + '\"', function(err, results) {
+	connection.query('SELECT * FROM recipe NATURAL JOIN recipeAssignments NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND foodName = \'' + ingred + '\'', function(err, results) {
 		if(err) throw err;
 		else { res.send(JSON.parse(JSON.stringify(results))); }
 	});
@@ -526,14 +526,14 @@ app.post('/user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ing
 	connection.query('INSERT INTO recipe (userID, recipeName, meal, steps) VALUES(' + uID + ', ' + recipeName + ', ' + meal + ', ' + procedure + ')', function(err, results) {
 		if(err) throw err;
 	});
-	connection.query('SELECT * FROM recipe WHERE userID = ' + uID + ' AND recipeName = \"' + recipeName + '\" AND procedure = \"' + procedure + '\"', function(err, results) {
+	connection.query('SELECT * FROM recipe WHERE userID = ' + uID + ' AND recipeName = \'' + recipeName + '\' AND procedure = \'' + procedure + '\'', function(err, results) {
 		if(err) throw err;
 		else {
 			recipe = JSON.parse(JSON.stringify(results));
 		}
 	});
 	for(int j = 0; j < ingredients.length; j++){
-		connection.query('SELECT * FROM foodItem NATURAL JOIN pantry WHERE foodName = \"' + ingredients[j].name + '\" AND userID = ' + uID, function(err, results) {
+		connection.query('SELECT * FROM foodItem NATURAL JOIN pantry WHERE foodName = \'' + ingredients[j].name + '\' AND userID = ' + uID, function(err, results) {
 			if(err) throw err;
 			else {
 				fd = JSON.parse(JSON.stringify(results));
@@ -549,7 +549,7 @@ app.post('/user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ing
 			connection.query('INSERT INTO foodItem (foodName) VALUES(' + ingredients[j].name + ')', function(err, results) {
 				if(err) throw err;
 			});
-			connection.query('SELECT * FROM foodItem WHERE foodName = \"' + ingredients[j].name + '\"', function(err, results) {
+			connection.query('SELECT * FROM foodItem WHERE foodName = \'' + ingredients[j].name + '\'', function(err, results) {
 				if(err) throw err;
 				else {
 					newfd = JSON.parse(JSON.stringify(results));
@@ -592,7 +592,7 @@ app.put('/user/:userid/recipes/recipe/ingred', (req, res) => {
 	var fid;
 	var newF;
 
-	connection.query('SELECT * FROM foodItem WHERE foodName = \"' + fName.name + '\"', function(err, results) {
+	connection.query('SELECT * FROM foodItem WHERE foodName = \'' + fName.name + '\'', function(err, results) {
 		if(err) throw err;
 		else {
 			fid = JSON.parse(JSON.stringify(results));
@@ -622,7 +622,7 @@ app.delete('/user/:userid/recipes/:recipe/ingred/:ingred', (req, res) => {
 	var fname;
 	var bol;
 
-	connection.query('SELECT * FROM foodItem WHERE foodName = \"' + ingred + '\"', function(err, results) {
+	connection.query('SELECT * FROM foodItem WHERE foodName = \'' + ingred + '\'', function(err, results) {
 		if(err) throw err;
 		else {
 			fname = JSON.parse(JSON.stringify(results));
