@@ -16,14 +16,14 @@ class FoodItemModal extends React.Component {
     }
 
     onAddItem() {
-        // this.props.onAddItemBase()
-        this.setState(state => ({
+        this.props.onAddItemBase(this.state);
+        this.setState({
             food: '',
             brand: '',
             type: '',
             date: '',
             quantity: 1
-          }));
+      })
     }
 
     render() {
@@ -107,7 +107,7 @@ class FoodItemModal extends React.Component {
                     
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="addCourse" type="submit" className="btn btn-primary" onClick={e => this.onAddItem()} data-dismiss="modal">Submit</button>
+                        <button id="addCourse2" type="submit" className="btn btn-primary" data-dismiss="modal" onClick={e => this.onAddItem()}>Submit</button>
                     </div>
                 </div>
             </div>

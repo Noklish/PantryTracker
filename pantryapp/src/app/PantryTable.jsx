@@ -10,15 +10,24 @@ export class PantryTable extends React.Component {
         tableList: []
     }
 
-
-    onCheckModal(){
-
-    }
-
     onAddItemBase(s) {
+        debugger;
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.add(userId, s.food, s.type, s.brand, s.quantity, s.date, "This is a Description").then(state => {
+            this.repo.addPantryItem(userId, s.food, s.type, s.brand, s.quantity, s.date, "This is a Description").then(state => {
+                this.setState(state => ({
+                    food: '',
+                    brand: '',
+                    type: '',
+                    quantity: 1}));
+            })
+        }
+    }
+
+    onDeleteFood(id){
+        let userId = +this.props.match.params.userId;
+        if(userId){
+            this.repo.deletePantryItem(userId, id).then(state => {
                 this.setState(state => ({
                     food: '',
                     brand: '',
@@ -93,7 +102,7 @@ export class PantryTable extends React.Component {
                                     <td>{a.foodGroup}</td>
                                     {this.checkExpiration(a.expirationDate)}
                                     <td>{a.quantity}</td>
-                                    <td><button type="button" className="btn btn-danger float-right">Delete</button></td>
+                                    <td><button type="button" className="btn btn-danger float-right" onClick={e => this.onDeleteFood(a.foodID)}>Delete</button></td>
                                  </tr>
                             )
                         }

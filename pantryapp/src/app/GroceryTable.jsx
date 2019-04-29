@@ -35,6 +35,20 @@ export class GroceryTable extends React.Component {
         }
     }
 
+    onQuickAdd(id){
+        debugger;
+        let userId = +this.props.match.params.userId;
+        if(userId){
+            this.repo.deleteGroceryItem(userId, id).then(state => {
+                this.setState(state => ({
+                    food: '',
+                    brand: '',
+                    type: '',
+                    quantity: 1}));
+            })
+        }
+    }
+
     render (){
         return (
             <>
@@ -61,7 +75,7 @@ export class GroceryTable extends React.Component {
                                     <td>{a.brand}</td>
                                     <td>{a.foodGroup}</td>
                                     <td>{a.quantity}</td>
-                                    <td><button type="button" className="btn btn-secondary float-right" data-toggle="modal" data-target="#expiration">Quick Add</button>{ <ExpirationModal repo={this.repo}/>}</td>
+                                    <td><button type="button" className="btn btn-secondary float-right" data-toggle="modal" data-target="#expiration" onClick={e => this.onQuickAdd(a.foodID)}>Quick Add</button>{ <ExpirationModal repo={this.repo}/>}</td>
                                  </tr>
                             )
                         }

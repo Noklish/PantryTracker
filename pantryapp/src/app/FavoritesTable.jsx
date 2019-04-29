@@ -13,26 +13,41 @@ export class FavoritesTable extends React.Component {
 
     onAddItemBase(food, type, brand, quantity) {
         
-        if(food == ''){
-            return false;
-        }
-        if(brand == ''){
-            brand = 'N/A';
-        }
-        if(type == ''){
-            type = 'N/A';
-        }
+        // if(food == ''){
+        //     return false;
+        // }
+        // if(brand == ''){
+        //     brand = 'N/A';
+        // }
+        // if(type == ''){
+        //     type = 'N/A';
+        // }
 
+        // let userId = +this.props.match.params.userId;
+        // if(userId){
+        //     this.repo.addGroceryItem(userId, food, type, brand, quantity).then(state => {
+        //         this.setState(state => ({
+        //             food: '',
+        //             brand: '',
+        //             type: '',
+        //             quantity: 1}));
+        //     })
+        // }
+    }
+
+    onAddToGrocery(){
+        debugger;
         let userId = +this.props.match.params.userId;
-        if(userId){
-            this.repo.addGroceryItem(userId, food, type, brand, quantity).then(state => {
-                this.setState(state => ({
-                    food: '',
-                    brand: '',
-                    type: '',
-                    quantity: 1}));
-            })
-        }
+        this.state.tableList.map((a) => {
+            if(userId){
+                this.repo.addGroceryItem(userId, a.foodName, a.foodGroup, a.brand, a.minimumValue).then(state => {
+                    this.setState(state => ({
+                        food: '',
+                        brand: '',
+                        type: '',
+                        quantity: 1}));
+                })
+        }})
     }
 
     render (){
@@ -60,7 +75,7 @@ export class FavoritesTable extends React.Component {
                                     <td>{a.foodName}</td>
                                     <td>{a.brand}</td>
                                     <td>{a.foodGroup}</td>
-                                    <td>{a.quantity}</td>
+                                    <td>{a.minimumValue}</td>
                                     <td><button type="button" className="btn btn-secondary float-right" >Qucik Add</button></td>
                                  </tr>
                             )
@@ -74,7 +89,7 @@ export class FavoritesTable extends React.Component {
                 {
                     <FavoriteModal onAddItemBase={e => this.onAddItemBase(e)} repo={ this.repo } />
                 }
-                {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1">
+                {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1" onClick={this.onAddToGrocery()}>
                     Add all to your Grocery List
                 </button>}
             </div>

@@ -49,6 +49,12 @@ export class repository {
         });
     }
 
+    deletePantryItem(userId, foodId){
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/user/${userId}/pantry/${foodId}/deleteFood`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
+
     // addFoodItem()
 
     //Grocery stuff
@@ -68,6 +74,12 @@ export class repository {
     groceryToPantry(userId, foodName, foodGroup, brand, quantity){
         return new Promise((resolve, reject) => {
             axios.delete(`${this.url}/user/${userId}/groceryList/item`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
+
+    deleteGroceryItem(userId, foodId,){
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/user/${userId}/groceryList/${foodId}/deleteRow`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
