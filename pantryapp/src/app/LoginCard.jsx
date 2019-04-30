@@ -4,6 +4,7 @@ import { Card } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import './loginCard.css';
 import { repository } from '../api/repository';
+import AuthService from '../AuthService';
 
 export class LoginCard extends React.Component{
     repo = new repository();
@@ -15,6 +16,7 @@ export class LoginCard extends React.Component{
             pass: "",
             remember: false
         }
+        this.auth = new AuthService();
     }
 
     checkEmail(mail){
@@ -43,7 +45,7 @@ export class LoginCard extends React.Component{
             localStorage.removeItem("RememberEmail");
             localStorage.removeItem("RememberPassword");
         }
-        this.repo.login(this.state.email, this.state.pass);
+        this.repo.login(this.state.email, this.state.pass).then(res => {this.props.history.replace('/') }).catch(err => { alert(err); });
         return true;
     }
 
