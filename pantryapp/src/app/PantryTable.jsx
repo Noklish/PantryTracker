@@ -27,7 +27,11 @@ export class PantryTable extends React.Component {
     onDeleteFood(id){
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.deletePantryItem(userId, id)
+            this.repo.deletePantryItem(userId, id).then(() => {
+                this.setState(prevState => ({
+                    tableList: prevState.tableList.filter(x => x.foodID !== id)
+                }))
+            });
         }
     }
 

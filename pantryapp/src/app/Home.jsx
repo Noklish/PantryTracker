@@ -6,6 +6,7 @@ import UpdateProfile from './UpdateProfile';
 import { Link } from 'react-router-dom';
 
 import './Home.css';
+import withAuth from './withAuth';
 
 
 export class Home extends React.Component {
@@ -28,4 +29,4 @@ export class Home extends React.Component {
     }
 }
 
-export default Home;
+export default withAuth(Home);

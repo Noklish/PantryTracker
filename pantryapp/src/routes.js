@@ -5,6 +5,7 @@ import RecipeTable from './app/RecipeTable';
 import UpdateProfile from './app/UpdateProfile';
 import Home from './app/Home';
 import { Login } from './app/Login';
+import App from './app/App';
 
 export const ROUTES = [
     { path: '/login', component: Login},
@@ -13,8 +14,7 @@ export const ROUTES = [
     { path: '/user/:userId/favorites', component: FavoritesTable},
     { path: '/user/:userId/recipes', component: RecipeTable},
     { path: '/user/:userId/update-profile', component: UpdateProfile},
-    { path: '/user/:userId/home', component: Home},
-    // { path: '/', component: Home}
+    { path: '/user/:userId/home', component: Home}
 ];
 
 export default ROUTES;

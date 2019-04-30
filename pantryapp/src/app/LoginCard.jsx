@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import './loginCard.css';
 import { repository } from '../api/repository';
 import AuthService from '../AuthService';
+import { Redirect } from 'react-router-dom';
 
 export class LoginCard extends React.Component{
     repo = new repository();
@@ -45,8 +46,25 @@ export class LoginCard extends React.Component{
             localStorage.removeItem("RememberEmail");
             localStorage.removeItem("RememberPassword");
         }
-        this.repo.login(this.state.email, this.state.pass).then(res => {this.props.history.replace('/') }).catch(err => { alert(err); });
+        this.auth.login(this.state.email, this.state.pass).then(res => {
+            this.props.history.replace('/');
+        }).catch(err => { 
+            debugger;
+            if(err == 400){
+                return alert("Email or password incorrect. Please try again.");
+            }
+            else
+            {
+                return alert(err);
+            }
+        });
         return true;
+    }
+    
+    componentWillMount(){
+        if(this.auth.loggedIn()){
+            this.props.history.replace('/login');
+        }
     }
 
     render() {
@@ -73,7 +91,7 @@ export class LoginCard extends React.Component{
                     </Form.Group>
                     <hr/>
                     <Form.Group controlID="login.register">
-                        <Button block className="btn-primary" onClick={ this.props.toggleRegister }>Register</Button>
+                        <Button block className="btn-primary" onClick={ e => this.props.toggleRegister() }>Register</Button>
                     </Form.Group>
                 </Card.Body>
             </Card>

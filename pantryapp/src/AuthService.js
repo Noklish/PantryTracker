@@ -1,9 +1,20 @@
 import decode from 'jwt-decode';
+import { repository } from './api/repository';
 
-export default class AuthService {
-    // Initializing important variables
+export class AuthService {
+    constructor(){
+        this.repo = new repository();
+    }
+
+    login(username, pass){
+        return this.repo.login(username, pass).then(res => { 
+            this.setToken(res.token);
+            return Promise.resolve(res);
+        }).catch(err => { alert("Login failed") });
+    }
 
     loggedIn() {
+        debugger;
         // Checks if there is a saved token and it's still valid
         const token = this.getToken() // GEtting token from localstorage
         return !!token && !this.isTokenExpired(token) // handwaiving here
@@ -76,3 +87,5 @@ export default class AuthService {
         }
     }
 }
+
+export default AuthService;
