@@ -25,27 +25,14 @@ export class GroceryTable extends React.Component {
 
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.addGroceryItem(userId, s.food, s.type, s.brand, s.quantity).then(state => {
-                this.setState(state => ({
-                    food: '',
-                    brand: '',
-                    type: '',
-                    quantity: 1}));
-            })
+            this.repo.addGroceryItem(userId, s.food, s.type, s.brand, s.quantity)
         }
     }
 
     onQuickAdd(id){
-        debugger;
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.deleteGroceryItem(userId, id).then(state => {
-                this.setState(state => ({
-                    food: '',
-                    brand: '',
-                    type: '',
-                    quantity: 1}));
-            })
+            this.repo.deleteGroceryItem(userId, id)
         }
     }
 

@@ -40,13 +40,7 @@ export class FavoritesTable extends React.Component {
         let userId = +this.props.match.params.userId;
         this.state.tableList.map((a) => {
             if(userId){
-                this.repo.addGroceryItem(userId, a.foodName, a.foodGroup, a.brand, a.minimumValue).then(state => {
-                    this.setState(state => ({
-                        food: '',
-                        brand: '',
-                        type: '',
-                        quantity: 1}));
-                })
+                this.repo.addGroceryItem(userId, a.foodName, a.foodGroup, a.brand, a.minimumValue)
         }})
     }
 
@@ -89,7 +83,7 @@ export class FavoritesTable extends React.Component {
                 {
                     <FavoriteModal onAddItemBase={e => this.onAddItemBase(e)} repo={ this.repo } />
                 }
-                {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1" onClick={this.onAddToGrocery()}>
+                {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1" onClick={e => this.onAddToGrocery()}>
                     Add all to your Grocery List
                 </button>}
             </div>

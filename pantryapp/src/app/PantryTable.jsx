@@ -27,13 +27,7 @@ export class PantryTable extends React.Component {
     onDeleteFood(id){
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.deletePantryItem(userId, id).then(state => {
-                this.setState(state => ({
-                    food: '',
-                    brand: '',
-                    type: '',
-                    quantity: 1}));
-            })
+            this.repo.deletePantryItem(userId, id)
         }
     }
 
@@ -52,15 +46,18 @@ export class PantryTable extends React.Component {
         var splitDate = prettyDate.split("-");
 
         if(year > splitDate[0]){
-            return <td className="text-danger">Expired</td>;
+            // return <td className="text-danger">Expired</td>;
+            return <td className="text-warning">{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
         }
         
         if(year == splitDate[0] && month > splitDate[1]){
-            return <td className="text-danger">Expired</td>;
+            // return <td className="text-danger">Expired</td>;
+            return <td className="text-warning">{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
         }
 
         if(month == splitDate[1] && day > splitDate[2]){
-            return <td className="text-danger">Expired</td>;
+            // return <td className="text-danger">Expired</td>;
+            return <td className="text-warning">{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
         }
 
         if(month == splitDate[1] && (splitDate[2] - day) <= 5){
@@ -127,6 +124,7 @@ export class PantryTable extends React.Component {
                 this.setState(state => ({
                     tableList: pantry}));
             })
+            this.repo.addFavorite(userId, 15, 4)
         }
     }
 }

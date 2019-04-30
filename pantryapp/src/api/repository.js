@@ -55,6 +55,18 @@ export class repository {
         });
     }
 
+    sortByExpiration(userId){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/user/${userId}/pantry/exp`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
+
+    sortByCategories(userId){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/user/${userId}/pantry/categories`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
+
     // addFoodItem()
 
     //Grocery stuff
@@ -92,7 +104,7 @@ export class repository {
     
     addFavorite(userId, foodId, quant){
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/user/${userId}/favorites`, {uID: userId, fID: foodId, minVal: quant}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.post(`${this.url}/user/${userId}/pantry/favorite`, {uID: userId, fID: foodId, minVal: quant}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
@@ -101,7 +113,7 @@ export class repository {
     //recipe stuff
     getRecipes(userId){
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/user/${userId}/recipes`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.get(`${this.url}/user/${userId}/recipesSelect`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 

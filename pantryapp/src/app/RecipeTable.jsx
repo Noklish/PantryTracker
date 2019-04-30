@@ -6,7 +6,8 @@ class RecipeTable extends React.Component {
     repo = new repository();
 
     state = {
-      tableList: []
+      tableList: [],
+      ingredients: []
     }
     render() {
 
@@ -34,17 +35,17 @@ class RecipeTable extends React.Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {
+                            {/* {
                               r.ingredients.map((n, j) => 
                                 <tr key={j}>
                                   <td>{n.name}</td>
                                   <td>{n.quantity}</td>
                                 </tr>
                                 )
-                            }
+                            } */}
                           </tbody>
                         </table>
-                        <p>{r.description}</p>
+                        {/* <p>{r.description}</p> */}
                       </div>
                     </div>
                   </div>
@@ -61,9 +62,10 @@ class RecipeTable extends React.Component {
     }
 
     componentDidMount(){
+      debugger;
       let userId = +this.props.match.params.userId;
       if(userId){
-          this.repo.getRecipes(userId).then(recipes => {
+          this.repo.getRecipe(userId, 'recipeOne').then(recipes => {
               this.setState(state => ({
                   tableList: recipes}));
           })
