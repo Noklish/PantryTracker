@@ -15,6 +15,16 @@ export class RecipeModal extends React.Component {
         ingredients: []
     }
 
+    validate() {
+        let isValid = true;
+        if(this.state.name.length == 0) {
+            isValid = false;
+            alert("Must enter name of recipe.");
+        }
+        return isValid;
+    }
+
+
     onAddItem() {
         this.setState({
           name: '',
@@ -22,6 +32,10 @@ export class RecipeModal extends React.Component {
           description: '',
           ingredients: []
       })
+    }
+
+    onAddValidItem() {
+        this.validate() && this.onAddItem();
     }
 
     onNewIngredient(ingredient) {
@@ -92,7 +106,7 @@ export class RecipeModal extends React.Component {
                             </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button id="addRecipe" type="button" className="btn btn-primary" onClick={e => this.onAddItem()} data-dismiss="modal">Submit</button>
+                            <button id="addRecipe" type="button" className="btn btn-primary" onClick={e => this.onAddValidItem()} data-dismiss="modal">Submit</button>
                         </div>
                     </div>
                 </div>
