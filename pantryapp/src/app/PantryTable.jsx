@@ -124,7 +124,6 @@ export class PantryTable extends React.Component {
                 this.setState(state => ({
                     tableList: pantry}));
             })
-            this.repo.addFavorite(userId, 15, 4)
         }
     }
 }
