@@ -15,6 +15,20 @@ class FavoriteModal extends React.Component {
         quantity: 1
     }
 
+    validate() {
+        let isValid = true;
+        if(this.state.food.length == 0) {
+            isValid = false;
+            alert("Must enter food item.");
+        }
+        else if(this.state.brand.length == 0) {
+            isValid = false;
+            alert("Must enter brand.");
+        }
+        return isValid;
+    }
+
+
     onAddItem() {
         this.props.onAddItemBase(this.state);
         this.setState({
@@ -25,6 +39,11 @@ class FavoriteModal extends React.Component {
             quantity: 1
       })
     }
+
+    onAddValidItem() {
+        this.validate() && this.onAddItem();
+    }
+
 
     render() {
         return (
@@ -97,7 +116,7 @@ class FavoriteModal extends React.Component {
                     
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="addCourse" type="submit" className="btn btn-primary" onClick={e => this.onAddItem()} data-dismiss="modal">Submit</button>
+                        <button id="addCourse" type="submit" className="btn btn-primary" onClick={e => this.onAddValidItem()} data-dismiss="modal">Submit</button>
                     </div>
                 </div>
             </div>
