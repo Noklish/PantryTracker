@@ -8,6 +8,7 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.css';
 import 'jquery';
+import 'react-router-dom';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

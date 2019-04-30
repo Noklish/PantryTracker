@@ -3,8 +3,10 @@ import { Form } from 'react-bootstrap';
 import { Card } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import './loginCard.css';
+import { repository } from '../api/repository';
 
 export class LoginCard extends React.Component{
+    repo = new repository();
     constructor(props){
         super(props);
 
@@ -13,9 +15,6 @@ export class LoginCard extends React.Component{
             pass: "",
             remember: false
         }
-
-        this.checkEmail = this.checkEmail.bind(this);
-        this.validateLogin = this.validateLogin.bind(this);
     }
 
     checkEmail(mail){
@@ -24,23 +23,27 @@ export class LoginCard extends React.Component{
     }
 
     validateLogin(e){
-        debugger;
         if(!this.checkEmail(this.state.email))
         {
             window.alert("Invalid email address");
             e.preventDefault();
             return;
         }
-        if(!this.state.pass.value)
+        if(!this.state.pass)
         {
             window.alert("Please enter a valid password");
             e.preventDefault();
             return;
         }
         if(this.state.remember){
-            localStorage.setItem("LoginData",this.state);
+            localStorage.setItem("RememberEmail",this.state.email);
+            localStorage.setItem("RememberPassword",this.state.pass);
         }
-        window.alert("You am loged in");
+        else if(!this.state.remember && localStorage.getItem("RememberEmail")){ //wants to be forgotten
+            localStorage.removeItem("RememberEmail");
+            localStorage.removeItem("RememberPassword");
+        }
+        this.repo.login(this.state.email, this.state.pass);
         return true;
     }
 
@@ -60,7 +63,7 @@ export class LoginCard extends React.Component{
                             <Form.Control type="password" placeholder="password" value={ this.state.pass } onChange={ e => this.setState({ pass: e.target.value })}></Form.Control>
                         </Form.Group>
                         <Form.Group controlID="login.stay">
-                            <Form.Check type="checkbox" label="Remember me" value={this.state.remember} onChange={ e => this.setState(state => ({ remember: !state.remember })) }/>
+                            <Form.Check type="checkbox" label="Remember me" defaultChecked={this.state.remember} value={this.state.remember} onChange={ e => this.setState(state => ({ remember: !state.remember })) }/>
                         </Form.Group>
                     </Form>
                     <Form.Group controlID="login.submit">
@@ -74,6 +77,17 @@ export class LoginCard extends React.Component{
             </Card>
             </>
         )
+    }
+
+    componentDidMount(){
+        if(localStorage.getItem("RememberEmail")){
+            console.log(localStorage.getItem("RememberEmail"));
+            this.setState({
+                email: localStorage.getItem("RememberEmail"),
+                pass: localStorage.getItem("RememberPassword"),
+                remember: true
+            });
+        }
     }
 }
 
