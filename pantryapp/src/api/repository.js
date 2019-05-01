@@ -30,9 +30,9 @@ export class repository {
         });
     }
 
-    changePassword(userId, newPass){
+    changePassword(userId, username, oldPass, newPass){
         return new Promise((resolve, reject) => {
-            axios.put(`${this.url}/passUpdate/${userId}`, {user: userId, newPass: newPass}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.put(`${this.url}/${userId}/passUpdate`, {userName: username, pass: oldPass, newPass: newPass}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
