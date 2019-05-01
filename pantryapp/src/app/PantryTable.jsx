@@ -21,11 +21,16 @@ export class PantryTable extends React.Component {
         }
     }
 
-    onDeleteFood(id){
+    onDeleteFood(deleteId){
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.deletePantryItem(userId, id)
+            this.repo.deletePantryItem(userId, deleteId).then(() => {
+                this.setState(state => ({
+                    tableList: state.tableList.filter(x => x.foodID !== deleteId)
+                }))
+            })
         }
+
     }
 
     checkExpiration(date) {
@@ -41,20 +46,20 @@ export class PantryTable extends React.Component {
 
         
         var splitDate = prettyDate.split("-");
+        if(splitDate[0] == '0000' && splitDate[1] == '00' && splitDate[2] == '00'){
+            return <td>N/A</td>   
+        }
 
         if(year > splitDate[0]){
-            // return <td className="text-danger">Expired</td>;
-            return <td className="text-warning">{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
+            return <td className="text-danger">Expired</td>;
         }
         
         if(year == splitDate[0] && month > splitDate[1]){
-            // return <td className="text-danger">Expired</td>;
-            return <td className="text-warning">{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
+            return <td className="text-danger">Expired</td>;
         }
 
         if(month == splitDate[1] && day > splitDate[2]){
-            // return <td className="text-danger">Expired</td>;
-            return <td className="text-warning">{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
+            return <td className="text-danger">Expired</td>;
         }
 
         if(month == splitDate[1] && (splitDate[2] - day) <= 5){
@@ -143,7 +148,7 @@ export class PantryTable extends React.Component {
     componentDidMount(){
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.sortByExpiration(userId).then(pantry => {
+            this.repo.getPantry(userId).then(pantry => {
                 this.setState(state => ({
                     tableList: pantry,
                     id: userId}));

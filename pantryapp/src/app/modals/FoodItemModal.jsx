@@ -73,7 +73,7 @@ class FoodItemModal extends React.Component {
                                     <option value="N/A">Please select food type</option>
                                     <option value="grain">grain</option>
                                     <option value="fruit">fruit</option>
-                                    <option value="begetable">vegetable</option>
+                                    <option value="vegetable">vegetable</option>
                                     <option value="dairy">dairy</option>
                                     <option value="meat">meat</option>
                                     <option value="sauce">sauce</option>

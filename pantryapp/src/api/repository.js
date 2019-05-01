@@ -83,9 +83,9 @@ export class repository {
         });
     }
 
-    groceryToPantry(userId, foodName, foodGroup, brand, quantity){
+    groceryToPantry(userId, foodId, expiration, quantity){
         return new Promise((resolve, reject) => {
-            axios.delete(`${this.url}/user/${userId}/groceryList/item`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.post(`${this.url}/user/${userId}/grocery-to-pantry`, {uID: userId, fID: foodId, exDate: expiration, quant: quantity},this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
@@ -105,6 +105,12 @@ export class repository {
     addFavorite(userId, foodId, quant){
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/user/${userId}/pantry/favorite`, {uID: userId, fID: foodId, minVal: quant}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
+
+    favoritesToGrocery(userId, foodId, quantity){
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/user/${userId}/favorite-to-grocery`, {uID: userId, fID: foodId, quant: quantity},this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 

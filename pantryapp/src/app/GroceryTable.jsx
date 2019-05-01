@@ -42,7 +42,11 @@ export class GroceryTable extends React.Component {
     onQuickAdd(id){
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.deleteGroceryItem(userId, id)
+            this.repo.deleteGroceryItem(userId, id).then(() => {
+                this.setState(state => ({
+                    tableList: state.tableList.filter(x => x.foodID !== id)
+                }))
+            })
         }
     }
 
