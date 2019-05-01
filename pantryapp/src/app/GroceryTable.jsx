@@ -8,34 +8,19 @@ export class GroceryTable extends React.Component {
     repo = new repository();
 
     state = {
-        tableList: []
+        tableList: [],
+        id: ''
     }
 
     onAddItemBase(s) {
-        debugger;
-        // if(s.food == ''){
-        //     return false;
-        // }
-        // if(brand == ''){
-        //     brand = 'N/A';
-        // }
-        // if(type == ''){
-        //     type = 'N/A';
-        // }
-
         let id = +this.props.match.params.userId;
         if(id){
             this.repo.addGroceryItem(id, String(s.food).toLowerCase(), String(s.type).toLowerCase(), String(s.brand).toLowerCase(), s.quantity)
-            // .then(e => {
-            //     this.setState( state => ({ tableList: this.state.tableList.push({
-            //         foodId: e.foodId,
-            //         foodName: s.food, 
-            //         brand: s.brand, 
-            //         quantity: s.quantity, 
-            //         foodGroup: s.type,
-            //         userId: id})}));
-            // })
-            
+            this.repo.getGroceryList(id).then(groceryList => {
+                this.setState(state => ({
+                    tableList: groceryList,
+                    }));
+            })          
         }
     }
 
@@ -48,6 +33,22 @@ export class GroceryTable extends React.Component {
                 }))
             })
         }
+    }
+
+    onAddAllToPantry(){
+        let userId = +this.props.match.params.userId;
+        this.state.tableList.map((a) => {
+            if(userId){
+                this.repo.deleteGroceryItem(userId, a.foodID).then(() => {
+                    this.setState(state => ({
+                        tableList: state.tableList.filter(x => x.foodID !== a.id)
+                    }))
+                })
+                this.repo.groceryToPantry(userId, a.foodID, '', a.quantity)
+        }})
+        
+        
+
     }
 
     render (){
@@ -76,7 +77,7 @@ export class GroceryTable extends React.Component {
                                     <td>{a.brand}</td>
                                     <td>{a.foodGroup}</td>
                                     <td>{a.quantity}</td>
-                                    <td><button type="button" className="btn btn-secondary float-right" data-toggle="modal" data-target="#expiration" onClick={e => this.onQuickAdd(a.foodID)}>Quick Add</button>{ <ExpirationModal repo={this.repo}/>}</td>
+                                    <td><button type="button" className="btn btn-secondary float-right" data-toggle="modal" data-target="#expiration" onClick={e => this.onQuickAdd(a.foodID)}>Quick Add</button>{ <ExpirationModal repo={this.repo} userId={this.state.id} foodId={a.foodID} quant={a.quantity} />}</td>
                                  </tr>
                             )
                         }
@@ -102,7 +103,8 @@ export class GroceryTable extends React.Component {
         if(userId){
             this.repo.getGroceryList(userId).then(groceryList => {
                 this.setState(state => ({
-                    tableList: groceryList}));
+                    tableList: groceryList,
+                    id: userId}));
             })
         }
         //debugger;

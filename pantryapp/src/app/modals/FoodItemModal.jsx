@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FoodList } from '../../models/foodList';
 
+
 class FoodItemModal extends React.Component {
 
     constructor(props){

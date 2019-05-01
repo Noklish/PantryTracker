@@ -18,6 +18,10 @@ export class PantryTable extends React.Component {
         let userId = +this.props.match.params.userId;
         if(userId){
             this.repo.addPantryItem(userId, s.food, s.type, s.brand, s.quantity, s.date, "This is a Description")
+            this.repo.getPantry(userId).then(pantry => {
+                this.setState(state => ({
+                    tableList: pantry}));
+            })
         }
     }
 
@@ -154,18 +158,7 @@ export class PantryTable extends React.Component {
                     id: userId}));
             })
         }
-        // }if(userId){
-        //     this.repo.getFavorites(userId).then(favs => {
-        //         this.setState(state => ({
-        //             favoriteList: favs,
-        //             id: userId}));
-        //     })
-        // }
     }
-
-    // componentWillUpdate(){
-    
-    // }
 }
 
 export default PantryTable;
