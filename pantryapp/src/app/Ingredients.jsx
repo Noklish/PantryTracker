@@ -25,7 +25,6 @@ class Ingredients extends React.Component {
     }
 
     componentDidMount(){
-        debugger
         this.repo.getIngredients(this.props.recipeId).then(ingredients => {
               this.setState(state => ({
                   tableList: ingredients}));

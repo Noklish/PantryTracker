@@ -128,5 +128,11 @@ export class repository {
             axios.get(`${this.url}/user/recipes/${recipeId}/ingredients`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
+
+    addRecipe(userId, recipeName, meal, ingredients, steps){
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/user/${userId}/recipes/recipe`, {uID: userId, recipeName: recipeName, meal: meal, ingredients: ingredients, procedure: steps}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
 }
 

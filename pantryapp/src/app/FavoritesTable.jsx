@@ -43,7 +43,6 @@ export class FavoritesTable extends React.Component {
     }
 
     onAddAllToGrocery(){
-        debugger
         let userId = +this.props.match.params.userId;
         this.state.tableList.map((a) => {
             if(userId){
@@ -52,7 +51,6 @@ export class FavoritesTable extends React.Component {
     }
 
     render (){
-        debugger;
         return (
             <>
             <div id="home">
@@ -78,7 +76,7 @@ export class FavoritesTable extends React.Component {
                                     <td>{a.brand}</td>
                                     <td>{a.foodGroup}</td>
                                     <td>{a.minimumValue}</td>
-                                    <td><button type="button" onClick={this.onAddToGrocery(a.foodID, a.minimumValue)}className="btn btn-secondary float-right" >Qucik Add</button></td>
+                                    <td><button type="button" onClick={e => this.onAddToGrocery(a.foodID, a.minimumValue)}className="btn btn-secondary float-right" >Qucik Add</button></td>
                                  </tr>
                             )
                         }

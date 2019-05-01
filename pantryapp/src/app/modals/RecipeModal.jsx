@@ -2,8 +2,10 @@ import React from 'react';
 import { Ingredient } from '../../models/ingredient';
 import { Recipe } from '../../models/recipe';
 import IngredientList from '../ingredientList';
+import { repository }  from './../../api/repository';
 
 export class RecipeModal extends React.Component {
+    repo = new repository();
     constructor(props){
         super(props);
     }
@@ -16,6 +18,7 @@ export class RecipeModal extends React.Component {
     }
 
     onAddItem() {
+        this.repo.addRecipe(this.props.userId, this.state.name, this.state.meal, this.state.ingredients, this.state.description)
         this.setState({
           name: '',
           meal: '',

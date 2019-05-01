@@ -50,7 +50,7 @@ class RecipeTable extends React.Component {
             <button type="button" className="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
                 Add Item to your Recipe List
             </button>
-            <RecipeModal repo={ this.repo }/>
+            <RecipeModal userId={ this.state.id }/>
             </>
         )
     }
