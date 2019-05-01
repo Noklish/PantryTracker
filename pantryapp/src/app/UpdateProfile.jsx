@@ -80,7 +80,6 @@ export class UpdateProfile extends React.Component {
     }
 
     componentDidMount(){
-        debugger;
         this.setState({
             username: this.props.user.username
         });
