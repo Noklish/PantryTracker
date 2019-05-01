@@ -1,8 +1,13 @@
 
 .update {
-    padding-bottom: 1em;
+    padding: 1em;
+}
+
+.update-header {
+    padding-left: .5em;
 }
 
 .updateProfile {
     color: white;
+    padding: 1em;
 }
