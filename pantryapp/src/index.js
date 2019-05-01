@@ -14,10 +14,7 @@ import 'react-router-dom';
 
 ReactDOM.render(
     <Router>
-        <div>
-            <Route exact path='/' component={App} />
-            <Route exact path='/login' component={Login} />
-        </div>
+        <Route key='/' path='/*' component={App} />
     </Router>,
     document.getElementById('root')
 );

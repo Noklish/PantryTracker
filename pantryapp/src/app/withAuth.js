@@ -5,40 +5,57 @@ import { Redirect } from 'react-router-dom';
 export const withAuth = (AuthComponent) => {
     const auth = new AuthService();
     return class AuthWrapped extends Component {
-        debugger;
         constructor(props){
             super(props);
             this.state = {
                 user: '',
+                redirect: ''
             }
         }
 
         componentWillMount(){
+            debugger;
             if(!auth.loggedIn()){
-                this.props.history.replace('/login');
+                this.setState({ redirect: '/login' });
             }
             else {
                 try {
                     const profile = auth.getProfile();
                     this.setState({
-                        user: profile
+                        user: profile,
+                        redirect: `/user/${profile.id}/pantry`
                     });
                 } catch(err){
                     auth.logout();
-                    this.props.history.replace('/login');
+                    this.setState({ redirect: '/login' });
+                }
+            }
+        }
+
+        componentDidUpdate(prevProps){
+            if(this.props.user !== prevProps.user)
+            {
+                if(!auth.loggedIn()){
+                    alert("We're sorry, there was an error logging in. Please try again.");
+                    this.setState({ redirect: '/login' });
+                }
+                else {
+                    try {
+                        const profile = auth.getProfile();
+                        this.setState({
+                            user: profile,
+                            redirect: `/user/${profile.id}/pantry`
+                        });
+                    } catch(err){
+                        auth.logout();
+                        this.setState({ redirect: '/login' });
+                    }
                 }
             }
         }
 
         render(){
-            if(this.state.user){
-                return(
-                    <AuthComponent history = {this.props.history} user={this.state.user} /> 
-                )
-            }
-            else {
-                return null;
-            }
+            return <AuthComponent user={this.state.user} /> 
         }
     }
 }

@@ -7,6 +7,8 @@ import { Form } from 'react-bootstrap';
 import './registerCard.css';
 import { repository } from '../api/repository';
 
+import { Link } from 'react-router-dom';
+
 export class RegisterCard extends React.Component {
     repo = new repository();
     constructor(props) {
@@ -25,9 +27,8 @@ export class RegisterCard extends React.Component {
     }
 
     checkEmail(mail){
-        //var mailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        //return mailformat.test(mail);
-        return true;
+        var mailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return mailformat.test(mail);
     }
 
     validateRegister(e){
@@ -45,13 +46,12 @@ export class RegisterCard extends React.Component {
         }
         if(!this.state.userName)
         {
-            window.alert("Please enter your name");
+            window.alert("Please enter a username");
             e.preventDefault();
             return;
         }
-        window.alert("You're did it, your member now");
-        this.repo.addAccount(this.state.userName, this.state.pass, this.state.email);
-        return true;   
+        this.repo.addAccount(this.state.userName, this.state.pass, this.state.email).then(res => alert("You've been successfully registered! You may now log into your account.")).catch(err => alert(err)).then(e => this.props.toggleRegister());
+        return true;
     }
 
     handleChange(event) {
@@ -72,17 +72,17 @@ export class RegisterCard extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                     <Form>
-                        <Form.Group controlID="register.email">
+                        <Form.Group controlid="register.email">
                             <Form.Control type="email" placeholder="email" value={this.state.email} onChange={e => this.setState({ email: e.target.value })}></Form.Control>
                         </Form.Group>
-                        <Form.Group controlID="register.pass">
+                        <Form.Group controlid="register.pass">
                             <Form.Control type="password" placeholder="password" value={this.state.pass} onChange={e => this.setState({ pass: e.target.value })}></Form.Control>
                         </Form.Group>
-                        <Form.Group controlID="register.userName">
+                        <Form.Group controlid="register.userName">
                             <Form.Control type="text" placeholder="username" value={this.state.userName} onChange={e => this.setState({ userName: e.target.value })}></Form.Control>
                         </Form.Group>
-                        <Button variant="success" onClick={e => this.validateRegister(e)} className="regButton">Register</Button>
-                        <Button variant="secondary" data-dismiss="modal" onClick={this.props.toggleRegister} className="regButton">Cancel</Button>
+                        <Button onClick={e => this.validateRegister(e)} className="btn btn-success regButton">Register</Button>
+                        <Button variant="secondary" data-dismiss="modal" onClick={e => this.props.toggleRegister()} className="regButton">Cancel</Button>
                     </Form>
                     </Modal.Body>
                 </Modal.Dialog>

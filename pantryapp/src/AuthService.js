@@ -8,16 +8,16 @@ export class AuthService {
 
     login(username, pass){
         return this.repo.login(username, pass).then(res => { 
-            this.setToken(res.token);
+            debugger;
+            this.setToken(res.tk);
             return Promise.resolve(res);
         }).catch(err => { alert("Login failed") });
     }
 
     loggedIn() {
-        debugger;
         // Checks if there is a saved token and it's still valid
-        const token = this.getToken() // GEtting token from localstorage
-        return !!token && !this.isTokenExpired(token) // handwaiving here
+        const token = this.getToken();
+        return !!token && !this.isTokenExpired(token);
     }
 
     isTokenExpired(token) {

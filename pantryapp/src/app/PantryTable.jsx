@@ -15,12 +15,8 @@ export class PantryTable extends React.Component {
         let userId = +this.props.match.params.userId;
         if(userId){
             this.repo.addPantryItem(userId, s.food, s.type, s.brand, s.quantity, s.date, "This is a Description").then(state => {
-                this.setState(state => ({
-                    food: '',
-                    brand: '',
-                    type: '',
-                    quantity: 1}));
-            })
+                state.tableList.push(s);
+            });
         }
     }
 
@@ -76,6 +72,7 @@ export class PantryTable extends React.Component {
     }
 
     render (){
+        debugger;
         return (
             <>
             <div id="home">
