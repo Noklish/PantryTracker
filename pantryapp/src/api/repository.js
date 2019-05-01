@@ -39,7 +39,6 @@ export class repository {
     login(email, pass){
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/user/login`, {email: email, pass: pass}, this.config).then(resp => resolve(resp.data)).catch(resp => {
-                //debugger;
                 if(resp == "Error: Request failed with status code 400")
                 {
                     alert("Incorrect email or password.");
@@ -58,7 +57,6 @@ export class repository {
     
     addPantryItem(userId, foodName, foodGroup, brand, quantity, date, description){
         return new Promise((resolve, reject) => {
-            //debugger;
             axios.post(`${this.url}/user/${userId}/pantry/add`, {uID: userId, fName: foodName, exDate: date, desc: description, fGroup: foodGroup, br: brand, quant: quantity}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
