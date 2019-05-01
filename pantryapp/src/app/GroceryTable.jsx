@@ -92,7 +92,7 @@ export class GroceryTable extends React.Component {
                                     <td>{a.brand}</td>
                                     <td>{a.foodGroup}</td>
                                     <td>{a.quantity}</td>
-                                    <td><button type="button" className="btn btn-secondary float-right" data-toggle="modal" data-target="#expiration" onClick={e => this.onQuickAdd(a)}>Quick Add</button>{ 
+                                    <td><button type="button" className="btn btn-secondary float-right" data-toggle="modal" data-target="#expiration" onClick={e => this.onQuickAdd(a)} data-backdrop="static" data-keyboard="false">Quick Add</button>{ 
                                     <ExpirationModal addExpiration={e => this.addExpiration(e)} />
                                     }</td>
                                  </tr>

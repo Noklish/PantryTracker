@@ -27,7 +27,7 @@ class ExpirationModal extends React.Component {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="foodEntryLable">Add Expiration Date</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close"  onClick={e => this.onAddItem()}>
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -49,7 +49,7 @@ class ExpirationModal extends React.Component {
                     </div>
                     
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={e => this.onAddItem()}>Close</button>
                         <button id="addCourse" type="submit" className="btn btn-primary" onClick={e => this.onAddItem()} data-dismiss="modal">Submit</button>
                     </div>
                 </div>

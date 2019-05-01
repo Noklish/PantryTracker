@@ -56,7 +56,7 @@ export class FavoritesTable extends React.Component {
             <div id="home">
                 <h1 className="text-white">Favorites</h1>
                 {!this.state.tableList.length && <div className="alert alert-light" role="alert">
-                    You do not have any food items in your <b>Favorites</b>. Click 'Add Item' to begin filling your <b>Favorites</b>.
+                    You do not have any food items in your <b>Favorites</b>. Add some items form your pantry to begin filling your <b>Favorites</b>.
                 </div>}
                 {!!this.state.tableList.length && <table className="table table-light table-striped">
                     <thead>
@@ -82,13 +82,6 @@ export class FavoritesTable extends React.Component {
                         }
                     </tbody>
                 </table>}
-                
-                <button type="button" className="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
-                    Add Item to your Favorites
-                </button>
-                {
-                    <FavoriteModal onAddItemBase={e => this.onAddItemBase(e)} repo={ this.repo } />
-                }
                 {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1" onClick={e => this.onAddAllToGrocery()}>
                     Add all to your Grocery List
                 </button>}

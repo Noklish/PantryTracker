@@ -12,7 +12,7 @@ export class RecipeModal extends React.Component {
 
     state = {
         name: '',
-        meal: '',
+        meal: 'Breakfast',
         description: '',
         ingredients: []
     }
@@ -70,6 +70,7 @@ export class RecipeModal extends React.Component {
                                                 id="meal"
                                                 value={this.state.meal}
                                                 onChange={e => this.setState({ meal: e.target.value })}>
+                                            <option value="N/A" disabled>What is the type of meal?</option>    
                                             <option value="Breakfast">Breakfast</option>
                                             <option value="Lunch">Lunch</option>
                                             <option value="Dinner">Dinner</option>
