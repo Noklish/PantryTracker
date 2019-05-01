@@ -1,23 +1,36 @@
 import React from 'react'
 import './UpdateProfile.css';
+import { repository } from '../api/repository';
 
 export class UpdateProfile extends React.Component {
-
+    repo = new repository();
     state = {
         username: '',
-        password: ''
+        oldPass: '',
+        newPass: '',
+        confirmPass: ''
     }    
 
-    updateProfile() {
-
+    onUpdateProfile() {
+        if(this.state.newPass === this.state.confirmPass){
+            this.repo.changePassword(this.props.user.id, this.state.username, this.state.oldPass, this.state.newPass).then(resp => alert("Password has been reset")).then(resp => this.setState({
+                username: '',
+                oldPass: '',
+                newPass: '',
+                confirmPass: ''
+            })).catch(err => alert(err));
+        }
+        else {
+            alert("Passwords don't match");
+        }
     }
 
     render() {
         return (
             <div className="updateProfile">
-                <h1>Update Profile</h1>
+                <h1 className="text-white text-center">Update Profile</h1>
                 <div className="update">
-                    <label htmlFor="firstName">First Name</label>
+                    <label htmlFor="username" className="text-white">Username</label>
                     <input  type="text"
                         name="username" 
                         id="username"
@@ -28,14 +41,34 @@ export class UpdateProfile extends React.Component {
                         required/>
                 </div>
                 <div className="update">
-                    <label htmlFor="password">Password</label>
-                    <input  type="text"
+                    <label htmlFor="passwordO" className="text-white">Password</label>
+                    <input  type="password"
+                        name="passwordO" 
+                        id="passwordO"
+                        className="form-control"
+                        placeholder="Please enter old password"
+                        value={this.state.oldPass}
+                        onChange={e => this.setState({ oldPass: e.target.value })} 
+                        required/>
+                </div>
+                <div className="update">
+                    <input  type="password"
                         name="password" 
                         id="password"
                         className="form-control"
-                        placeholder="Please Enter New Password"
-                        value={this.state.password}
-                        onChange={e => this.setState({ password: e.target.value })} 
+                        placeholder="Please enter new password"
+                        value={this.state.newPass}
+                        onChange={e => this.setState({ newPass: e.target.value })} 
+                        required/>
+                </div>
+                <div className="update">
+                    <input  type="password"
+                        name="password2" 
+                        id="password2"
+                        className="form-control"
+                        placeholder="Please confirm new password"
+                        value={this.state.confirmPass}
+                        onChange={e => this.setState({ confirmPass: e.target.value })} 
                         required/>
                 </div>
                 <div className="modal-footer">
