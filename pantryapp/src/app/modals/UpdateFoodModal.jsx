@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FoodList } from '../../models/foodList';
 import { repository } from '../../api/repository';
 
-class UpdateFoodModal extends React.Component {
+export class UpdateFoodModal extends React.Component {
     repo = new repository();
     constructor(props){
         super(props);
@@ -10,25 +10,35 @@ class UpdateFoodModal extends React.Component {
 
     state = {
         food: '',
+        name: '',
         brand: '',
         type: '',
         date: '',
-        quantity: 1,
+        quantity: 1
     }
 
-    onAddItem() {
-        debugger;
-        this.repo.addFavorite(this.props.userId, this.props.foodId, 4)
+    onSubmit(){
+        this.props.repo.editPantry(this.props.user.id, this.state.food, this.state.type, this.state.brand, this.state.quantity, this.state.date).then(() => this.setState({
+            food: '',
+            name: '',
+            brand: '',
+            type: '',
+            date: '',
+            quantity: ''
+        })).catch(err => alert(err));
     }
 
-    checkFavorites(){
-        var isFav = false;
-        for(var i = 0; i < this.props.favorites.length; i++){
-            if(this.props.favorites[i].foodID == this.props.foodId){
-                isFav = true;
-            }
+    componentDidUpdate(prevProps){
+        if(this.props.updateItem.foodID !== prevProps.updateItem.foodID){
+            this.setState({
+                food: this.props.updateItem.foodID,
+                name: this.props.updateItem.foodName,
+                brand: this.props.updateItem.brand,
+                type: this.props.updateItem.foodGroup,
+                date: this.props.updateItem.expirationDate,
+                quantity: this.props.updateItem.quantity
+            });
         }
-        return isFav
     }
 
     render() {
@@ -38,89 +48,70 @@ class UpdateFoodModal extends React.Component {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="foodEntryLable">Add Food Item</h5>
+                        <h5 className="modal-title" id="foodEntryLable">{`Update ${this.state.name}`}</h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div className="modal-body">
                         <form name="foodEntryForm" id="foodEntryForm">
-                            
-                            {/* <div className="form-group">
-                                <label htmlFor="foodItem">Food Item</label>
+                            <div className="form-group">
+                                <label htmlFor="uBrand">Update brand</label>
                                 <input  type="text"
-                                        name="foodItem"                                             
-                                        id="foodItem"
+                                        name="uBrand"                                             
+                                        id="uBrand"
                                         className="form-control"
-                                        placeholder="Please Enter Food Item"
-                                        value={this.state.food}
-                                        onChange={e => this.setState({ food: e.target.value })} 
-                                        required/>
-                                <div className="invalid-feedback">Please enter food item</div>
-                            </div>
-                                    
-                            <div className="form-group">
-                                <label htmlFor="foodBrand">Food Brand</label>
-                                        <input  type="text"
-                                        name="foodBrand"
-                                        id="foodBrand"
-                                        className="form-control"
-                                        placeholder="Please Enter the Brand of the Food"
+                                        placeholder="Please enter new brand name"
                                         value={this.state.brand}
-                                        onChange={e => this.setState({ brand: e.target.value })} />
+                                        onChange={e => this.setState({ brand: e.target.value })} 
+                                />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="foodType">Food Type</label>
+                                <label htmlFor="uType">Update food group</label>
                                 <select className= "form-control"
-                                        name="foodType"
-                                        id="foodType"
+                                        name="uType"
+                                        id="uType"
                                         value={this.state.type}
                                         onChange={e => this.setState({ type: e.target.value })} >
                                     <option value="N/A">Please select food type</option>
-                                    <option value="Grains">Grains</option>
-                                    <option value="Fruits">Fruits</option>
-                                    <option value="Vegetables">Vegetables</option>
-                                    <option value="Dairy">Dairy</option>
-                                    <option value="Meat">Meat</option>
-                                    <option value="Beverage">Beverage</option>
-                                    <option value="Other">Other</option>
+                                    <option value="grain">grain</option>
+                                    <option value="fruit">fruit</option>
+                                    <option value="begetable">vegetable</option>
+                                    <option value="dairy">dairy</option>
+                                    <option value="meat">meat</option>
+                                    <option value="sauce">sauce</option>
+                                    <option value="beverage">beverage</option>
+                                    <option value="other">other</option>
                                 </select>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="expirationDate">Expiration Date</label>
-                                <input  type="date" 
-                                        name="expirationDate"
-                                        id="expirationDate"
+                                <label htmlFor="uDate">Update expiration date</label>
+                                <input  type="date"
+                                        name="uDate"                                             
+                                        id="uDate"
                                         className="form-control"
-                                        placeholder="Please Enter Expiration Date"
+                                        placeholder="Please enter new expiration date"
                                         value={this.state.date}
-                                        onChange={e => this.setState({ date: e.target.value })} />
+                                        onChange={e => this.setState({ date: e.target.value })} 
+                                />
                             </div>
-
                             <div className="form-group">
-                                <label htmlFor="quantity">Quantity</label>
-                                <input  type="number"
-                                        name="quantity" 
-                                        id="quantity" 
-                                        className="form-control" 
-                                        min="1"
-                                        placeholder="Please enter the Quantity of Food"
+                                <label htmlFor="uQuant">Update quantity</label>
+                                <input  type="text"
+                                        name="uQuant"                                             
+                                        id="uQuant"
+                                        className="form-control"
+                                        placeholder="Please enter new quantity"
                                         value={this.state.quantity}
-                                        onChange={e => this.setState({ quantity: e.target.value })} />
-                            </div> */}
-                            
-                            <div>
-                                
-                            {!this.checkFavorites() && <input type="checkbox" name="favorite" value="check" />}
-                            {!!this.checkFavorites() && <input type="checkbox" name="favorite" value="check" checked disabled/>}
-
+                                        onChange={e => this.setState({ quantity: e.target.value })} 
+                                />
                             </div>
                         </form>
                     </div>
                     
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="addCourse2" type="submit" className="btn btn-primary" data-dismiss="modal" onClick={e => this.onAddItem()}>Update</button>
+                        <button id="addCourse2" type="submit" className="btn btn-primary" data-dismiss="modal" onClick={e => this.onSubmit()}>Update</button>
                     </div>
                 </div>
             </div>

@@ -3,15 +3,17 @@ import { FoodList } from './../models/foodList';
 import { repository }  from './../api/repository';
 import FoodItemModal from './modals/FoodItemModal';
 import { Link } from 'react-router-dom';
-import UpdateFoodModal from './modals/UpdateFoodModal';
+import { UpdateFoodModal } from './modals/UpdateFoodModal';
+import { AddToFavModal } from './modals/addToFavModal';
 
 export class PantryTable extends React.Component {
     repo = new repository();
 
     state = {
         tableList: [],
-        favoriteList: [],
-        id: ''
+        id: '',
+        favId: '',
+        updateItem: ''
     }
 
     onAddItemBase(s) {
@@ -25,16 +27,17 @@ export class PantryTable extends React.Component {
         }
     }
 
-    onDeleteFood(deleteId){
+    onDeleteFood(deleteId, deleteName){
         let userId = +this.props.match.params.userId;
-        if(userId){
-            this.repo.deletePantryItem(userId, deleteId).then(() => {
-                this.setState(state => ({
-                    tableList: state.tableList.filter(x => x.foodID !== deleteId)
-                }))
-            })
+        if(window.confirm(`Are you sure you want to delete ${deleteName}?`)){
+            if(userId){
+                this.repo.deletePantryItem(userId, deleteId).then(() => {
+                    this.setState(state => ({
+                        tableList: state.tableList.filter(x => x.foodID !== deleteId)
+                    }))
+                })
+            }
         }
-
     }
 
     checkExpiration(date) {
@@ -99,6 +102,18 @@ export class PantryTable extends React.Component {
         }
     }
 
+    onAddtoFavorites(foodId){
+        this.setState({
+            favId: foodId
+        });
+    }
+
+    onUpdateItem(food){
+        this.setState({
+            updateItem: food
+        });
+    }
+
     render (){
         debugger;
         return (
@@ -116,7 +131,7 @@ export class PantryTable extends React.Component {
                             <th><button className="btn btn-link" onClick={e => this.sortCategory()}>Food Type <i className="fa fa-sort"></i></button></th>
                             <th><button className="btn btn-link" onClick={e => this.sortExpiration()}>Expiration Date <i className="fa fa-sort"></i></button></th>
                             <th>Quantity</th>
-                            <th className="text-right">Delete</th>
+                            <th className="text-right">Manage</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -132,7 +147,11 @@ export class PantryTable extends React.Component {
                                     <td>{a.foodGroup}</td>
                                     {this.checkExpiration(a.expirationDate)}
                                     <td>{a.quantity}</td>
-                                    <td><button type="button" className="btn btn-danger float-right" onClick={e => this.onDeleteFood(a.foodID)}>Delete</button></td>
+                                    <td>
+                                        <button type="button" className="btn btn-danger btn-md float-right" onClick={e => this.onDeleteFood(a.foodID, a.foodName)}><i className="fa fa-trash"></i></button>
+                                        <button type="button" className="btn btn-warning btm-sm float-right" onClick={e => this.onAddtoFavorites(a.foodID)} data-toggle="modal" data-target="#toFav"><i className="fa fa-star"></i></button>
+                                        <button type="button" className="btn btn-secondary btm-sm float-right" onClick={e => this.onUpdateItem(a)} data-toggle="modal" data-target="#update"><i className="fa fa-edit"></i></button>
+                                    </td>
                                  </tr>
                             )
                         }
@@ -145,6 +164,10 @@ export class PantryTable extends React.Component {
                 {
                     <FoodItemModal repo={ this.repo }  onAddItemBase={e => this.onAddItemBase(e)}/>
                 }
+                {
+                    <AddToFavModal repo={ this.repo } user={this.props.user} id={this.state.favId}/>
+                }
+                <UpdateFoodModal repo={ this.repo } user={this.props.user} updateItem={this.state.updateItem} updateItem={this.state.updateItem}/>
             </div>
             </>
         );
