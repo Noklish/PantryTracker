@@ -10,14 +10,39 @@ class ExpirationModal extends React.Component {
     }
 
     state = {
+        food: '',
+        name: '',
+        brand: '',
+        type: '',
+        quantity: '',
         expire: '',
     }
 
     onAddItem() {
-        this.props.addExpiration(this.state.expire);
-        this.setState({
-            expire: ''
-      });
+        this.props.removeFromTable(this.state.food)
+        this.props.repo.groceryToPantry(this.props.user, this.state.food, this.state.expiration, this.state.quantity).then(() => {
+            this.setState(state => ({
+                food: '',
+                name: '',
+                brand: '',
+                type: '',
+                quantity: '',
+                expire: ''
+            }))
+        })
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.quickAddItem.foodID !== prevProps.quickAddItem.foodID){
+            this.setState({
+                food: this.props.quickAddItem.foodID,
+                name: this.props.quickAddItem.foodName,
+                brand: this.props.quickAddItem.brand,
+                type: this.props.quickAddItem.foodGroup,
+                quantity: this.props.quickAddItem.quantity,
+                expire: ''
+            })
+        }
     }
 
     render() {
@@ -27,7 +52,7 @@ class ExpirationModal extends React.Component {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="foodEntryLable">Add Expiration Date</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close"  onClick={e => this.onAddItem()}>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" >
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -49,7 +74,7 @@ class ExpirationModal extends React.Component {
                     </div>
                     
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={e => this.onAddItem()}>Close</button>
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button id="addCourse" type="submit" className="btn btn-primary" onClick={e => this.onAddItem()} data-dismiss="modal">Submit</button>
                     </div>
                 </div>
