@@ -27,6 +27,19 @@ export class RecipeModal extends React.Component {
       })
     }
 
+    onAddValidItem() {
+        this.validate() && this.onAddItem();
+    }
+
+    validate() {
+        let isValid = true;
+        if(this.state.name.length == 0) {
+            isValid = false;
+            alert("Must enter name of recipe.");
+        }
+        return isValid;
+    }
+
     onNewIngredient(ingredient) {
         this.setState(state => {
             state.ingredients.push(ingredient);
@@ -95,7 +108,7 @@ export class RecipeModal extends React.Component {
                             </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button id="addRecipe" type="button" className="btn btn-primary" onClick={e => this.onAddItem()} data-dismiss="modal">Submit</button>
+                            <button id="addRecipe" type="button" className="btn btn-primary" onClick={e => this.onAddValidItem()}>Submit</button>
                         </div>
                     </div>
                 </div>
