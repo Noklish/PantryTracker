@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import { RecipeModal } from './modals/RecipeModal';
 import { repository } from './../api/repository';
+import Ingredients from './Ingredients';
 
 class RecipeTable extends React.Component {
     repo = new repository();
 
     state = {
       tableList: [],
-      ingredients: []
+      id: ''
     }
-    render() {
 
+    render() {
         return (
             <>
-            <h1 className="text-white">Recipies</h1>
+            <h1 className="text-white">Recipes</h1>
             {!this.state.tableList.length && <div className="alert alert-light" role="alert">
                     You do not have any <b>Recipies</b>. Click 'Add Item' to begin filling your <b>Recipies List</b>.
                 </div>}
@@ -22,7 +23,7 @@ class RecipeTable extends React.Component {
                 this.state.tableList.map((r,i) => 
                   <div className="card" key={i}>
                     <div className="card-header">
-                      <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"#accordion-" + i} aria-expanded="true" aria-controls={"accordion-" + i}>{r.name}</button>
+                      <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"#accordion-" + i} aria-expanded="true" aria-controls={"accordion-" + i}>{r.recipeName}</button>
                       <span className="float-right">{r.meal}</span>
                     </div>
                     <div id={"accordion-" + i} className="collapse" aria-labelledby={"heading-" + i} data-parent="#recipeAccordion">
@@ -35,17 +36,10 @@ class RecipeTable extends React.Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {/* {
-                              r.ingredients.map((n, j) => 
-                                <tr key={j}>
-                                  <td>{n.name}</td>
-                                  <td>{n.quantity}</td>
-                                </tr>
-                                )
-                            } */}
+                              <Ingredients recipeId={r.recipeID}/>
                           </tbody>
                         </table>
-                        {/* <p>{r.description}</p> */}
+                        <p>{r.steps}</p>
                       </div>
                     </div>
                   </div>
@@ -56,18 +50,18 @@ class RecipeTable extends React.Component {
             <button type="button" className="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#foodEntry">
                 Add Item to your Recipe List
             </button>
-            <RecipeModal repo={ this.repo }/>
+            <RecipeModal userId={ this.state.id }/>
             </>
         )
     }
 
     componentDidMount(){
-      debugger;
       let userId = +this.props.match.params.userId;
       if(userId){
-          this.repo.getRecipe(userId, 'recipeOne').then(recipes => {
+          this.repo.getRecipes(userId).then(recipes => {
               this.setState(state => ({
-                  tableList: recipes}));
+                  tableList: recipes,
+                  id: userId}));
           })
       }
   }

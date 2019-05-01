@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import {FoodList} from '../../models/foodList'
+import {FoodList} from '../../models/foodList';
+import { repository }  from './../../api/repository';
 
 class ExpirationModal extends React.Component {
 
+    repo = new repository();
     constructor(props){
         super(props);
     }
@@ -12,9 +14,12 @@ class ExpirationModal extends React.Component {
     }
 
     onAddItem() {
-        this.setState({
-            expire: '',
-      })
+        debugger
+        this.repo.groceryToPantry(this.props.userId, this.props.foodId, this.state.expire, this.props.quant).then(() => {
+            this.setState(state => ({
+                expire: ''
+            }))
+        })
     }
 
     render() {

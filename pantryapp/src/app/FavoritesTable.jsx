@@ -35,12 +35,18 @@ export class FavoritesTable extends React.Component {
         // }
     }
 
-    onAddToGrocery(){
-        debugger;
+    onAddToGrocery(foodId, quant){
+        let userId = +this.props.match.params.userId;
+        if(userId){
+            this.repo.favoritesToGrocery(userId, foodId, quant)
+        }
+    }
+
+    onAddAllToGrocery(){
         let userId = +this.props.match.params.userId;
         this.state.tableList.map((a) => {
             if(userId){
-                this.repo.addGroceryItem(userId, a.foodName, a.foodGroup, a.brand, a.minimumValue)
+                this.repo.favoritesToGrocery(userId, a.foodID, a.minimumValue)
         }})
     }
 
@@ -55,9 +61,9 @@ export class FavoritesTable extends React.Component {
                 {!!this.state.tableList.length && <table className="table table-light table-striped">
                     <thead>
                         <tr>
-                            <th><button type="button" class="btn btn-link">Food Item <i className="fa fa-sort"></i></button></th>
-                            <th>Brand <i className="fa fa-sort"></i></th>
-                            <th>Food Type <i className="fa fa-sort"></i></th>
+                            <th>Food Item</th>
+                            <th>Brand</th>
+                            <th>Food Type</th>
                             <th>Desired Quantity</th>
                             <th className="text-right">Quick Add</th>
                         </tr>
@@ -70,7 +76,7 @@ export class FavoritesTable extends React.Component {
                                     <td>{a.brand}</td>
                                     <td>{a.foodGroup}</td>
                                     <td>{a.minimumValue}</td>
-                                    <td><button type="button" className="btn btn-secondary float-right" >Qucik Add</button></td>
+                                    <td><button type="button" onClick={e => this.onAddToGrocery(a.foodID, a.minimumValue)}className="btn btn-secondary float-right" >Qucik Add</button></td>
                                  </tr>
                             )
                         }
@@ -83,7 +89,7 @@ export class FavoritesTable extends React.Component {
                 {
                     <FavoriteModal onAddItemBase={e => this.onAddItemBase(e)} repo={ this.repo } />
                 }
-                {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1" onClick={e => this.onAddToGrocery()}>
+                {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1" onClick={e => this.onAddAllToGrocery()}>
                     Add all to your Grocery List
                 </button>}
             </div>
