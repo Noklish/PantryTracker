@@ -14,7 +14,6 @@ export const withAuth = (AuthComponent) => {
         }
 
         componentWillMount(){
-            debugger;
             if(!auth.loggedIn()){
                 this.setState({ redirect: '/login' });
             }
