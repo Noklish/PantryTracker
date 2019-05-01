@@ -15,7 +15,7 @@ export class UpdateProfile extends React.Component {
     render() {
         return (
             <div className="updateProfile">
-                <h1>Update Profile</h1>
+                <h1 className="update-header">Update Profile</h1>
                 <div className="update">
                     <label htmlFor="firstName">First Name</label>
                     <input  type="text"
