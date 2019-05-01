@@ -97,9 +97,9 @@ export class repository {
         });
     }
 
-    groceryToPantry(userId, foodName, foodGroup, brand, quantity){
+    groceryToPantry(userId, foodId, expiration, quantity){
         return new Promise((resolve, reject) => {
-            axios.delete(`${this.url}/user/${userId}/groceryList/item`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.post(`${this.url}/user/${userId}/grocery-to-pantry`, {uID: userId, fID: foodId, exDate: expiration, quant: quantity},this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
@@ -122,6 +122,12 @@ export class repository {
         });
     }
 
+    favoritesToGrocery(userId, foodId, quantity){
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/user/${userId}/favorite-to-grocery`, {uID: userId, fID: foodId, quant: quantity},this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
+
 
 
     //recipe stuff
@@ -131,15 +137,15 @@ export class repository {
         });
     }
 
-    getRecipe(userId, recipeName){
+    getIngredients(recipeId){
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/user/${userId}/recipes/${recipeName}`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.get(`${this.url}/user/recipes/${recipeId}/ingredients`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 
-    getIngredients(userId){
+    addRecipe(userId, recipeName, meal, ingredients, steps){
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/user/${userId}/recipes/ingredient`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.post(`${this.url}/user/${userId}/recipes/recipe`, {uID: userId, recipeName: recipeName, meal: meal, ingredients: ingredients, procedure: steps}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 }
