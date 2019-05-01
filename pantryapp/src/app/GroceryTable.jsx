@@ -12,7 +12,7 @@ export class GroceryTable extends React.Component {
     }
 
     onAddItemBase(s) {
-        
+        debugger;
         // if(s.food == ''){
         //     return false;
         // }
@@ -23,9 +23,19 @@ export class GroceryTable extends React.Component {
         //     type = 'N/A';
         // }
 
-        let userId = +this.props.match.params.userId;
-        if(userId){
-            this.repo.addGroceryItem(userId, s.food, s.type, s.brand, s.quantity)
+        let id = +this.props.match.params.userId;
+        if(id){
+            this.repo.addGroceryItem(id, String(s.food).toLowerCase(), String(s.type).toLowerCase(), String(s.brand).toLowerCase(), s.quantity)
+            // .then(e => {
+            //     this.setState( state => ({ tableList: this.state.tableList.push({
+            //         foodId: e.foodId,
+            //         foodName: s.food, 
+            //         brand: s.brand, 
+            //         quantity: s.quantity, 
+            //         foodGroup: s.type,
+            //         userId: id})}));
+            // })
+            
         }
     }
 
@@ -47,9 +57,9 @@ export class GroceryTable extends React.Component {
                 {!!this.state.tableList.length && <table className="table table-light table-striped">
                     <thead>
                         <tr>
-                            <th><button type="button" className="btn btn-link">Food Item <i className="fa fa-sort"></i></button></th>
-                            <th>Brand <i className="fa fa-sort"></i></th>
-                            <th>Food Type <i className="fa fa-sort"></i></th>
+                            <th>Food Item</th>
+                            <th>Brand</th>
+                            <th>Food Type</th>
                             <th>Quantity</th>
                             <th className="text-right">Quick Add</th>
                         </tr>
@@ -91,6 +101,7 @@ export class GroceryTable extends React.Component {
                     tableList: groceryList}));
             })
         }
+        //debugger;
     }
 }
 

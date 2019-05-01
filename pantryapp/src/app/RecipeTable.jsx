@@ -10,7 +10,7 @@ class RecipeTable extends React.Component {
       ingredients: []
     }
     render() {
-
+        debugger
         return (
             <>
             <h1 className="text-white">Recipies</h1>
@@ -65,7 +65,7 @@ class RecipeTable extends React.Component {
       debugger;
       let userId = +this.props.match.params.userId;
       if(userId){
-          this.repo.getRecipe(userId, 'recipeOne').then(recipes => {
+          this.repo.getRecipes(userId).then(recipes => {
               this.setState(state => ({
                   tableList: recipes}));
           })

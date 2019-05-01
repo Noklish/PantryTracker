@@ -71,13 +71,14 @@ class FavoriteModal extends React.Component {
                                         value={this.state.type}
                                         onChange={e => this.setState({ type: e.target.value })} >
                                     <option value="N/A">Please select food type</option>
-                                    <option value="Grains">Grains</option>
-                                    <option value="Fruits">Fruits</option>
-                                    <option value="Vegetables">Vegetables</option>
-                                    <option value="Dairy">Dairy</option>
-                                    <option value="Meat">Meat</option>
-                                    <option value="Beverage">Beverage</option>
-                                    <option value="Other">Other</option>
+                                    <option value="grain">grain</option>
+                                    <option value="fruit">fruit</option>
+                                    <option value="vegetable">vegetable</option>
+                                    <option value="dairy">dairy</option>
+                                    <option value="meat">meat</option>
+                                    <option value="beverage">beverage</option>
+                                    <option value="sauce">sauce</option>
+                                    <option value="other">other</option>
                                 </select>
                             </div>
 

@@ -40,7 +40,7 @@ export class FavoritesTable extends React.Component {
         let userId = +this.props.match.params.userId;
         this.state.tableList.map((a) => {
             if(userId){
-                this.repo.addGroceryItem(userId, a.foodName, a.foodGroup, a.brand, a.minimumValue)
+                this.repo.addGroceryItem(userId, a.foodName.toLowerCase(), a.foodGrouptoLowerCase(), a.brandtoLowerCase(), a.minimumValuetoLowerCase())
         }})
     }
 
@@ -55,9 +55,9 @@ export class FavoritesTable extends React.Component {
                 {!!this.state.tableList.length && <table className="table table-light table-striped">
                     <thead>
                         <tr>
-                            <th><button type="button" class="btn btn-link">Food Item <i className="fa fa-sort"></i></button></th>
-                            <th>Brand <i className="fa fa-sort"></i></th>
-                            <th>Food Type <i className="fa fa-sort"></i></th>
+                            <th>Food Item</th>
+                            <th>Brand</th>
+                            <th>Food Type</th>
                             <th>Desired Quantity</th>
                             <th className="text-right">Quick Add</th>
                         </tr>

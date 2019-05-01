@@ -2,25 +2,22 @@ import React, { Component } from 'react';
 import { FoodList } from './../models/foodList';
 import { repository }  from './../api/repository';
 import FoodItemModal from './modals/FoodItemModal';
+import { Link } from 'react-router-dom';
+import UpdateFoodModal from './modals/UpdateFoodModal';
 
 export class PantryTable extends React.Component {
     repo = new repository();
 
     state = {
-        tableList: []
+        tableList: [],
+        favoriteList: [],
+        id: ''
     }
 
     onAddItemBase(s) {
-        debugger;
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.addPantryItem(userId, s.food, s.type, s.brand, s.quantity, s.date, "This is a Description").then(state => {
-                this.setState(state => ({
-                    food: '',
-                    brand: '',
-                    type: '',
-                    quantity: 1}));
-            })
+            this.repo.addPantryItem(userId, s.food, s.type, s.brand, s.quantity, s.date, "This is a Description")
         }
     }
 
@@ -71,6 +68,28 @@ export class PantryTable extends React.Component {
         return <td>{splitDate[1]+"/"+splitDate[2]+"/"+splitDate[0]}</td>;
     }
 
+    sortCategory(){
+        let userId = +this.props.match.params.userId;
+        if(userId){
+            this.repo.sortByCategories(userId).then(table => {
+                this.setState({
+                    tableList: table
+                });
+            })
+        }
+    }
+
+    sortExpiration(){
+        let userId = +this.props.match.params.userId;
+        if(userId){
+            this.repo.sortByExpiration(userId).then(table => {
+                this.setState({
+                    tableList: table
+                });
+            })
+        }
+    }
+
     render (){
         return (
             <>
@@ -82,10 +101,10 @@ export class PantryTable extends React.Component {
                 {!!this.state.tableList.length && <table className="table table-light table-striped">
                     <thead>
                         <tr>
-                            <th><button type="button" class="btn btn-link">Food Item <i className="fa fa-sort"></i></button></th>
-                            <th>Brand <i className="fa fa-sort"></i></th>
-                            <th>Food Type <i className="fa fa-sort"></i></th>
-                            <th>Expiration Date <i className="fa fa-sort"></i></th>
+                            <th>Food Item</th>
+                            <th>Brand</th>
+                            <th><button className="btn btn-link" onClick={e => this.sortCategory()}>Food Type <i className="fa fa-sort"></i></button></th>
+                            <th><button className="btn btn-link" onClick={e => this.sortExpiration()}>Expiration Date <i className="fa fa-sort"></i></button></th>
                             <th>Quantity</th>
                             <th className="text-right">Delete</th>
                         </tr>
@@ -94,6 +113,10 @@ export class PantryTable extends React.Component {
                         {
                             this.state.tableList.map((a, i) => 
                                 <tr key={i}>
+                                    {/* <td><button type="link" data-toggle="modal" data-target="#update">{a.foodName}</button></td> */}
+                                    {/* {
+                                        <UpdateFoodModal favorites={this.state.favoriteList} foodId={a.foodID} userId={this.state.id}/>
+                                    } */}
                                     <td>{a.foodName}</td>
                                     <td>{a.brand}</td>
                                     <td>{a.foodGroup}</td>
@@ -120,12 +143,24 @@ export class PantryTable extends React.Component {
     componentDidMount(){
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.getPantry(userId).then(pantry => {
+            this.repo.sortByExpiration(userId).then(pantry => {
                 this.setState(state => ({
-                    tableList: pantry}));
+                    tableList: pantry,
+                    id: userId}));
             })
         }
+        // }if(userId){
+        //     this.repo.getFavorites(userId).then(favs => {
+        //         this.setState(state => ({
+        //             favoriteList: favs,
+        //             id: userId}));
+        //     })
+        // }
     }
+
+    // componentWillUpdate(){
+    
+    // }
 }
 
 export default PantryTable;

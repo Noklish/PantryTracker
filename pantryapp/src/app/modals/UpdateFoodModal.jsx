@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { FoodList } from '../../models/foodList';
+import { repository } from '../../api/repository';
 
-class FoodItemModal extends React.Component {
-
+class UpdateFoodModal extends React.Component {
+    repo = new repository();
     constructor(props){
         super(props);
     }
@@ -12,23 +13,28 @@ class FoodItemModal extends React.Component {
         brand: '',
         type: '',
         date: '',
-        quantity: 1
+        quantity: 1,
     }
 
     onAddItem() {
-        this.props.onAddItemBase(this.state);
-        this.setState({
-            food: '',
-            brand: '',
-            type: '',
-            date: '',
-            quantity: 1
-      })
+        debugger;
+        this.repo.addFavorite(this.props.userId, this.props.foodId, 4)
+    }
+
+    checkFavorites(){
+        var isFav = false;
+        for(var i = 0; i < this.props.favorites.length; i++){
+            if(this.props.favorites[i].foodID == this.props.foodId){
+                isFav = true;
+            }
+        }
+        return isFav
     }
 
     render() {
         return (
-            <div className="modal fade" id="foodEntry" tabIndex="-1" role="dialog" aria-labelledby="foodEntryLable" aria-hidden="true">
+            <>
+            <div className="modal fade" id="update" tabIndex="-1" role="dialog" aria-labelledby="foodEntryLable" aria-hidden="true">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -40,7 +46,7 @@ class FoodItemModal extends React.Component {
                     <div className="modal-body">
                         <form name="foodEntryForm" id="foodEntryForm">
                             
-                            <div className="form-group">
+                            {/* <div className="form-group">
                                 <label htmlFor="foodItem">Food Item</label>
                                 <input  type="text"
                                         name="foodItem"                                             
@@ -71,14 +77,13 @@ class FoodItemModal extends React.Component {
                                         value={this.state.type}
                                         onChange={e => this.setState({ type: e.target.value })} >
                                     <option value="N/A">Please select food type</option>
-                                    <option value="grain">grain</option>
-                                    <option value="fruit">fruit</option>
-                                    <option value="begetable">vegetable</option>
-                                    <option value="dairy">dairy</option>
-                                    <option value="meat">meat</option>
-                                    <option value="sauce">sauce</option>
-                                    <option value="beverage">beverage</option>
-                                    <option value="other">other</option>
+                                    <option value="Grains">Grains</option>
+                                    <option value="Fruits">Fruits</option>
+                                    <option value="Vegetables">Vegetables</option>
+                                    <option value="Dairy">Dairy</option>
+                                    <option value="Meat">Meat</option>
+                                    <option value="Beverage">Beverage</option>
+                                    <option value="Other">Other</option>
                                 </select>
                             </div>
                             <div className="form-group">
@@ -102,19 +107,28 @@ class FoodItemModal extends React.Component {
                                         placeholder="Please enter the Quantity of Food"
                                         value={this.state.quantity}
                                         onChange={e => this.setState({ quantity: e.target.value })} />
+                            </div> */}
+                            
+                            <div>
+                                
+                            {!this.checkFavorites() && <input type="checkbox" name="favorite" value="check" />}
+                            {!!this.checkFavorites() && <input type="checkbox" name="favorite" value="check" checked disabled/>}
+
                             </div>
                         </form>
                     </div>
                     
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="addCourse2" type="submit" className="btn btn-primary" data-dismiss="modal" onClick={e => this.onAddItem()}>Submit</button>
+                        <button id="addCourse2" type="submit" className="btn btn-primary" data-dismiss="modal" onClick={e => this.onAddItem()}>Update</button>
                     </div>
                 </div>
             </div>
         </div>
+        
+        </>
         );
     }
 }
 
-export default FoodItemModal;
+export default UpdateFoodModal;
