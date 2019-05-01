@@ -28,7 +28,7 @@ export class UpdateProfile extends React.Component {
     render() {
         return (
             <div className="updateProfile">
-                <h1 className="text-white text-center">Update Profile</h1>
+                <h1 className="text-white">Update Profile</h1>
                 <div className="update">
                     <label htmlFor="username" className="text-white">Username</label>
                     <input  type="text"
