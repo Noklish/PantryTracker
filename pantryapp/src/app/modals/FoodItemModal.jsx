@@ -25,6 +25,7 @@ class FoodItemModal extends React.Component {
             date: '',
             quantity: 1
       })
+      this.forceUpdate();
     }
 
     render() {

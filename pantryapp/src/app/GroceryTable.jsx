@@ -45,9 +45,11 @@ export class GroceryTable extends React.Component {
                     }))
                 })
                 this.repo.groceryToPantry(userId, a.foodID, '', a.quantity)
-        }})
+        }})  
         
-        
+    }
+
+    getExpiration(expiration){
 
     }
 

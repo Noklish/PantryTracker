@@ -18,6 +18,7 @@ export class RecipeModal extends React.Component {
     }
 
     onAddItem() {
+        debugger;
         this.repo.addRecipe(this.props.userId, this.state.name, this.state.meal, this.state.ingredients, this.state.description)
         this.setState({
           name: '',

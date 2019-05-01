@@ -23,6 +23,7 @@ export class PantryTable extends React.Component {
                     tableList: pantry}));
             })
         }
+        this.forceUpdate();
     }
 
     onDeleteFood(deleteId){
