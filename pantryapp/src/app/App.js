@@ -22,21 +22,17 @@ class App extends Component {
   }
 
   handleLogout(){
-    debugger;
     this.auth.logout();
     this.setState({ redirect: '/login' });
   }
 
   componentWillMount(){
-    debugger;
     if(!this.auth.loggedIn()){
       this.setState({ redirect: '/login' });
     }
   }
   
   onLogin(){
-    console.log("onLogin App");
-    debugger;
       if(!this.auth.loggedIn()){
           alert("We're sorry, there was an error logging in. Please try again.");
           this.setState({ redirect: '/login' });
@@ -56,7 +52,6 @@ class App extends Component {
   }
 
   render() {
-    debugger;
     console.log("App render");
     let globalEvents = {
       handleLogout: this.handleLogout,
