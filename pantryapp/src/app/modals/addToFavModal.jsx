@@ -13,7 +13,6 @@ export class AddToFavModal extends React.Component {
     }
 
     onSubmit() {
-        debugger;
         this.props.repo.addFavorite(this.props.user.id, this.props.id, this.state.minCount).catch(err => alert(err));
         this.setState({
             minCount: ''
