@@ -8,7 +8,6 @@ export class AuthService {
 
     login(username, pass){
         return this.repo.login(username, pass).then(res => { 
-            debugger;
             this.setToken(res.tk);
             return Promise.resolve(res);
         }).catch(err => { alert("Login failed") });
