@@ -25,6 +25,10 @@ export class PantryTable extends React.Component {
         }
     }
 
+    testEdit(){
+        this.repo.editPantry(1, 6, "new", "new", 18, "1990-01-01")
+    }
+
     onDeleteFood(deleteId){
         let userId = +this.props.match.params.userId;
         if(userId){
@@ -145,6 +149,10 @@ export class PantryTable extends React.Component {
                 {
                     <FoodItemModal repo={ this.repo }  onAddItemBase={e => this.onAddItemBase(e)}/>
                 }
+                {/* <button type="button" className="btn btn-success btn-lg btn-block" onClick={e => this.testEdit()}>
+                    put
+                </button> */}
+
             </div>
             </>
         );

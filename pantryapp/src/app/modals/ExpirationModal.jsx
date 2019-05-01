@@ -14,12 +14,10 @@ class ExpirationModal extends React.Component {
     }
 
     onAddItem() {
-        debugger
-        this.repo.groceryToPantry(this.props.userId, this.props.foodId, this.state.expire, this.props.quant).then(() => {
-            this.setState(state => ({
-                expire: ''
-            }))
-        })
+        this.props.addExpiration(this.state.expire);
+        this.setState({
+            expire: ''
+      })
     }
 
     render() {

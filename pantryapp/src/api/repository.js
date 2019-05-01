@@ -81,6 +81,12 @@ export class repository {
         });
     }
 
+    editPantry(userId, foodId, foodGroup, brand, quantity, date){
+        return new Promise((resolve, reject) => {
+            axios.put(`${this.url}/user/${userId}/pantry/item`, {uID: userId, fID: foodId, exDate: date, fGroup: foodGroup, brand: brand, quant: quantity}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+        });
+    }
+
     // addFoodItem()
 
     //Grocery stuff

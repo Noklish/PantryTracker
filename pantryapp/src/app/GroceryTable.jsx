@@ -9,7 +9,9 @@ export class GroceryTable extends React.Component {
 
     state = {
         tableList: [],
-        id: ''
+        id: '',
+        foodId: '',
+        quant: '',
     }
 
     onAddItemBase(s) {
@@ -24,15 +26,27 @@ export class GroceryTable extends React.Component {
         }
     }
 
-    onQuickAdd(id){
+    onQuickAdd(food){
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.deleteGroceryItem(userId, id).then(() => {
+            this.repo.deleteGroceryItem(userId, food.foodID).then(() => {
                 this.setState(state => ({
-                    tableList: state.tableList.filter(x => x.foodID !== id)
+                    tableList: state.tableList.filter(x => x.foodID !== food.foodID),
+                    foodId: food.foodID,
+                    quant: food.quantity
                 }))
             })
         }
+    }
+
+    addExpiration(expiration){
+        debugger;
+        this.repo.groceryToPantry(this.state.id, this.state.foodId, expiration, this.state.quant).then(() => {
+            this.setState(state => ({
+                foodId: '',
+                quant: ''
+            }))
+        })
     }
 
     onAddAllToPantry(){
@@ -77,7 +91,9 @@ export class GroceryTable extends React.Component {
                                     <td>{a.brand}</td>
                                     <td>{a.foodGroup}</td>
                                     <td>{a.quantity}</td>
-                                    <td><button type="button" className="btn btn-secondary float-right" data-toggle="modal" data-target="#expiration" onClick={e => this.onQuickAdd(a.foodID)}>Quick Add</button>{ <ExpirationModal repo={this.repo} userId={this.state.id} foodId={a.foodID} quant={a.quantity} />}</td>
+                                    <td><button type="button" className="btn btn-secondary float-right" data-toggle="modal" data-target="#expiration" onClick={e => this.onQuickAdd(a)}>Quick Add</button>{ 
+                                    <ExpirationModal addExpiration={e => this.addExpiration(e)} />
+                                    }</td>
                                  </tr>
                             )
                         }
