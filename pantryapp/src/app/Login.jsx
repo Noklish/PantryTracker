@@ -25,7 +25,6 @@ export class Login extends React.Component {
     }
 
     changeRedirect(id){
-        debugger;
         console.log("change Redirect");
         this.setState({
             redirect: '/home'
@@ -35,14 +34,12 @@ export class Login extends React.Component {
 
     componentWillMount(){
         if(this.auth.loggedIn()){
-            //debugger;
             let path = `/user/${this.auth.getProfile().id}/pantry`;
             this.setState({ redirect: path });
         }
     }
 
     render() {
-        debugger;
         console.log("Login render");
         if(this.state.redirect){
             return <Redirect to={{ pathname: this.state.redirect }}/>
