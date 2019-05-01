@@ -18,7 +18,15 @@ export class repository {
 
     addAccount(userName, pass, email){
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/user`, {userName: userName, pass: pass, email: email}, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.post(`${this.url}/user/create`, {userName: userName, pass: pass, email: email}, this.config).then(resp => {
+                if(resp.data == "L")
+                {
+                    return alert("Email already in use");
+                }
+                else {
+                    resolve(resp.data);
+                }
+            }).catch(err => alert(err));
         });
     }
 
@@ -28,10 +36,16 @@ export class repository {
         });
     }
 
-    login(userName, pass){
-        debugger;
+    login(email, pass){
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/login`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.post(`${this.url}/user/login`, {email: email, pass: pass}, this.config).then(resp => resolve(resp.data)).catch(resp => {
+                //debugger;
+                if(resp == "Error: Request failed with status code 400")
+                {
+                    alert("Incorrect email or password.");
+                }
+                else { alert(resp); }
+            });
         });
     }
 

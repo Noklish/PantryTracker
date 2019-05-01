@@ -100,6 +100,7 @@ export class PantryTable extends React.Component {
     }
 
     render (){
+        debugger;
         return (
             <>
             <div id="home">

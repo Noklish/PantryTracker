@@ -4,8 +4,7 @@ import './UpdateProfile.css';
 export class UpdateProfile extends React.Component {
 
     state = {
-        first: '',
-        last: '',
+        username: '',
         password: ''
     }    
 
@@ -20,23 +19,12 @@ export class UpdateProfile extends React.Component {
                 <div className="update">
                     <label htmlFor="firstName">First Name</label>
                     <input  type="text"
-                        name="firstName" 
-                        id="firstName"
+                        name="username" 
+                        id="username"
                         className="form-control"
-                        placeholder="Please Enter First Name"
-                        value={this.state.first}
-                        onChange={e => this.setState({ first: e.target.value })} 
-                        required/>
-                </div>
-                <div className="update">
-                    <label htmlFor="lastName">Last Name</label>
-                    <input  type="text"
-                        name="lastName" 
-                        id="lastName"
-                        className="form-control"
-                        placeholder="Please Enter Last Name"
-                        value={this.state.last}
-                        onChange={e => this.setState({ last: e.target.value })} 
+                        placeholder="Enter new username"
+                        value={this.state.username}
+                        onChange={e => this.setState({ username: e.target.value })} 
                         required/>
                 </div>
                 <div className="update">
@@ -56,6 +44,13 @@ export class UpdateProfile extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    componentDidMount(){
+        debugger;
+        this.setState({
+            username: this.props.user.username
+        });
     }
 }
 
