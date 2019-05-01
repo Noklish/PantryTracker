@@ -167,7 +167,7 @@ export class PantryTable extends React.Component {
                 {
                     <AddToFavModal repo={ this.repo } user={this.props.user} id={this.state.favId}/>
                 }
-                <UpdateFoodModal repo={ this.repo } user={this.props.user} updateItem={this.state.updateItem} updateItem={this.state.updateItem}/>
+                <UpdateFoodModal repo={ this.repo } user={this.props.user} updateItem={this.state.updateItem}/>
             </div>
             </>
         );
