@@ -44,7 +44,6 @@ export class GroceryTable extends React.Component {
     }
 
     addExpiration(expiration){
-        debugger;
         this.repo.groceryToPantry(this.state.id, this.state.foodId, expiration, this.state.quant).then(() => {
             this.setState(state => ({
                 foodId: '',
@@ -54,7 +53,6 @@ export class GroceryTable extends React.Component {
     }
 
     onAddAllToPantry(){
-        debugger;
         this.state.tableList.map((a) => {
                 this.repo.groceryToPantry(this.state.id, a.foodID, '', a.quantity)
                 this.repo.deleteGroceryItem(this.state.id, a.foodID).then(() => {
