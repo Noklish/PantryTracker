@@ -1,0 +1,12 @@
+body {
+    background: #543925;
+    background-image: url("./../data/WoodPictures/wood1.png"), url("./../data/WoodPictures/wood2.png");
+    background-repeat: repeat-x, repeat;
+    height: 100%;
+}
+
+#home-alert {
+    margin-top: 1rem;
+    margin-right: 5rem;
+    margin-left: 5rem;
+}
