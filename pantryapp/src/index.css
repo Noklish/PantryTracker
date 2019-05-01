@@ -20,3 +20,9 @@ code {
 main {
   margin: 1em 5em;
 }
+
+@media screen and (min-width: 990px) {
+  .link-appear {
+    display: none
+  }
+}
