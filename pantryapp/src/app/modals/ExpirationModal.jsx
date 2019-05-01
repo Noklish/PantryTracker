@@ -17,7 +17,7 @@ class ExpirationModal extends React.Component {
         this.props.addExpiration(this.state.expire);
         this.setState({
             expire: ''
-      })
+      });
     }
 
     render() {

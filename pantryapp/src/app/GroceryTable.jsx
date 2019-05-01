@@ -50,15 +50,16 @@ export class GroceryTable extends React.Component {
     }
 
     onAddAllToPantry(){
+        debugger;
         let userId = +this.props.match.params.userId;
         this.state.tableList.map((a) => {
             if(userId){
+                this.repo.groceryToPantry(userId, a.foodID, '', a.quantity)
                 this.repo.deleteGroceryItem(userId, a.foodID).then(() => {
                     this.setState(state => ({
-                        tableList: state.tableList.filter(x => x.foodID !== a.id)
+                        tableList: state.tableList.filter(x => x.foodID !== a.foodID)
                     }))
-                })
-                this.repo.groceryToPantry(userId, a.foodID, '', a.quantity)
+                }) 
         }})
         
         
@@ -106,7 +107,7 @@ export class GroceryTable extends React.Component {
                 {
                     <FavoriteModal onAddItemBase={e => this.onAddItemBase(e)} repo={ this.repo } />
                 }
-                {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1">
+                {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1" onClick={e => this.onAddAllToPantry()}>
                     Add all to your Pantry
                 </button>}
             </div>
