@@ -18,7 +18,7 @@ export class GroceryTable extends React.Component {
             this.repo.addGroceryItem(id, String(s.food).toLowerCase(), String(s.type).toLowerCase(), String(s.brand).toLowerCase(), s.quantity)
             this.repo.getGroceryList(id).then(groceryList => {
                 this.setState(state => ({
-                    tableList: groceryList,
+                    tableList: groceryList
                     }));
             })          
         }

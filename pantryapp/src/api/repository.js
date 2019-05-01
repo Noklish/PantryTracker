@@ -123,15 +123,9 @@ export class repository {
         });
     }
 
-    getRecipe(userId, recipeName){
+    getIngredients(recipeId){
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/user/${userId}/recipes/${recipeName}`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
-        });
-    }
-
-    getIngredients(userId){
-        return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/user/${userId}/recipes/ingredient`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
+            axios.get(`${this.url}/user/recipes/${recipeId}/ingredients`, this.config).then(resp => resolve(resp.data)).catch(resp => alert(resp));
         });
     }
 }

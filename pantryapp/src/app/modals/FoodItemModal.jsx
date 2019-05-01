@@ -71,7 +71,7 @@ class FoodItemModal extends React.Component {
                                         id="foodType"
                                         value={this.state.type}
                                         onChange={e => this.setState({ type: e.target.value })} >
-                                    <option value="N/A">Please select food type</option>
+                                    <option value="N/A" disabled>Please select food type</option>
                                     <option value="grain">grain</option>
                                     <option value="fruit">fruit</option>
                                     <option value="vegetable">vegetable</option>
