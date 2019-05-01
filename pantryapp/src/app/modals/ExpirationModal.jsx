@@ -10,16 +10,39 @@ class ExpirationModal extends React.Component {
     }
 
     state = {
+        food: '',
+        name: '',
+        brand: '',
+        type: '',
+        quantity: '',
         expire: '',
     }
 
     onAddItem() {
-        debugger
-        this.repo.groceryToPantry(this.props.userId, this.props.foodId, this.state.expire, this.props.quant).then(() => {
+        this.props.removeFromTable(this.state.food)
+        this.props.repo.groceryToPantry(this.props.user, this.state.food, this.state.expiration, this.state.quantity).then(() => {
             this.setState(state => ({
+                food: '',
+                name: '',
+                brand: '',
+                type: '',
+                quantity: '',
                 expire: ''
             }))
         })
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.quickAddItem.foodID !== prevProps.quickAddItem.foodID){
+            this.setState({
+                food: this.props.quickAddItem.foodID,
+                name: this.props.quickAddItem.foodName,
+                brand: this.props.quickAddItem.brand,
+                type: this.props.quickAddItem.foodGroup,
+                quantity: this.props.quickAddItem.quantity,
+                expire: ''
+            })
+        }
     }
 
     render() {
@@ -29,7 +52,7 @@ class ExpirationModal extends React.Component {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="foodEntryLable">Add Expiration Date</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" >
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

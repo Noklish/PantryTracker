@@ -3,13 +3,15 @@ import { FoodList } from './../models/foodList';
 import { repository }  from './../api/repository';
 import FavoriteModal from './modals/FavoriteModal';
 import ExpirationModal from './modals/ExpirationModal';
+import { Link } from 'react-router-dom';
 
 export class GroceryTable extends React.Component {
     repo = new repository();
 
     state = {
         tableList: [],
-        id: ''
+        id: '',
+        quickAddItem: ''
     }
 
     onAddItemBase(s) {
@@ -24,31 +26,43 @@ export class GroceryTable extends React.Component {
         }
     }
 
-    onQuickAdd(id){
+    onQuickAdd(food){
+        this.setState({
+            quickAddItem: food
+        })
+    }
+
+    removeFromTable(foodId){
         let userId = +this.props.match.params.userId;
         if(userId){
-            this.repo.deleteGroceryItem(userId, id).then(() => {
+            this.repo.deleteGroceryItem(userId, foodId).then(() => {
                 this.setState(state => ({
-                    tableList: state.tableList.filter(x => x.foodID !== id)
+                    tableList: state.tableList.filter(x => x.foodID !== foodId),
                 }))
             })
         }
     }
 
-    onAddAllToPantry(){
-        let userId = +this.props.match.params.userId;
-        this.state.tableList.map((a) => {
-            if(userId){
-                this.repo.deleteGroceryItem(userId, a.foodID).then(() => {
-                    this.setState(state => ({
-                        tableList: state.tableList.filter(x => x.foodID !== a.id)
-                    }))
-                })
-                this.repo.groceryToPantry(userId, a.foodID, '', a.quantity)
-        }})
-        
-        
+    addExpiration(expiration){
+        debugger;
+        this.repo.groceryToPantry(this.state.id, this.state.foodId, expiration, this.state.quant).then(() => {
+            this.setState(state => ({
+                foodId: '',
+                quant: ''
+            }))
+        })
+    }
 
+    onAddAllToPantry(){
+        debugger;
+        this.state.tableList.map((a) => {
+                this.repo.groceryToPantry(this.state.id, a.foodID, '', a.quantity)
+                this.repo.deleteGroceryItem(this.state.id, a.foodID).then(() => {
+                    this.setState(state => ({
+                        tableList: state.tableList.filter(x => x.foodID !== a.foodID)
+                    }))
+                }) 
+        })
     }
 
     render (){
@@ -77,7 +91,7 @@ export class GroceryTable extends React.Component {
                                     <td>{a.brand}</td>
                                     <td>{a.foodGroup}</td>
                                     <td>{a.quantity}</td>
-                                    <td><button type="button" className="btn btn-secondary float-right" data-toggle="modal" data-target="#expiration" onClick={e => this.onQuickAdd(a.foodID)}>Quick Add</button>{ <ExpirationModal repo={this.repo} userId={this.state.id} foodId={a.foodID} quant={a.quantity} />}</td>
+                                    <td><button type="button" className="btn btn-secondary float-right" data-toggle="modal" data-target="#expiration" onClick={e => this.onQuickAdd(a)}>Quick Add</button></td>
                                  </tr>
                             )
                         }
@@ -90,7 +104,8 @@ export class GroceryTable extends React.Component {
                 {
                     <FavoriteModal onAddItemBase={e => this.onAddItemBase(e)} repo={ this.repo } />
                 }
-                {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1">
+                <ExpirationModal repo={this.repo} user={this.state.id} quickAddItem={this.state.quickAddItem} removeFromTable={e => this.removeFromTable(e)}/>
+                {!!this.state.tableList.length && <button type="button" className="btn btn-info btn-lg btn-block mt-1" onClick={e => this.onAddAllToPantry()}>
                     Add all to your Pantry
                 </button>}
             </div>
