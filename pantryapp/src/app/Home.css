@@ -4,3 +4,9 @@ body {
     background-repeat: repeat-x, repeat;
     height: 100%;
 }
+
+#home-alert {
+    margin-top: 1rem;
+    margin-right: 5rem;
+    margin-left: 5rem;
+}
