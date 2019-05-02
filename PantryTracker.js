@@ -76,6 +76,7 @@ app.post('/user', (req, res/*userName, pass, email*/) => {
 	var user = req.body.userName;
 	var pass = req.body.pass;
 	var email = req.body.email;
+
 	connection.query('INSERT INTO userAccount (userPassword, userName, email) VALUES(?, ?, ?)', [pass, user, email], function(err, result){
 		if(err) throw err;
 		else {
@@ -90,22 +91,43 @@ app.post('/user', (req, res/*userName, pass, email*/) => {
 app.post('/user/login', (req, res) => {
 	var email = req.body.email;
 	var pass = req.body.userPassword;
+	var re;
+
 	if(req.session.loggedin) {
 		res.send("You're already logged in");
 	} else {
 		if(email && pass) {
 			connection.query('SELECT * FROM userAccount WHERE email = ? AND userPassword = ?', [email, pass],
-				function(err, results, fields) {
-					if(results.length > 0) {
-						req.session.loggedin = true;
-						req.session.email = email;
-						req.send("Welcome back, " + email);
-					} else {
-						res.status(400).send('Incorrect Username or Password.');
-						req.session.loggedin = false;
-					} //end inner-inner-else
-					res.end();
+				function(err, results) {
+					if(err) throw err;
+					else {
+						re = JSON.parse(JSON.stringify(results));
+					}
+					// if(results.length > 0) {
+					// 	req.session.loggedin = true;
+					// 	req.session.email = email;
+					// 	req.send("Welcome back, " + email);
+					// } else {
+					// 	res.status(400).send('Incorrect Username or Password.');
+					// 	req.session.loggedin = false;
+					// } //end inner-inner-else
+					// res.end();
 				}); //end function
+			if(typeof re != undefined && re) {
+				req.session.loggedin = true;
+				req.session.email = email;
+				req.send("Welcome back, " + email);
+				let tk = jwt.sign({id: re[0].userID, username: re[0].userName}, expsession.secret, {expiresIn: 129600});
+				res.json({
+					success: true,
+					err: null,
+					tk
+				});
+				res.end();
+			} else {
+				res.status(400).send('Incorrect Username or Password.');
+				req.session.loggedin = false;				
+			}
 		} else {
 			res.send("Please enter your username and password!");
 			res.end();
@@ -205,17 +227,17 @@ app.post('/user/:userid/pantry/add', (req, res/*, pID, uID, fName, fGroup, exDat
 			if(err) throw err;
 		});
 	} else {
-		connection.query('INSERT INTO foodItem  (foodName, foodGroup, brand) VALUES(' + fName + ', ' + fGroup + ', ' + br + ', ' + ')', function(err, results) {
+		connection.query('INSERT INTO foodItem  (foodName, foodGroup, brand) VALUES(\'' + fName + '\', \'' + fGroup + '\', \'' + br + '\')', function(err, results) {
 			if(err) throw err;
 		});
 		connection.query('SELECT foodID FROM foodItem WHERE foodName = \'' + fName + '\' AND foodGroup = \'' + fGroup + '\' AND brand = \'' + br + '\'', function(err, results) {
 			if(err) throw err;
 			else {
-				id = JSON.parse(JSON.stringify(results));
+				//id = JSON.parse(JSON.stringify(results));
+				connection.query('INSERT INTO pantry (userID, foodID, expirationDate, quantity) VALUES(' + uID + ', ' + results[0].foodID + ', ' + exDate + ', ' + quant + ')', function(err, results) {
+					if(err) throw err;
+				});
 			}
-		});
-		connection.query('INSERT INTO pantry (userID, foodID, expirationDate, quantity) VALUES(' + uID + ', ' + id + ', ' + exDate + ', ' + quant + ')', function(err, results) {
-			if(err) throw err;
 		});
 	}	
 });
@@ -411,6 +433,12 @@ app.put('/user/:userid/pantry/item/quantity', (req, res/*, uID, fName, br, num*/
 	if(typeof a != undefined && a) {
 		connection.query('INSERT INTO groceryList (userID, foodID, quantity) VALUES(' + uID + ', ' + a[0].foodID + ', ' + a[0].brand + ', 1)', function(err, results) {
 			if(err) throw err;
+			else {
+				connection.query('SELECT foodName FROM foodItem WHERE foodID = ' + a[0].foodID, function(err, results) {
+					if(err) throw err;
+					else { res.send(JSON.parse(JSON.stringify(results))); }
+				});
+			}
 		});
 		connection.query('DELETE FROM pantry WHERE userID = ' + uID + ' AND foodID = ' + a[0].foodID, function(err, results) {
 			if(err) throw err;
@@ -422,6 +450,12 @@ app.put('/user/:userid/pantry/item/quantity', (req, res/*, uID, fName, br, num*/
 	} else if(typeof c != undefined && c && c[0].quantity < c[0].minValue) {
 		connection.query('INSERT INTO groceryList (userID, foodID, quantity) VALUES('uID + ', ' + c[0].foodID + ', 1)', function(err, results) {
 			if(err) throw err;
+			else {
+				connection.query('SELECT foodName FROM foodItem WHERE foodID = ' + c[0].foodID, function(err, results) {
+					if(err) throw err;
+					else { res.send(JSON.parse(JSON.stringify(results))); }
+				});
+			}
 		});
 	}
 });
@@ -511,6 +545,8 @@ app.get('/user/:userid/recipes/:recipe', (req, res/*, uID, recipeName*/) => {
 	});
 });
 
+
+
 //INSERT RECIPE INGREDIENTS FIGURE OUT HOW TO ARRAY THING
 app.post('/user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ingredients, procedure*/) => {
 	var uID = req.body.uID;
@@ -532,7 +568,7 @@ app.post('/user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ing
 			recipe = JSON.parse(JSON.stringify(results));
 		}
 	});
-	for(int j = 0; j < ingredients.length; j++){
+	for(var j = 0; j < ingredients.length; j++){
 		connection.query('SELECT * FROM foodItem NATURAL JOIN pantry WHERE foodName = \'' + ingredients[j].name + '\' AND userID = ' + uID, function(err, results) {
 			if(err) throw err;
 			else {
@@ -587,7 +623,7 @@ app.put('/user/:userid/recipes/recipe', (req, res/*, uID, recipeName, meal, ingr
 
 app.put('/user/:userid/recipes/recipe/ingred', (req, res) => {
 	var fName = req.body.fName;
-	var rID = var.body.rID;
+	var rID = req.body.rID;
 
 	var fid;
 	var newF;
@@ -651,6 +687,7 @@ app.get('/user/:userid/recipes/pantry', (req, res) => {
 	var r = [];
 
 	var b;
+	var c;
 
 	connection.query('SELECT DISTINCT recipeID FROM recipe WHERE userID = ' + uID, function(err, results) {
 		if(err) throw err;
@@ -667,7 +704,20 @@ app.get('/user/:userid/recipes/pantry', (req, res) => {
 						r.push(results[j].recipeID);
 					}
 				}
-				res.send(r);
+				for(var j = 0; j < r.length; j++) {
+					connection.query('SELECT foodID FROM (recipe NATURAL JOIN recipeAssignments) x LEFT OUTER JOIN pantry ON pantry.foodID = x.foodID WHERE' +
+						'userID = ' + uID + ' AND recipeID = ' + r[j] + ' AND pantry.foodID IS NULL', function(err, results) {
+							if(err) throw err;
+							else {
+								c = JSON.parse(JSON.stringify(results));
+							}
+						});
+				}
+				res.json({
+					recipes: r,
+					iToBuy: c
+				});
+				res.end();
 			}
 
 	});
@@ -679,4 +729,81 @@ app.get('/user/:userid/recipes/pantry', (req, res) => {
 
 	 // }
 
+});
+
+app.post('/user/:userid/favorite-to-grocery', (req, res) => {
+	var uID = req.body.uID;
+	var fID = req.body.fID;
+	var quant = req.body.quant;
+	connection.query('INSERT INTO groceryList (userID, foodID, quantity) VALUES(' + uID + ', ' + fID + ', ' + quant + ')', function(err, results) {
+		if(err) throw err;
+	});
+});
+
+app.post('/user/:userid/grocery-to-pantry', (req, res) => {
+	var uID = req.body.uID;
+	var fID = req.body.fID;
+	var exDate = req.body.exDate;
+	var quant = req.body.quant;
+	connection.query('INSERT INTO pantry (userID, foodID, expirationDate, quantity) VALUES(' + uID + ', ' + fID + ', ' + exDate + ', ' + quant + ')', function(err, results) {
+		if(err) throw err;
+	});
+});
+
+app.get('/user/:userid/nutrition', (req, res) => {
+	var uID = req.params.userid;
+	var r;
+	connection.query('SELECT foodGroup, count(*) as t FROM pantry WHERE userID = ' + uID + ' GROUP BY foodGroup SORT BY ASC', function(err, results) {
+		if(err) throw err;
+		else {
+			r = JSON.parse(JSON.stringify(results));
+			res.send(r[0].foodGroup);
+		}
+	});
+});
+
+app.get('/user/:userid/expireSoon', (req, res) => {
+	var uID = req.params.userid;
+
+	var a;
+	connection.query('SELECT foodName FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND expirationDate < CURDATE() + 3', function(err, results) {
+		if(err) throw err;
+		else {
+			a = JSON.parse(JSON.stringify(results));
+			res.send(a);
+		}
+	});
+
+});
+
+//gets expired food 
+app.get('/user/:userid/expired', (req, res) => {
+	var a;
+	connection.query('SELECT foodName FROM pantry NATURAL JOIN foodItem WHERE userID = ' + uID + ' AND expirationDate >= CURDATE()', function(err, results) {
+		if(err) throw err;
+		else {
+			a = JSON.parse(JSON.stringify(results));
+			res.send(a);
+		}
+	});
+});
+
+
+app.put('/user/:userid/pantry/item', (req, res) => {
+	var uID = req.body.uID;
+	var fID = req.body.fID;
+	var exDate = req.body.exDate;
+	var quant = req.body.quant;
+	var fGroup = req.body.fGroup;
+	var brand = req.body.brand;
+
+	connection.query('UPDATE pantry SET expirationDate = \'' + exDate + '\', quantity = ' + quant + 'WHERE userID = ' + uID + ' AND foodID = ' + fID,
+	 function(err, results) {
+	 	if(err) throw err;
+	 });
+
+	connection.query('UPDATE foodItem SET foodGroup = \'' + fGroup + '\', brand = \'' + brand + '\' WHERE userID = ' + uID + ' AND foodID = ' + fID,
+	 function(err, results){
+		if(err) throw err;
+	});
 });
